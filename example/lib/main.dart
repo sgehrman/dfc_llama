@@ -43,8 +43,8 @@ class LlamaAppState extends State<LlamaApp> {
     }
 
     final contextParams = ContextParams();
-    // contextParams.nPredict = 8192;
-    // contextParams.nCtx = 8192;
+    // contextParams.nPredict = 111;
+    // contextParams.nCtx = 111;
     // contextParams.nBatch = 512;
 
     final samplerParams = SamplerParams();
@@ -53,13 +53,18 @@ class LlamaAppState extends State<LlamaApp> {
     // samplerParams.topP = 0.95;
     // samplerParams.penaltyRepeat = 1.1;
 
+    final modelParams = ModelParams();
+    // default of 99 crashes, not enough memory
+    // 30 crashed too
+    modelParams.nGpuLayers = 20;
+
     Llama.libraryPath = LibraryPaths.path;
     model = Llama(
       resultFile.path,
-      ModelParams(),
+      modelParams,
       contextParams,
       samplerParams,
-      true,
+      false, // verbose
     );
 
     print(model!.status);
