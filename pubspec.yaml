@@ -1,11 +1,11 @@
 name: dfc_llama
-description: "A new Flutter FFI plugin project."
+description: 'A new Flutter FFI plugin project.'
 version: 0.0.1
-homepage: "https://github.com/sgehrman/dfc_llama"
+homepage: 'https://github.com/sgehrman/dfc_llama'
 
 environment:
   sdk: ^3.8.1
-  flutter: ">=3.3.0"
+  flutter: '>=3.3.0'
 
 dependencies:
   flutter:
@@ -26,3 +26,22 @@ flutter:
         ffiPlugin: true
       windows:
         ffiPlugin: true
+
+analyzer:
+  exclude:
+    - 'lib/src/llama_cpp.dart'
+
+ffigen: # dart run ffigen
+  name: 'llama_cpp'
+  description: 'llama.cpp binding'
+  output: 'lib/src/llama_cpp.dart'
+  # ignore-source-errors: true
+  headers:
+    entry-points:
+      - 'src/llama.cpp/include/llama.h'
+      - 'src/llama.cpp/tools/mtmd/mtmd.h'
+  compiler-opts:
+    - '-I/usr/lib/clang/17/include'
+    - '-Isrc/llama.cpp/ggml/include'
+    - '-Isrc/llama.cpp/include'
+    - '-Isrc/llama.cpp/tools/mtmd'
