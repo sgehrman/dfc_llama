@@ -53,7 +53,7 @@ class LlamaAppState extends State<LlamaApp> {
     samplerParams.topP = 0.95;
     samplerParams.penaltyRepeat = 1.1;
 
-    Llama.libraryPath = 'llama.framework/llama';
+    Llama.libraryPath = LibraryPaths.path;
     model = Llama(
       resultFile.path,
       ModelParams(),
