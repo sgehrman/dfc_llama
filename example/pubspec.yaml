@@ -9,13 +9,12 @@ environment:
   sdk: ^3.8.1
 
 dependencies:
-  flutter:
-    sdk: flutter
-
+  cupertino_icons: ^1.0.8
   dfc_llama:
     path: ../
-
-  cupertino_icons: ^1.0.8
+  file_picker: ^10.2.4
+  flutter:
+    sdk: flutter
 
 dev_dependencies:
   flutter_lints: ^5.0.0
