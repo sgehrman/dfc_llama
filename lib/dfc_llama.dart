@@ -1,3 +1,4 @@
+export 'src/additions/library_paths.dart';
 export 'src/alpaca_format.dart';
 export 'src/chat.dart';
 export 'src/chatml_format.dart';
