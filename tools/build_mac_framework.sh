@@ -8,7 +8,8 @@ popd > /dev/null
 
 rm -rf macos/llama.framework
 
-cp -r src/llama.cpp/build-macos/framework/llama.framework macos/
+# you need -rP to preserve the symlinks
+cp -rP src/llama.cpp/build-macos/framework/llama.framework macos/
 
 rm -rf src/llama.cpp/build-macos
 
