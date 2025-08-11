@@ -43,15 +43,15 @@ class LlamaAppState extends State<LlamaApp> {
     }
 
     final contextParams = ContextParams();
-    contextParams.nPredict = 8192;
-    contextParams.nCtx = 8192;
-    contextParams.nBatch = 512;
+    // contextParams.nPredict = 8192;
+    // contextParams.nCtx = 8192;
+    // contextParams.nBatch = 512;
 
     final samplerParams = SamplerParams();
-    samplerParams.temp = 1.0;
-    samplerParams.topK = 64;
-    samplerParams.topP = 0.95;
-    samplerParams.penaltyRepeat = 1.1;
+    // samplerParams.temp = 1.0;
+    // samplerParams.topK = 64;
+    // samplerParams.topP = 0.95;
+    // samplerParams.penaltyRepeat = 1.1;
 
     Llama.libraryPath = LibraryPaths.path;
     model = Llama(
