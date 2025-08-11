@@ -7,9 +7,18 @@ cmake_minimum_required(VERSION 3.10)
 set(PROJECT_NAME "llama")
 project(${PROJECT_NAME} LANGUAGES CXX)
 
-set(GGML_CCACHE OFF)
+# set(GGML_CCACHE OFF)
 set(GGML_NATIVE OFF)
 set(GGML_VULKAN ON)
+set(LLAMA_CURL OFF)
+set(LLAMA_BUILD_TOOLS OFF)
+set(LLAMA_BUILD_TESTS OFF)
+
+set(LLAMA_BUILD_EXAMPLES OFF)
+set(LLAMA_BUILD_SERVER OFF)
+set(GGML_BLAS_DEFAULT ON)
+set(GGML_OPENMP ON)
+
 set(BUILD_SHARED_LIBS ON)
 set(CMAKE_INSTALL_LIBDIR lib CACHE PATH "library install dir" FORCE)
 # Set the linker flags for shared libraries
