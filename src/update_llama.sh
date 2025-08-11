@@ -17,7 +17,7 @@ rm -rf .github
 rm -rf .git
 # rm -rf vendor
 rm -rf prompts
-rm -rf tools
+# rm -rf tools
 rm -rf scripts
 rm -rf gguf-py
 

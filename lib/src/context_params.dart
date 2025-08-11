@@ -122,9 +122,10 @@ class ContextParams {
     contextParams.n_seq_max = nSeqMax;
     contextParams.n_threads = nThreads;
     contextParams.n_threads_batch = nThreadsBatch;
-    contextParams.rope_scaling_typeAsInt = ropeScalingType.value;
-    contextParams.pooling_typeAsInt = poolingType.value;
-    contextParams.attention_typeAsInt = attentionType.value;
+    // SNG - removed?
+    // contextParams.rope_scaling_typeAsInt = ropeScalingType.value;
+    // contextParams.pooling_typeAsInt = poolingType.value;
+    // contextParams.attention_typeAsInt = attentionType.value;
     contextParams.rope_freq_base = ropeFreqBase;
     contextParams.rope_freq_scale = ropeFreqScale;
     contextParams.yarn_ext_factor = yarnExtFactor;
