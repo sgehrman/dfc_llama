@@ -42,16 +42,16 @@ class LlamaAppState extends State<LlamaApp> {
       throw Exception('File does not exist');
     }
 
-    ContextParams contextParams = ContextParams();
-    // contextParams.nPredict = 512;
-    // contextParams.nCtx = 512;
-    // contextParams.nBatch = 512;
+    final contextParams = ContextParams();
+    contextParams.nPredict = 8192;
+    contextParams.nCtx = 8192;
+    contextParams.nBatch = 512;
 
     final samplerParams = SamplerParams();
-    // samplerParams.temp = 1.0;
-    // samplerParams.topK = 64;
-    // samplerParams.topP = 0.95;
-    // samplerParams.penaltyRepeat = 1.1;
+    samplerParams.temp = 1.0;
+    samplerParams.topK = 64;
+    samplerParams.topP = 0.95;
+    samplerParams.penaltyRepeat = 1.1;
 
     Llama.libraryPath = 'llama.framework/llama';
     model = Llama(
