@@ -28,6 +28,14 @@ A new Flutter FFI plugin project.
 
   s.dependency 'FlutterMacOS'
 
+  # this set seems to work to keep framework in the plugin
+  s.frameworks = 'Accelerate', 'Foundation', 'Metal', 'MetalKit'
+  s.source_files = 'llama.framework/Headers/**/*.h'  
+  s.public_header_files = 'llama.framework/Headers/**/*.h'
+  s.vendored_frameworks = 'llama.framework'
+  s.preserve_paths = 'llama.framework/**/*'
+  # s.xcconfig       = { 'FRAMEWORK_SEARCH_PATHS' => '"$(PODS_ROOT)"' }
+
   s.platform = :osx, '10.11'
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
   s.swift_version = '5.0'
