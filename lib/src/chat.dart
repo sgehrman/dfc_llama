@@ -2,7 +2,8 @@
 enum ChatFormat {
   chatml,
   alpaca,
-  gemini;
+  gemini,
+  llama3;
 
   String get value => name;
 }
@@ -16,20 +17,20 @@ enum Role {
 
   /// Converts Role enum to its string representation
   String get value => switch (this) {
-        Role.unknown => 'unknown',
-        Role.system => 'system',
-        Role.user => 'user',
-        Role.assistant => 'assistant',
-      };
+    Role.unknown => 'unknown',
+    Role.system => 'system',
+    Role.user => 'user',
+    Role.assistant => 'assistant',
+  };
 
   /// Creates a Role from a string value
   static Role fromString(String value) => switch (value.toLowerCase()) {
-        'unknown' => Role.unknown,
-        'system' => Role.system,
-        'user' => Role.user,
-        'assistant' => Role.assistant,
-        _ => Role.unknown,
-      };
+    'unknown' => Role.unknown,
+    'system' => Role.system,
+    'user' => Role.user,
+    'assistant' => Role.assistant,
+    _ => Role.unknown,
+  };
 }
 
 /// Represents a single message in a chat conversation
@@ -37,10 +38,7 @@ class Message {
   final Role role;
   final String content;
 
-  const Message({
-    required this.role,
-    required this.content,
-  });
+  const Message({required this.role, required this.content});
 
   /// Creates a Message from JSON
   factory Message.fromJson(Map<String, dynamic> json) {
@@ -51,10 +49,7 @@ class Message {
   }
 
   /// Converts Message to JSON
-  Map<String, dynamic> toJson() => {
-        'role': role.value,
-        'content': content,
-      };
+  Map<String, dynamic> toJson() => {'role': role.value, 'content': content};
 
   @override
   String toString() => 'Message(role: ${role.value}, content: $content)';
@@ -67,16 +62,42 @@ class ChatHistory {
   ChatHistory() : messages = [];
 
   /// Adds a new message to the chat history
-  void addMessage({
-    required Role role,
-    required String content,
-  }) {
+  void addMessage({required Role role, required String content}) {
     messages.add(Message(role: role, content: content));
   }
 
+  /// Exports chat history in Llama 3 format
+  String _exportLlama3() {
+    final buffer = StringBuffer();
+    buffer.writeln('<|begin_of_text|>');
+    for (final message in messages) {
+      String roleHeader;
+      switch (message.role) {
+        case Role.system:
+          roleHeader = 'system';
+          break;
+        case Role.user:
+          roleHeader = 'user';
+          break;
+        case Role.assistant:
+          roleHeader = 'assistant';
+          break;
+        case Role.unknown:
+          roleHeader = 'unknown';
+          break;
+      }
+      buffer.writeln('<|start_header_id|>$roleHeader<|end_header_id|>');
+      buffer.writeln(message.content);
+      buffer.writeln('<|eot_id|>');
+    }
+    return buffer.toString();
+  }
+
   /// Exports chat history in the specified format
-  String exportFormat(ChatFormat format,
-      {bool leaveLastAssistantOpen = false}) {
+  String exportFormat(
+    ChatFormat format, {
+    bool leaveLastAssistantOpen = false,
+  }) {
     switch (format) {
       case ChatFormat.chatml:
         return _exportChatML();
@@ -84,6 +105,8 @@ class ChatHistory {
         return _exportAlpaca();
       case ChatFormat.gemini:
         return _exportGemini(leaveLastAssistantOpen: leaveLastAssistantOpen);
+      case ChatFormat.llama3:
+        return _exportLlama3();
     }
   }
 
@@ -169,8 +192,9 @@ class ChatHistory {
     final messagesList = json['messages'] as List<dynamic>;
 
     for (final message in messagesList) {
-      chatHistory.messages
-          .add(Message.fromJson(message as Map<String, dynamic>));
+      chatHistory.messages.add(
+        Message.fromJson(message as Map<String, dynamic>),
+      );
     }
 
     return chatHistory;
@@ -178,8 +202,8 @@ class ChatHistory {
 
   /// Converts ChatHistory to JSON
   Map<String, dynamic> toJson() => {
-        'messages': messages.map((message) => message.toJson()).toList(),
-      };
+    'messages': messages.map((message) => message.toJson()).toList(),
+  };
 
   /// Clears all messages from the chat history
   void clear() => messages.clear();
