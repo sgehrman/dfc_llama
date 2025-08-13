@@ -85,6 +85,8 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
       } else {
         llama = Llama(path, modelParams, contextParams, samplingParams);
       }
+
+      print(llama?.chatTemplate());
       sendToParent(LlamaResponse.confirmation(LlamaStatus.ready));
     } catch (e) {
       sendToParent(LlamaResponse.error("Error loading model: $e"));
