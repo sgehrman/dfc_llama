@@ -1058,4 +1058,20 @@ class Llama {
   //     _nPos -= tokensToRemove;
   //   }
   // }
+
+  // SNG added
+  String chatTemplate() {
+    var ptr = lib.llama_model_chat_template(model, nullptr);
+
+    //  String piece = '';
+    //     final bytes = buf.cast<Uint8>().asTypedList(n);
+    //     try {
+    //       piece = utf8.decode(bytes);
+    //     } catch (e) {
+    //       piece = utf8.decode(bytes, allowMalformed: true);
+    //     }
+
+    Pointer<Utf8> utf8Ptr = ptr.cast<Utf8>();
+    return utf8Ptr.toDartString();
+  }
 }
