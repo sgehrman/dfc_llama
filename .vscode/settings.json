@@ -1,8 +1,8 @@
 {
   "workbench.colorCustomizations": {
-    "activityBar.background": "#910202",
-    "titleBar.inactiveBackground": "#910202",
-    "titleBar.activeBackground": "#910202"
+    "activityBar.background": "#3c5e9c",
+    "titleBar.inactiveBackground": "#3c5e9c",
+    "titleBar.activeBackground": "#3c5e9c"
   },
   "workbench.editor.scrollToSwitchTabs": true,
   "workbench.editor.limit.enabled": true,
