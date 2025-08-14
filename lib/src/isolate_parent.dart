@@ -176,6 +176,10 @@ class LlamaParent {
     await _readyCompleter!.future;
   }
 
+  void reset() async {
+    await _reset();
+  }
+
   /// Send a command to the child isolate and wait for confirmation
   Future<void> _sendCommand(LlamaCommand command, String description) async {
     _operationCompleter = Completer<void>();
