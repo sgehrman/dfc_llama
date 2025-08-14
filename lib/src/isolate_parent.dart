@@ -260,7 +260,7 @@ class LlamaParent {
     final nextPrompt = _promptQueue.removeAt(0);
 
     // Reset the model context
-    await _reset();
+    // await _reset();
 
     // Generate a unique ID for this prompt
     _currentPromptId = DateTime.now().millisecondsSinceEpoch.toString();

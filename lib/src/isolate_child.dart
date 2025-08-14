@@ -9,6 +9,8 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
 
   bool shouldStop = false;
   Llama? llama;
+  String _template = '';
+  bool _firstPrompt = true;
 
   @override
   void onData(LlamaCommand data) {
@@ -86,7 +88,8 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
         llama = Llama(path, modelParams, contextParams, samplingParams);
       }
 
-      print(llama?.chatTemplate());
+      _template = llama?.chatTemplate() ?? '';
+
       sendToParent(LlamaResponse.confirmation(LlamaStatus.ready));
     } catch (e) {
       sendToParent(LlamaResponse.error("Error loading model: $e"));
@@ -156,8 +159,25 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
           ),
         );
       } else {
+        String? newPrompt = prompt;
+
+        if (_template.isNotEmpty) {
+          newPrompt = llama?.applyTemplate(_template, [
+            if (_firstPrompt)
+              Message(
+                role: Role.system,
+                content:
+                    "You are a terse annoyed assistant. Always answer as briefly as possible, following the user's instructions.",
+                // "You are a helpful, respectful, and honest assistant. Always answer as helpfully as possible, following the user's instructions.",
+              ),
+            Message(role: Role.user, content: prompt),
+          ]);
+
+          _firstPrompt = false;
+        }
+
         // Use regular text generation
-        llama!.setPrompt(prompt);
+        llama!.setPrompt(newPrompt ?? prompt);
 
         bool generationDone = false;
         while (!generationDone && !shouldStop) {
