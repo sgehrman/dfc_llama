@@ -8,9 +8,14 @@ import 'package:dfc_llama/src/llama_input.dart';
 import 'package:typed_isolate/typed_isolate.dart';
 
 class LlamaParent {
-  LlamaParent({required this.loadCommand, this.systemPrompt = ''});
+  LlamaParent({
+    required this.loadCommand,
+    this.systemPrompt = '',
+    this.verbose = false,
+  });
 
   final String systemPrompt;
+  final bool verbose;
   StreamController<String> _controller = StreamController<String>.broadcast();
   final _parent = IsolateParent<LlamaCommand, LlamaResponse>();
 
@@ -96,7 +101,7 @@ class LlamaParent {
     await _subscription?.cancel();
     _subscription = _parent.stream.listen(_onData);
 
-    await _parent.spawn(LlamaChild(systemPrompt));
+    await _parent.spawn(LlamaChild(systemPrompt, verbose: verbose));
 
     await _sendCommand(
       LlamaInit(

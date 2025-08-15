@@ -11,9 +11,10 @@ import 'package:dfc_llama/src/sampler_params.dart';
 import 'package:typed_isolate/typed_isolate.dart';
 
 class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
-  LlamaChild(this.systemPrompt) : super(id: 1);
+  LlamaChild(this.systemPrompt, {required this.verbose}) : super(id: 1);
 
   final String systemPrompt;
+  final bool verbose;
 
   bool shouldStop = false;
   Llama? llama;
@@ -85,7 +86,7 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
           modelParams,
           contextParams,
           samplingParams,
-          false,
+          verbose,
           mmprojPath,
         );
       } else {
