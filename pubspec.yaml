@@ -2,6 +2,7 @@ name: dfc_llama
 description: 'A new Flutter FFI plugin project.'
 version: 0.0.1
 homepage: 'https://github.com/sgehrman/dfc_llama'
+publish_to: 'none'
 
 environment:
   sdk: ^3.8.1

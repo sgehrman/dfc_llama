@@ -1,34 +1,11 @@
 import 'dart:async';
 
-import 'package:dfc_llama/dfc_llama.dart';
+import 'package:dfc_llama/src/completion_event.dart';
+import 'package:dfc_llama/src/isolate_child.dart';
+import 'package:dfc_llama/src/isolate_types.dart';
+import 'package:dfc_llama/src/llama.dart';
+import 'package:dfc_llama/src/llama_input.dart';
 import 'package:typed_isolate/typed_isolate.dart';
-
-class CompletionEvent {
-  CompletionEvent(this.promptId, this.success, [this.errorDetails]);
-
-  final String promptId;
-  final bool success;
-  final String? errorDetails;
-}
-
-// ======================================================================
-
-class _QueuedPrompt {
-  _QueuedPrompt(this.prompt, this.scope, {this.images});
-  final String prompt;
-  final Completer<String> idCompleter = Completer<String>();
-  final Object? scope;
-  final List<LlamaImage>? images;
-}
-
-// ======================================================================
-
-class _QueuedPromptWithImages extends _QueuedPrompt {
-  _QueuedPromptWithImages(super.prompt, List<LlamaImage> images, super.scope)
-    : super(images: images);
-}
-
-// ======================================================================
 
 class LlamaParent {
   LlamaParent({required this.loadCommand, this.systemPrompt = ''});
@@ -59,8 +36,6 @@ class LlamaParent {
 
   String _currentPromptId = '';
 
-  final List<dynamic> _scopes = [];
-
   final List<_QueuedPrompt> _promptQueue = [];
   bool _isProcessingQueue = false;
 
@@ -77,10 +52,6 @@ class LlamaParent {
 
     if (data.text.isNotEmpty) {
       _controller.add(data.text);
-
-      for (final scope in _scopes) {
-        scope.handleResponse(data);
-      }
     }
 
     if (data.isConfirmation) {
@@ -102,16 +73,16 @@ class LlamaParent {
 
       CompletionEvent event;
       if (data.status == LlamaStatus.error) {
-        event = CompletionEvent(promptId, false, data.errorDetails);
+        event = CompletionEvent(
+          promptId,
+          success: false,
+          errorDetails: data.errorDetails,
+        );
       } else {
-        event = CompletionEvent(promptId, true);
+        event = CompletionEvent(promptId, success: true);
       }
 
       _completionController.add(event);
-
-      for (final scope in _scopes) {
-        scope.handleCompletion(event);
-      }
     }
   }
 
@@ -182,14 +153,14 @@ class LlamaParent {
     }
   }
 
-  Future<String> sendPrompt(String prompt, {Object? scope}) {
+  Future<String> sendPrompt(String prompt) {
     if (loadCommand.contextParams.embeddings) {
       throw StateError(
         'This LlamaParent instance is configured for embeddings only and cannot generate text.',
       );
     }
 
-    final queuedPrompt = _QueuedPrompt(prompt, scope);
+    final queuedPrompt = _QueuedPrompt(prompt);
     _promptQueue.add(queuedPrompt);
 
     if (!_isProcessingQueue) {
@@ -199,9 +170,10 @@ class LlamaParent {
     return queuedPrompt.idCompleter.future;
   }
 
-  Future<void> _processNextPrompt() async {
+  void _processNextPrompt() {
     if (_promptQueue.isEmpty) {
       _isProcessingQueue = false;
+
       return;
     }
 
@@ -213,10 +185,6 @@ class LlamaParent {
     _promptCompleters[_currentPromptId] = Completer<void>();
 
     nextPrompt.idCompleter.complete(_currentPromptId);
-
-    if (nextPrompt.scope != null) {
-      (nextPrompt.scope as dynamic).addPromptId(_currentPromptId);
-    }
 
     _isGenerating = true;
     _status = LlamaStatus.generating;
@@ -252,23 +220,11 @@ class LlamaParent {
     await _stopGeneration();
   }
 
-  dynamic getScope() {
-    final scope = LlamaScope(this);
-    _scopes.add(scope);
-    return scope;
-  }
-
   Future<void> dispose() async {
     _isGenerating = false;
     _status = LlamaStatus.disposed;
 
     await _subscription?.cancel();
-
-    final scopesToDispose = List.from(_scopes);
-    for (final scope in scopesToDispose) {
-      await scope.dispose();
-    }
-    _scopes.clear();
 
     if (!_controller.isClosed) {
       await _controller.close();
@@ -299,18 +255,14 @@ class LlamaParent {
     await _parent.dispose();
   }
 
-  Future<String> sendPromptWithImages(
-    String prompt,
-    List<LlamaImage> images, {
-    Object? scope,
-  }) {
+  Future<String> sendPromptWithImages(String prompt, List<LlamaImage> images) {
     if (loadCommand.contextParams.embeddings) {
       throw StateError(
         'This LlamaParent instance is configured for embeddings only and cannot generate text.',
       );
     }
 
-    final queuedPrompt = _QueuedPromptWithImages(prompt, images, scope);
+    final queuedPrompt = _QueuedPromptWithImages(prompt, images);
     _promptQueue.add(queuedPrompt);
 
     if (!_isProcessingQueue) {
@@ -319,4 +271,20 @@ class LlamaParent {
 
     return queuedPrompt.idCompleter.future;
   }
+}
+
+// ======================================================================
+
+class _QueuedPrompt {
+  _QueuedPrompt(this.prompt, {this.images});
+  final String prompt;
+  final Completer<String> idCompleter = Completer<String>();
+  final List<LlamaImage>? images;
+}
+
+// ======================================================================
+
+class _QueuedPromptWithImages extends _QueuedPrompt {
+  _QueuedPromptWithImages(super.prompt, List<LlamaImage> images)
+    : super(images: images);
 }
