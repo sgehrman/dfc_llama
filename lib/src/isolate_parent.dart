@@ -119,10 +119,6 @@ class LlamaParent {
     await _readyCompleter!.future;
   }
 
-  Future<void> reset() async {
-    await _reset();
-  }
-
   Future<void> _sendCommand(LlamaCommand command, String description) {
     _operationCompleter = Completer<void>();
 
@@ -136,7 +132,7 @@ class LlamaParent {
     );
   }
 
-  Future<void> _reset() async {
+  Future<void> reset() async {
     if (_isGenerating) {
       await _stopGeneration();
     }
@@ -253,7 +249,7 @@ class LlamaParent {
     }
     _promptQueue.clear();
 
-    _parent.sendToChild(id: 1, data: LlamaClear());
+    _parent.sendToChild(id: 1, data: LlamaDestroy());
 
     await Future.delayed(const Duration(milliseconds: 100));
 

@@ -185,7 +185,7 @@ class Llama {
       loadedContext = lib.llama_new_context_with_model(model, contextParams);
 
       if (loadedContext == nullptr) {
-        lib.llama_free_model(model);
+        lib.llama_model_free(model);
         throw LlamaException("Could not create context!");
       }
       context = loadedContext;
@@ -193,7 +193,7 @@ class Llama {
       if (loadedContext != nullptr) {
         lib.llama_free(loadedContext);
       }
-      lib.llama_free_model(model);
+      lib.llama_model_free(model);
       rethrow;
     }
 
@@ -744,7 +744,7 @@ class Llama {
     // Only access late fields if initialization was completed
     if (_isInitialized) {
       if (context.address != 0) lib.llama_free(context);
-      if (model.address != 0) lib.llama_free_model(model);
+      if (model.address != 0) lib.llama_model_free(model);
 
       // Free the batch only if it was initialized
       try {

@@ -9,6 +9,9 @@ class LlamaStop extends LlamaCommand {}
 /// Command to clear the model context
 class LlamaClear extends LlamaCommand {}
 
+/// Command to destroy the model context
+class LlamaDestroy extends LlamaCommand {}
+
 /// Command to initialize the Llama library
 class LlamaInit extends LlamaCommand {
   LlamaInit(

@@ -30,6 +30,9 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
       case LlamaClear():
         _handleClear();
 
+      case LlamaDestroy():
+        _handleDestroy();
+
       case LlamaLoad(
         :final path,
         :final modelParams,
@@ -62,13 +65,26 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
     shouldStop = true;
     if (llama != null) {
       try {
-        llama!.clear();
+        llama?.clear();
         sendToParent(LlamaResponse.confirmation(LlamaStatus.ready));
       } catch (e) {
         sendToParent(LlamaResponse.error('Error clearing context: $e'));
       }
     } else {
       sendToParent(LlamaResponse.error('Cannot clear: model not initialized'));
+    }
+  }
+
+  void _handleDestroy() {
+    shouldStop = true;
+    if (llama != null) {
+      try {
+        // I not seeing GPU memory freed, trying this but not sure if it helps
+        llama?.dispose();
+        llama = null;
+      } catch (e) {
+        print(e);
+      }
     }
   }
 
@@ -177,12 +193,12 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
           _firstPrompt = false;
         }
 
-        llama!.setPrompt(newPrompt ?? prompt);
+        llama?.setPrompt(newPrompt ?? prompt);
 
         var asyncCount = 0;
         var generationDone = false;
         while (!generationDone && !shouldStop) {
-          final (text, isDone) = llama!.getNext();
+          final (text, isDone) = llama?.getNext() ?? ('', true);
 
           sendToParent(
             LlamaResponse(
