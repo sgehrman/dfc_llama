@@ -4,6 +4,8 @@ import 'package:dfc_llama/dfc_llama.dart';
 
 /// A scope that filters responses from LlamaParent for specific prompt IDs
 class LlamaScope {
+  /// Create a new scope for the given parent
+  LlamaScope(this._parent);
   final LlamaParent _parent;
   final Set<String> _promptIds = {};
   final StreamController<String> _streamController =
@@ -16,9 +18,6 @@ class LlamaScope {
 
   /// Stream of completion events for prompts sent through this scope
   Stream<CompletionEvent> get completions => _completionController.stream;
-
-  /// Create a new scope for the given parent
-  LlamaScope(this._parent);
 
   /// Send a prompt to the model and track its ID in this scope
   Future<String> sendPrompt(String prompt) async {
@@ -51,8 +50,13 @@ class LlamaScope {
 
   /// Dispose of resources
   Future<void> dispose() async {
-    if (!_streamController.isClosed) await _streamController.close();
-    if (!_completionController.isClosed) await _completionController.close();
+    if (!_streamController.isClosed) {
+      await _streamController.close();
+    }
+
+    if (!_completionController.isClosed) {
+      await _completionController.close();
+    }
   }
 
   /// Send a prompt with images to the model and track its ID in this scope

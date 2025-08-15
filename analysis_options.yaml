@@ -1,4 +1,11 @@
-include: package:flutter_lints/flutter.yaml
-
+include: package:dfc_lints/rules.yaml
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
+
+analyzer:
+  exclude:
+    - 'lib/src/llama_cpp.dart'
+    - 'lib/src/context_params.dart'
+    - 'lib/src/model_params.dart'
+    - 'lib/src/sampler_params.dart'
+    - 'lib/src/llama.dart'

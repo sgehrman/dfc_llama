@@ -58,10 +58,10 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
         llama!.clear();
         sendToParent(LlamaResponse.confirmation(LlamaStatus.ready));
       } catch (e) {
-        sendToParent(LlamaResponse.error("Error clearing context: $e"));
+        sendToParent(LlamaResponse.error('Error clearing context: $e'));
       }
     } else {
-      sendToParent(LlamaResponse.error("Cannot clear: model not initialized"));
+      sendToParent(LlamaResponse.error('Cannot clear: model not initialized'));
     }
   }
 
@@ -90,7 +90,7 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
 
       sendToParent(LlamaResponse.confirmation(LlamaStatus.ready));
     } catch (e) {
-      sendToParent(LlamaResponse.error("Error loading model: $e"));
+      sendToParent(LlamaResponse.error('Error loading model: $e'));
     }
   }
 
@@ -104,14 +104,14 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
     sendToParent(LlamaResponse.confirmation(LlamaStatus.uninitialized));
   }
 
-  void _sendPrompt(
+  Future<void> _sendPrompt(
     String prompt,
     String promptId,
     List<LlamaImage>? images,
   ) async {
     if (llama == null) {
       sendToParent(
-        LlamaResponse.error("Cannot generate: model not initialized", promptId),
+        LlamaResponse.error('Cannot generate: model not initialized', promptId),
       );
       return;
     }
@@ -119,7 +119,7 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
     try {
       sendToParent(
         LlamaResponse(
-          text: "",
+          text: '',
           isDone: false,
           status: LlamaStatus.generating,
           promptId: promptId,
@@ -130,7 +130,9 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
         final stream = llama!.generateWithMeda(prompt, inputs: images);
 
         await for (final token in stream) {
-          if (shouldStop) break;
+          if (shouldStop) {
+            break;
+          }
 
           sendToParent(
             LlamaResponse(
@@ -144,7 +146,7 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
 
         sendToParent(
           LlamaResponse(
-            text: "",
+            text: '',
             isDone: true,
             status: LlamaStatus.ready,
             promptId: promptId,
@@ -160,7 +162,7 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
                 role: Role.system,
                 content: systemPrompt.isNotEmpty
                     ? systemPrompt
-                    : "You are a helpful, funny assistant. Keep your answers informative but brief.",
+                    : 'You are a helpful, funny assistant. Keep your answers informative but brief.',
               ),
             Message(role: Role.user, content: prompt),
           ]);
@@ -170,8 +172,8 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
 
         llama!.setPrompt(newPrompt ?? prompt);
 
-        int asyncCount = 0;
-        bool generationDone = false;
+        var asyncCount = 0;
+        var generationDone = false;
         while (!generationDone && !shouldStop) {
           final (text, isDone) = llama!.getNext();
 
@@ -189,7 +191,7 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
           // gets us out of the loop so we can process the stop command if it comes in
           asyncCount++;
           if (asyncCount.isEven) {
-            await Future.delayed(Duration(milliseconds: 1));
+            await Future.delayed(const Duration(milliseconds: 1));
           }
         }
       }
@@ -197,7 +199,7 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
       if (shouldStop) {
         sendToParent(
           LlamaResponse(
-            text: "",
+            text: '',
             isDone: true,
             status: LlamaStatus.ready,
             promptId: promptId,
@@ -205,9 +207,7 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
         );
       }
     } catch (e) {
-      sendToParent(
-        LlamaResponse.error("Generation error: ${e.toString()}", promptId),
-      );
+      sendToParent(LlamaResponse.error('Generation error: $e', promptId));
     }
   }
 }

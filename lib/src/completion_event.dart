@@ -1,5 +1,7 @@
 /// Event signaling the completion of a prompt generation task.
 class CompletionEvent {
+  CompletionEvent({required this.requestId, required this.success});
+
   /// The unique identifier of the request that completed.
   /// Will be null if the completion corresponds to a prompt sent via
   /// the global `LlamaParent.sendPrompt` method.
@@ -7,11 +9,6 @@ class CompletionEvent {
 
   /// Indicates whether the generation completed successfully or ended in error.
   final bool success;
-
-  CompletionEvent({
-    required this.requestId,
-    required this.success,
-  });
 
   @override
   String toString() {

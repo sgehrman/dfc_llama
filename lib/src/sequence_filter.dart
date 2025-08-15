@@ -1,10 +1,9 @@
 import 'dart:math';
 
 class SequenceFilter {
+  SequenceFilter(this.sequence);
   final String sequence;
   StringBuffer buffer = StringBuffer();
-
-  SequenceFilter(this.sequence);
 
   String? processChunk(String chunk) {
     for (var i = 0; i < chunk.length; i++) {
@@ -22,7 +21,7 @@ class SequenceFilter {
           buffer.clear();
         }
       } else {
-        String result = chunk.substring(i);
+        var result = chunk.substring(i);
 
         if (buffer.isNotEmpty) {
           result += buffer.toString();

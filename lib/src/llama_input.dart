@@ -20,10 +20,6 @@ typedef BitmapPointers = ({
 /// either a file path or raw image bytes. The actual file reading and native
 /// conversion is deferred until it's processed inside the Llama instance.
 class LlamaImage extends LlamaInput {
-  // The LlamaImage will hold EITHER a path OR bytes, but not both.
-  final String? _path;
-  final Uint8List? _bytes;
-
   /// Creates a LlamaImage from a file. This is the preferred method when
   /// working with isolates as it only sends the file path string, not the
   /// full image data.
@@ -32,6 +28,9 @@ class LlamaImage extends LlamaInput {
   /// Creates a LlamaImage from raw image bytes (e.g., from a network request).
   /// When sent to another isolate, this will cause the entire byte array to be copied.
   LlamaImage.fromBytes(Uint8List bytes) : _bytes = bytes, _path = null;
+  // The LlamaImage will hold EITHER a path OR bytes, but not both.
+  final String? _path;
+  final Uint8List? _bytes;
 
   /// Internal method to get the raw image bytes, either by reading the file
   /// or using the provided byte list.
@@ -63,9 +62,7 @@ class LlamaImage extends LlamaInput {
     }
 
     // Convert the image to RGB format, which is what the model expects.
-    final Uint8List rgbBytes = decodedImage.getBytes(
-      order: img.ChannelOrder.rgb,
-    );
+    final rgbBytes = decodedImage.getBytes(order: img.ChannelOrder.rgb);
 
     // Allocate memory for the image data and copy it.
     final imageDataPtr = allocator<Uint8>(rgbBytes.length);

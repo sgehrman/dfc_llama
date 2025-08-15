@@ -4,22 +4,21 @@ import 'package:dfc_llama/dfc_llama.dart';
 import 'package:typed_isolate/typed_isolate.dart';
 
 class CompletionEvent {
+  CompletionEvent(this.promptId, this.success, [this.errorDetails]);
+
   final String promptId;
   final bool success;
   final String? errorDetails;
-
-  CompletionEvent(this.promptId, this.success, [this.errorDetails]);
 }
 
 // ======================================================================
 
 class _QueuedPrompt {
+  _QueuedPrompt(this.prompt, this.scope, {this.images});
   final String prompt;
   final Completer<String> idCompleter = Completer<String>();
   final Object? scope;
   final List<LlamaImage>? images;
-
-  _QueuedPrompt(this.prompt, this.scope, {this.images});
 }
 
 // ======================================================================
@@ -58,7 +57,7 @@ class LlamaParent {
   final _completionController = StreamController<CompletionEvent>.broadcast();
   Stream<CompletionEvent> get completions => _completionController.stream;
 
-  String _currentPromptId = "";
+  String _currentPromptId = '';
 
   final List<dynamic> _scopes = [];
 
@@ -135,26 +134,26 @@ class LlamaParent {
         loadCommand.contextParams,
         loadCommand.samplingParams,
       ),
-      "library initialization",
+      'library initialization',
     );
 
     _status = LlamaStatus.loading;
-    await _sendCommand(loadCommand, "model loading");
+    await _sendCommand(loadCommand, 'model loading');
 
     await _readyCompleter!.future;
   }
 
-  void reset() async {
+  Future<void> reset() async {
     await _reset();
   }
 
-  Future<void> _sendCommand(LlamaCommand command, String description) async {
+  Future<void> _sendCommand(LlamaCommand command, String description) {
     _operationCompleter = Completer<void>();
 
     _parent.sendToChild(data: command, id: 1);
 
-    return await _operationCompleter!.future.timeout(
-      Duration(seconds: description == "model loading" ? 60 : 30),
+    return _operationCompleter!.future.timeout(
+      Duration(seconds: description == 'model loading' ? 60 : 30),
       onTimeout: () {
         throw TimeoutException('Operation "$description" timed out');
       },
@@ -173,20 +172,20 @@ class LlamaParent {
       _subscription = _parent.stream.listen(_onData);
     }
 
-    await _sendCommand(LlamaClear(), "context clearing");
+    await _sendCommand(LlamaClear(), 'context clearing');
   }
 
   Future<void> _stopGeneration() async {
     if (_isGenerating) {
-      await _sendCommand(LlamaStop(), "generation stopping");
+      await _sendCommand(LlamaStop(), 'generation stopping');
       _isGenerating = false;
     }
   }
 
-  Future<String> sendPrompt(String prompt, {Object? scope}) async {
+  Future<String> sendPrompt(String prompt, {Object? scope}) {
     if (loadCommand.contextParams.embeddings) {
       throw StateError(
-        "This LlamaParent instance is configured for embeddings only and cannot generate text.",
+        'This LlamaParent instance is configured for embeddings only and cannot generate text.',
       );
     }
 
@@ -281,14 +280,14 @@ class LlamaParent {
 
     for (final completer in _promptCompleters.values) {
       if (!completer.isCompleted) {
-        completer.completeError(StateError("Parent disposed"));
+        completer.completeError(StateError('Parent disposed'));
       }
     }
     _promptCompleters.clear();
 
     for (final queuedPrompt in _promptQueue) {
       if (!queuedPrompt.idCompleter.isCompleted) {
-        queuedPrompt.idCompleter.completeError(StateError("Parent disposed"));
+        queuedPrompt.idCompleter.completeError(StateError('Parent disposed'));
       }
     }
     _promptQueue.clear();
@@ -297,17 +296,17 @@ class LlamaParent {
 
     await Future.delayed(const Duration(milliseconds: 100));
 
-    _parent.dispose();
+    await _parent.dispose();
   }
 
   Future<String> sendPromptWithImages(
     String prompt,
     List<LlamaImage> images, {
     Object? scope,
-  }) async {
+  }) {
     if (loadCommand.contextParams.embeddings) {
       throw StateError(
-        "This LlamaParent instance is configured for embeddings only and cannot generate text.",
+        'This LlamaParent instance is configured for embeddings only and cannot generate text.',
       );
     }
 

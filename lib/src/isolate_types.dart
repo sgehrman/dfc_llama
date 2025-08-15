@@ -11,37 +11,28 @@ class LlamaClear extends LlamaCommand {}
 
 /// Command to initialize the Llama library
 class LlamaInit extends LlamaCommand {
-  final String? libraryPath;
-  final ModelParams modelParams;
-  final ContextParams contextParams;
-  final SamplerParams samplingParams;
-
   LlamaInit(
     this.libraryPath,
     this.modelParams,
     this.contextParams,
     this.samplingParams,
   );
+  final String? libraryPath;
+  final ModelParams modelParams;
+  final ContextParams contextParams;
+  final SamplerParams samplingParams;
 }
 
 /// Command to send a prompt for generation
 class LlamaPrompt extends LlamaCommand {
+  LlamaPrompt(this.prompt, this.promptId, {this.images});
   final String prompt;
   final String promptId;
   final List<LlamaImage>? images;
-
-  LlamaPrompt(this.prompt, this.promptId, {this.images});
 }
 
 /// Response from the LlamaChild isolate
 class LlamaResponse {
-  final String text;
-  final bool isDone;
-  final LlamaStatus? status;
-  final String? promptId;
-  final String? errorDetails;
-  final bool isConfirmation;
-
   LlamaResponse({
     required this.text,
     required this.isDone,
@@ -54,7 +45,7 @@ class LlamaResponse {
   /// Create a confirmation response
   factory LlamaResponse.confirmation(LlamaStatus status, [String? promptId]) {
     return LlamaResponse(
-      text: "",
+      text: '',
       isDone: false,
       status: status,
       promptId: promptId,
@@ -65,23 +56,23 @@ class LlamaResponse {
   /// Create an error response
   factory LlamaResponse.error(String errorMessage, [String? promptId]) {
     return LlamaResponse(
-      text: "",
+      text: '',
       isDone: true,
       status: LlamaStatus.error,
       promptId: promptId,
       errorDetails: errorMessage,
     );
   }
+  final String text;
+  final bool isDone;
+  final LlamaStatus? status;
+  final String? promptId;
+  final String? errorDetails;
+  final bool isConfirmation;
 }
 
 /// Command to load a model
 class LlamaLoad extends LlamaCommand {
-  final String path;
-  final ModelParams modelParams;
-  final ContextParams contextParams;
-  final SamplerParams samplingParams;
-  final String? mmprojPath;
-
   LlamaLoad({
     required this.path,
     required this.modelParams,
@@ -89,4 +80,9 @@ class LlamaLoad extends LlamaCommand {
     required this.samplingParams,
     this.mmprojPath,
   });
+  final String path;
+  final ModelParams modelParams;
+  final ContextParams contextParams;
+  final SamplerParams samplingParams;
+  final String? mmprojPath;
 }

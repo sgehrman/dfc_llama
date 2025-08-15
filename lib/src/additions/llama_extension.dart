@@ -7,7 +7,7 @@ import 'package:ffi/ffi.dart';
 
 extension LlamaExtension on Llama {
   String chatTemplate() {
-    var ptr = Llama.lib.llama_model_chat_template(model, nullptr);
+    final ptr = Llama.lib.llama_model_chat_template(model, nullptr);
 
     //  String piece = '';
     //     final bytes = buf.cast<Uint8>().asTypedList(n);
@@ -17,7 +17,7 @@ extension LlamaExtension on Llama {
     //       piece = utf8.decode(bytes, allowMalformed: true);
     //     }
 
-    Pointer<Utf8> utf8Ptr = ptr.cast<Utf8>();
+    final utf8Ptr = ptr.cast<Utf8>();
     return utf8Ptr.toDartString();
   }
 
@@ -29,7 +29,7 @@ extension LlamaExtension on Llama {
     final allocatedRoles = <Pointer<Char>>[];
     final allocatedContents = <Pointer<Char>>[];
     try {
-      for (int i = 0; i < nMsg; i++) {
+      for (var i = 0; i < nMsg; i++) {
         final msg = messages[i];
         final rolePtr = msg.role.value.toNativeUtf8().cast<Char>();
         final contentPtr = msg.content.toNativeUtf8().cast<Char>();

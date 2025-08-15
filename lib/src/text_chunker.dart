@@ -1,14 +1,11 @@
 class TextChunker {
+  TextChunker({this.maxChunkSize = 512, this.overlapSentences = 2})
+    : _paragraphSplitter = RegExp(r'\n\s*\n'),
+      _sentenceSplitter = RegExp(r'(?<=[.!?])\s+');
   final int maxChunkSize;
   final int overlapSentences;
   final RegExp _sentenceSplitter;
   final RegExp _paragraphSplitter;
-
-  TextChunker({
-    this.maxChunkSize = 512,
-    this.overlapSentences = 2,
-  })  : _paragraphSplitter = RegExp(r'\n\s*\n'),
-        _sentenceSplitter = RegExp(r'(?<=[.!?])\s+');
 
   List<String> chunk(String text) {
     final paragraphs = _splitParagraphs(text);

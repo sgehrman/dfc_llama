@@ -35,9 +35,6 @@ enum Role {
 
 /// Represents a single message in a chat conversation
 class Message {
-  final Role role;
-  final String content;
-
   const Message({required this.role, required this.content});
 
   /// Creates a Message from JSON
@@ -47,6 +44,8 @@ class Message {
       content: json['content'] as String,
     );
   }
+  final Role role;
+  final String content;
 
   /// Converts Message to JSON
   Map<String, dynamic> toJson() => {'role': role.value, 'content': content};
@@ -57,9 +56,22 @@ class Message {
 
 /// Manages a collection of chat messages
 class ChatHistory {
-  final List<Message> messages;
-
   ChatHistory() : messages = [];
+
+  /// Creates a ChatHistory from JSON
+  factory ChatHistory.fromJson(Map<String, dynamic> json) {
+    final chatHistory = ChatHistory();
+    final messagesList = json['messages'] as List<dynamic>;
+
+    for (final message in messagesList) {
+      chatHistory.messages.add(
+        Message.fromJson(message as Map<String, dynamic>),
+      );
+    }
+
+    return chatHistory;
+  }
+  final List<Message> messages;
 
   /// Adds a new message to the chat history
   void addMessage({required Role role, required String content}) {
@@ -152,7 +164,7 @@ class ChatHistory {
   String _exportGemini({bool leaveLastAssistantOpen = false}) {
     final buffer = StringBuffer();
 
-    for (int i = 0; i < messages.length; i++) {
+    for (var i = 0; i < messages.length; i++) {
       final message = messages[i];
       final isLastMessage = i == messages.length - 1;
 
@@ -184,20 +196,6 @@ class ChatHistory {
     }
 
     return buffer.toString();
-  }
-
-  /// Creates a ChatHistory from JSON
-  factory ChatHistory.fromJson(Map<String, dynamic> json) {
-    final chatHistory = ChatHistory();
-    final messagesList = json['messages'] as List<dynamic>;
-
-    for (final message in messagesList) {
-      chatHistory.messages.add(
-        Message.fromJson(message as Map<String, dynamic>),
-      );
-    }
-
-    return chatHistory;
   }
 
   /// Converts ChatHistory to JSON
