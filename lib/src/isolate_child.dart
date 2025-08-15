@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dfc_llama/dfc_llama.dart';
+import 'package:dfc_llama/src/additions/llama_extension.dart';
 import 'package:typed_isolate/typed_isolate.dart';
 
 /// Child isolate that handles Llama model operations
