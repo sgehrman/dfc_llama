@@ -44,9 +44,9 @@ class Llama {
   /// Throws [LlamaException] if model loading or initialization fails.
   Llama({
     required String modelPath,
-    ModelParams? modelParamsDart,
-    ContextParams? contextParamsDart,
-    SamplerParams? samplerParams,
+    required ModelParams modelParamsDart,
+    required ContextParams contextParamsDart,
+    required SamplerParams samplerParams,
     bool? verbose,
     String? mmprojPath,
   }) {
@@ -63,7 +63,6 @@ class Llama {
       );
 
       // Always initialize the batch, even if contextParamsDart is null
-      contextParamsDart ??= ContextParams();
       final contextParams = contextParamsDart.get();
       batch = lib.llama_batch_init(contextParams.n_batch, 0, 1);
 
@@ -142,9 +141,9 @@ class Llama {
   void _initializeLlama(
     String modelPath,
     String? mmprojPath,
-    ModelParams? modelParamsDart,
-    ContextParams? contextParamsDart,
-    SamplerParams? samplerParams,
+    ModelParams modelParamsDart,
+    ContextParams contextParamsDart,
+    SamplerParams samplerParams,
   ) {
     if (_verbos == false) {
       final nullCallbackPointer = Pointer.fromFunction<LlamaLogCallback>(
@@ -155,7 +154,6 @@ class Llama {
 
     lib.llama_backend_init();
 
-    modelParamsDart ??= ModelParams();
     final modelParams = modelParamsDart.get();
 
     final modelPathPtr = modelPath.toNativeUtf8().cast<Char>();
@@ -173,7 +171,6 @@ class Llama {
       malloc.free(modelPathPtr);
     }
 
-    contextParamsDart ??= ContextParams();
     _contextParams = contextParamsDart;
     _nPredict = contextParamsDart.nPredict;
     final contextParams = contextParamsDart.get();
@@ -194,7 +191,6 @@ class Llama {
       rethrow;
     }
 
-    samplerParams ??= SamplerParams();
     final sparams = lib.llama_sampler_chain_default_params();
     sparams.no_perf = false;
     _smpl = lib.llama_sampler_chain_init(sparams);
