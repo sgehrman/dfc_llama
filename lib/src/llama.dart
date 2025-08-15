@@ -5,13 +5,12 @@ import 'dart:io';
 import 'dart:math' show sqrt;
 import 'dart:typed_data';
 
+import 'package:dfc_llama/src/llama_cpp.dart';
+import 'package:dfc_llama/src/llama_input.dart';
+import 'package:dfc_llama/src/params/context_params.dart';
+import 'package:dfc_llama/src/params/model_params.dart';
+import 'package:dfc_llama/src/params/sampler_params.dart';
 import 'package:ffi/ffi.dart';
-
-import 'context_params.dart';
-import 'llama_cpp.dart';
-import 'llama_input.dart';
-import 'model_params.dart';
-import 'sampler_params.dart';
 
 typedef LlamaLogCallback =
     Void Function(

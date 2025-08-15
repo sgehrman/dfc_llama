@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'llama_cpp.dart';
+import 'package:dfc_llama/src/llama.dart';
+import 'package:dfc_llama/src/llama_cpp.dart';
 
 /// RoPE scaling types
 enum LlamaRopeScalingType {

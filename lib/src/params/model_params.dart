@@ -2,9 +2,8 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:dfc_llama/dfc_llama_ffi.dart';
+import 'package:dfc_llama/src/llama.dart';
 import 'package:ffi/ffi.dart';
-
-import 'llama_cpp.dart';
 
 /// Enum representing how to split the model across multiple GPUs
 enum LlamaSplitMode {
