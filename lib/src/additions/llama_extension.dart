@@ -69,12 +69,9 @@ extension LlamaExtension on Llama {
         calloc.free(bufPtr);
       }
     } finally {
-      for (final ptr in allocatedRoles) {
-        calloc.free(ptr);
-      }
-      for (final ptr in allocatedContents) {
-        calloc.free(ptr);
-      }
+      allocatedRoles.forEach(calloc.free);
+      allocatedContents.forEach(calloc.free);
+
       calloc.free(chatPtr);
       calloc.free(templatePtr);
     }
