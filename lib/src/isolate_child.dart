@@ -4,7 +4,6 @@ import 'package:dfc_llama/dfc_llama.dart';
 import 'package:dfc_llama/src/additions/llama_extension.dart';
 import 'package:typed_isolate/typed_isolate.dart';
 
-/// Child isolate that handles Llama model operations
 class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
   LlamaChild(this.systemPrompt) : super(id: 1);
 
@@ -29,7 +28,7 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
         :final modelParams,
         :final contextParams,
         :final samplingParams,
-        :final mmprojPath, // Add this
+        :final mmprojPath,
       ):
         _handleLoad(
           path,
@@ -47,13 +46,11 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
     }
   }
 
-  /// Handle stop command
   void _handleStop() {
     shouldStop = true;
     sendToParent(LlamaResponse.confirmation(LlamaStatus.ready));
   }
 
-  /// Handle clear command
   void _handleClear() {
     shouldStop = true;
     if (llama != null) {
@@ -68,7 +65,6 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
     }
   }
 
-  /// Handle load command
   void _handleLoad(
     String path,
     ModelParams modelParams,
@@ -77,7 +73,6 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
     String? mmprojPath,
   ) {
     try {
-      // Create Llama instance with optional mmproj path for VLM support
       if (mmprojPath != null) {
         llama = Llama(
           path,
@@ -99,19 +94,16 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
     }
   }
 
-  /// Handle prompt command
   void _handlePrompt(String prompt, String promptId, List<LlamaImage>? images) {
     shouldStop = false;
     _sendPrompt(prompt, promptId, images);
   }
 
-  /// Handle init command
   void _handleInit(String? libraryPath) {
     Llama.libraryPath = libraryPath;
     sendToParent(LlamaResponse.confirmation(LlamaStatus.uninitialized));
   }
 
-  /// Process a prompt and send responses
   void _sendPrompt(
     String prompt,
     String promptId,
@@ -125,7 +117,6 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
     }
 
     try {
-      // Send confirmation that generation has started
       sendToParent(
         LlamaResponse(
           text: "",
@@ -135,7 +126,6 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
         ),
       );
 
-      // Use different generation method based on whether images are provided
       if (images != null && images.isNotEmpty) {
         final stream = llama!.generateWithMeda(prompt, inputs: images);
 
@@ -152,7 +142,6 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
           );
         }
 
-        // Send completion
         sendToParent(
           LlamaResponse(
             text: "",
@@ -179,7 +168,6 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
           _firstPrompt = false;
         }
 
-        // Use regular text generation
         llama!.setPrompt(newPrompt ?? prompt);
 
         bool generationDone = false;
@@ -203,7 +191,6 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
         }
       }
 
-      // If stopped by external request, send completion confirmation
       if (shouldStop) {
         sendToParent(
           LlamaResponse(
