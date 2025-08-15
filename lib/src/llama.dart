@@ -840,7 +840,7 @@ class Llama {
   ///
   /// Throws [ArgumentError] if text is empty
   /// Throws [LlamaException] if tokenization fails
-  List<int> tokenize(String text, bool addBos) {
+  List<int> tokenize({required String text, required bool addBos}) {
     if (_isDisposed) {
       throw StateError('Cannot tokenize with disposed instance');
     }
@@ -919,7 +919,7 @@ class Llama {
 
     try {
       // Tokenize the input text
-      var tokens = tokenize(prompt, addBos);
+      var tokens = tokenize(text: prompt, addBos: addBos);
       var nTokens = tokens.length;
 
       // Check if token count exceeds batch size
