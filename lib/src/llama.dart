@@ -42,16 +42,16 @@ class Llama {
   /// Creates a new Llama instance with the specified model path and optional parameters.
   ///
   /// Throws [LlamaException] if model loading or initialization fails.
-  Llama(
-    String modelPath, [
+  Llama({
+    required String modelPath,
     ModelParams? modelParamsDart,
     ContextParams? contextParamsDart,
     SamplerParams? samplerParams,
-    bool? verbos,
+    bool? verbose,
     String? mmprojPath,
-  ]) {
+  }) {
     try {
-      _verbos = verbos ?? false;
+      _verbos = verbose ?? false;
       // _verbos = true;
       _validateConfiguration();
       _initializeLlama(

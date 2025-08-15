@@ -60,11 +60,11 @@ class LlamaAppState extends State<LlamaApp> {
 
     Llama.libraryPath = LibraryPaths.path;
     model = Llama(
-      resultFile.path,
-      modelParams,
-      contextParams,
-      samplerParams,
-      false, // verbose
+      modelPath: resultFile.path,
+      modelParamsDart: modelParams,
+      contextParamsDart: contextParams,
+      samplerParams: samplerParams,
+      verbose: false,
     );
 
     print(model!.status);

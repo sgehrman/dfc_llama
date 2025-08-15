@@ -96,18 +96,14 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
     String? mmprojPath,
   ) {
     try {
-      if (mmprojPath != null) {
-        llama = Llama(
-          path,
-          modelParams,
-          contextParams,
-          samplingParams,
-          verbose,
-          mmprojPath,
-        );
-      } else {
-        llama = Llama(path, modelParams, contextParams, samplingParams);
-      }
+      llama = Llama(
+        modelPath: path,
+        modelParamsDart: modelParams,
+        contextParamsDart: contextParams,
+        samplerParams: samplingParams,
+        verbose: verbose,
+        mmprojPath: mmprojPath,
+      );
 
       _template = llama?.chatTemplate() ?? '';
 
