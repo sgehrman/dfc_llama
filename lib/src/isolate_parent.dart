@@ -30,6 +30,13 @@ class _QueuedPromptWithImages extends _QueuedPrompt {
 
 /// Parent class that manages communication with the LlamaChild isolate
 class LlamaParent {
+  /// Create a new LlamaParent
+  ///
+  /// [loadCommand] specifies the model to load
+  /// [formatter] optional formatter for prompts
+  LlamaParent(this.loadCommand, [this.systemPrompt = '', this.formatter]);
+
+  final String systemPrompt;
   StreamController<String> _controller = StreamController<String>.broadcast();
   final _parent = IsolateParent<LlamaCommand, LlamaResponse>();
 
@@ -71,12 +78,6 @@ class LlamaParent {
   /// Queue for pending prompts
   final List<_QueuedPrompt> _promptQueue = [];
   bool _isProcessingQueue = false;
-
-  /// Create a new LlamaParent
-  ///
-  /// [loadCommand] specifies the model to load
-  /// [formatter] optional formatter for prompts
-  LlamaParent(this.loadCommand, [this.formatter]);
 
   /// Handle responses from the child isolate
   void _onData(LlamaResponse data) {
@@ -155,7 +156,7 @@ class LlamaParent {
     _subscription = _parent.stream.listen(_onData);
 
     // Spawn the child isolate
-    await _parent.spawn(LlamaChild());
+    await _parent.spawn(LlamaChild(systemPrompt));
 
     // Initialize the library
     await _sendCommand(

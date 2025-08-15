@@ -6,7 +6,9 @@ import 'package:typed_isolate/typed_isolate.dart';
 
 /// Child isolate that handles Llama model operations
 class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
-  LlamaChild() : super(id: 1);
+  LlamaChild(this.systemPrompt) : super(id: 1);
+
+  final String systemPrompt;
 
   bool shouldStop = false;
   Llama? llama;
@@ -167,9 +169,9 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
             if (_firstPrompt)
               Message(
                 role: Role.system,
-                content:
-                    "You are a terse annoyed assistant. Always answer as briefly as possible, following the user's instructions.",
-                // "You are a helpful, respectful, and honest assistant. Always answer as helpfully as possible, following the user's instructions.",
+                content: systemPrompt.isNotEmpty
+                    ? systemPrompt
+                    : "You are a helpful, funny assistant. Keep your answers informative but brief.",
               ),
             Message(role: Role.user, content: prompt),
           ]);
