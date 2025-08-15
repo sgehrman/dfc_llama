@@ -17,8 +17,13 @@ extension LlamaExtension on Llama {
     //       piece = utf8.decode(bytes, allowMalformed: true);
     //     }
 
-    final utf8Ptr = ptr.cast<Utf8>();
-    return utf8Ptr.toDartString();
+    if (ptr != nullptr) {
+      final utf8Ptr = ptr.cast<Utf8>();
+
+      return utf8Ptr.toDartString();
+    }
+
+    return 'chatml';
   }
 
   String applyTemplate(String template, List<Message> messages) {
