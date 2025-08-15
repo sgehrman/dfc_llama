@@ -170,6 +170,7 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
 
         llama!.setPrompt(newPrompt ?? prompt);
 
+        int asyncCount = 0;
         bool generationDone = false;
         while (!generationDone && !shouldStop) {
           final (text, isDone) = llama!.getNext();
@@ -185,8 +186,10 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
 
           generationDone = isDone;
 
-          if (!isDone) {
-            await Future.delayed(Duration(milliseconds: 5));
+          // gets us out of the loop so we can process the stop command if it comes in
+          asyncCount++;
+          if (asyncCount.isEven) {
+            await Future.delayed(Duration(milliseconds: 1));
           }
         }
       }
