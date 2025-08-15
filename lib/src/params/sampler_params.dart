@@ -1,4 +1,6 @@
 class SamplerParams {
+  SamplerParams();
+
   // Basic samplers
   bool greedy = false;
   int seed = 0; // For distribution sampler
@@ -72,8 +74,6 @@ class SamplerParams {
       2; // tokens extending repetitions beyond this receive penalty
   int dryLookback = -1; // how many tokens to scan (-1 = context size)
   List<String> dryBreakers = ["\n", ":", "\"", "*"];
-
-  SamplerParams();
 
   SamplerParams.fromJson(Map<String, dynamic> json) {
     greedy = json['greedy'] ?? greedy;

@@ -39,6 +39,8 @@ enum LlamaAttentionType {
 
 /// ContextParams holds configuration settings for the Llama model context
 class ContextParams {
+  ContextParams();
+
   /// Maximum number of tokens to predict/generate in response
   int nPredict = 32;
 
@@ -107,8 +109,6 @@ class ContextParams {
 
   /// Whether to measure performance timings
   bool noPerfTimings = false;
-
-  ContextParams();
 
   /// Constructs and returns a `llama_context_params` object
   llama_context_params get() {

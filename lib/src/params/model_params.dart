@@ -14,6 +14,8 @@ enum LlamaSplitMode {
 }
 
 class ModelParams {
+  ModelParams();
+
   /// Number of layers to store in VRAM
   int nGpuLayers = 99;
 
@@ -47,8 +49,6 @@ class ModelParams {
   // Pointers that need to be freed
   Pointer<Float>? _tensorSplitPtr;
   Pointer<Char>? _rpcServersPtr;
-
-  ModelParams();
 
   /// Constructs and returns a `llama_model_params` object with current settings
   llama_model_params get() {
