@@ -15,8 +15,6 @@ enum LlamaSplitMode {
 }
 
 class ModelParams {
-  PromptFormat? formatter;
-
   /// Number of layers to store in VRAM
   int nGpuLayers = 99;
 

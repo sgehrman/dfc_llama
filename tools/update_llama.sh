@@ -49,3 +49,7 @@ rm poetry.lock
 rm pyproject.toml
 rm pyrightconfig.json
 rm mypy.ini
+
+cd ../..
+
+dart run ffigen

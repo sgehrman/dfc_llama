@@ -6,7 +6,6 @@ import 'package:dfc_llama/src/llama_cpp.dart';
 import 'package:ffi/ffi.dart';
 
 extension LlamaExtension on Llama {
-  // SNG added
   String chatTemplate() {
     var ptr = Llama.lib.llama_model_chat_template(model, nullptr);
 
@@ -22,7 +21,6 @@ extension LlamaExtension on Llama {
     return utf8Ptr.toDartString();
   }
 
-  // SNG added
   String applyTemplate(String template, List<Message> messages) {
     final templatePtr = template.toNativeUtf8().cast<Char>();
     final nMsg = messages.length;
