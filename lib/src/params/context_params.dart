@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:dfc_llama/dfc_llama.dart';
-
 import 'llama_cpp.dart';
 
 /// RoPE scaling types

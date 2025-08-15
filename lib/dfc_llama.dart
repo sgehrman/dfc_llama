@@ -1,12 +1,12 @@
 export 'src/additions/library_paths.dart';
 export 'src/chat.dart';
 export 'src/completion_event.dart';
-export 'src/context_params.dart';
 export 'src/isolate_child.dart';
 export 'src/isolate_parent.dart';
 export 'src/isolate_types.dart';
 export 'src/llama.dart';
 export 'src/llama_input.dart';
-export 'src/model_params.dart';
-export 'src/sampler_params.dart';
+export 'src/params/context_params.dart';
+export 'src/params/model_params.dart';
+export 'src/params/sampler_params.dart';
 export 'src/text_chunker.dart';

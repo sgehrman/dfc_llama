@@ -1,4 +1,8 @@
-import 'package:dfc_llama/dfc_llama.dart';
+import 'package:dfc_llama/src/llama.dart';
+import 'package:dfc_llama/src/llama_input.dart';
+import 'package:dfc_llama/src/params/context_params.dart';
+import 'package:dfc_llama/src/params/model_params.dart';
+import 'package:dfc_llama/src/params/sampler_params.dart';
 
 /// Base class for commands sent to the LlamaChild isolate
 sealed class LlamaCommand {}

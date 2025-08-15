@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:ffi';
 
-import 'package:dfc_llama/dfc_llama.dart';
 import 'package:dfc_llama/dfc_llama_ffi.dart';
 import 'package:ffi/ffi.dart';
 
