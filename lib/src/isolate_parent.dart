@@ -17,7 +17,7 @@ class LlamaParent {
   final String systemPrompt;
   final bool verbose;
   StreamController<String> _controller = StreamController<String>.broadcast();
-  final _parent = IsolateParent<LlamaCommand, LlamaResponse>();
+  final _childIsolate = IsolateParent<LlamaCommand, LlamaResponse>();
 
   StreamSubscription<LlamaResponse>? _subscription;
   bool _isGenerating = false;
@@ -96,12 +96,12 @@ class LlamaParent {
 
     _isGenerating = false;
     _status = LlamaStatus.uninitialized;
-    _parent.init();
+    _childIsolate.init();
 
     await _subscription?.cancel();
-    _subscription = _parent.stream.listen(_onData);
+    _subscription = _childIsolate.stream.listen(_onData);
 
-    await _parent.spawn(LlamaChild(systemPrompt, verbose: verbose));
+    await _childIsolate.spawn(LlamaChild(systemPrompt, verbose: verbose));
 
     await _sendCommand(
       LlamaInit(
@@ -122,7 +122,7 @@ class LlamaParent {
   Future<void> _sendCommand(LlamaCommand command, String description) {
     _operationCompleter = Completer<void>();
 
-    _parent.sendToChild(data: command, id: 1);
+    _childIsolate.sendToChild(data: command, id: 1);
 
     return _operationCompleter!.future.timeout(
       Duration(seconds: description == 'model loading' ? 60 : 30),
@@ -141,7 +141,7 @@ class LlamaParent {
       _controller = StreamController<String>.broadcast();
 
       await _subscription?.cancel();
-      _subscription = _parent.stream.listen(_onData);
+      _subscription = _childIsolate.stream.listen(_onData);
     }
 
     await _sendCommand(LlamaClear(), 'context clearing');
@@ -190,7 +190,7 @@ class LlamaParent {
     _isGenerating = true;
     _status = LlamaStatus.generating;
 
-    _parent.sendToChild(
+    _childIsolate.sendToChild(
       id: 1,
       data: LlamaPrompt(
         nextPrompt.prompt,
@@ -249,11 +249,11 @@ class LlamaParent {
     }
     _promptQueue.clear();
 
-    _parent.sendToChild(id: 1, data: LlamaDestroy());
+    _childIsolate.sendToChild(id: 1, data: LlamaDestroy());
 
     await Future.delayed(const Duration(milliseconds: 100));
 
-    await _parent.dispose();
+    await _childIsolate.dispose();
   }
 
   Future<String> sendPromptWithImages(String prompt, List<LlamaImage> images) {
