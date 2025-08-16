@@ -44,7 +44,7 @@ class LlamaParent {
   final List<_QueuedPrompt> _promptQueue = [];
   bool _isProcessingQueue = false;
 
-  void _onData(LlamaResponse data) {
+  void _childIsolateListener(LlamaResponse data) {
     if (data.status != null) {
       _status = data.status!;
 
@@ -99,7 +99,7 @@ class LlamaParent {
     _childIsolate.init();
 
     await _subscription?.cancel();
-    _subscription = _childIsolate.stream.listen(_onData);
+    _subscription = _childIsolate.stream.listen(_childIsolateListener);
 
     await _childIsolate.spawn(LlamaChild(systemPrompt, verbose: verbose));
 
@@ -141,7 +141,7 @@ class LlamaParent {
       _controller = StreamController<String>.broadcast();
 
       await _subscription?.cancel();
-      _subscription = _childIsolate.stream.listen(_onData);
+      _subscription = _childIsolate.stream.listen(_childIsolateListener);
     }
 
     await _sendCommand(LlamaClear(), 'context clearing');
