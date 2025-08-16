@@ -38,53 +38,6 @@ class LlamaParent {
   bool get isGenerating => _isGenerating;
   Stream<CompletionEvent> get completions => _completionController.stream;
 
-  void _childIsolateListener(LlamaResponse data) {
-    if (data.status != null) {
-      _status = data.status!;
-
-      if (data.status == LlamaStatus.ready &&
-          _readyCompleter != null &&
-          !_readyCompleter!.isCompleted) {
-        _readyCompleter!.complete();
-      }
-    }
-
-    if (data.text.isNotEmpty) {
-      _controller.add(data.text);
-    }
-
-    if (data.isConfirmation) {
-      if (_operationCompleter != null && !_operationCompleter!.isCompleted) {
-        _operationCompleter!.complete();
-      }
-    }
-
-    if (data.isDone) {
-      _isGenerating = false;
-
-      final promptId = data.promptId ?? _currentPromptId;
-      if (_promptCompleters.containsKey(promptId)) {
-        if (!_promptCompleters[promptId]!.isCompleted) {
-          _promptCompleters[promptId]!.complete();
-        }
-        _promptCompleters.remove(promptId);
-      }
-
-      CompletionEvent event;
-      if (data.status == LlamaStatus.error) {
-        event = CompletionEvent(
-          promptId,
-          success: false,
-          errorDetails: data.errorDetails,
-        );
-      } else {
-        event = CompletionEvent(promptId, success: true);
-      }
-
-      _completionController.add(event);
-    }
-  }
-
   Future<void> init() async {
     _readyCompleter = Completer<void>();
 
@@ -113,19 +66,6 @@ class LlamaParent {
     await _readyCompleter!.future;
   }
 
-  Future<void> _sendCommand(LlamaCommand command, String description) {
-    _operationCompleter = Completer<void>();
-
-    _childIsolate.sendToChild(data: command, id: 1);
-
-    return _operationCompleter!.future.timeout(
-      Duration(seconds: description == 'model loading' ? 60 : 30),
-      onTimeout: () {
-        throw TimeoutException('Operation "$description" timed out');
-      },
-    );
-  }
-
   Future<void> reset() async {
     if (_isGenerating) {
       await _stopGeneration();
@@ -139,13 +79,6 @@ class LlamaParent {
     }
 
     await _sendCommand(LlamaClear(), 'context clearing');
-  }
-
-  Future<void> _stopGeneration() async {
-    if (_isGenerating) {
-      await _sendCommand(LlamaStop(), 'generation stopping');
-      _isGenerating = false;
-    }
   }
 
   Future<String> sendPrompt(String prompt) {
@@ -163,39 +96,6 @@ class LlamaParent {
     }
 
     return queuedPrompt.idCompleter.future;
-  }
-
-  void _processNextPrompt() {
-    if (_promptQueue.isEmpty) {
-      _isProcessingQueue = false;
-
-      return;
-    }
-
-    _isProcessingQueue = true;
-    final nextPrompt = _promptQueue.removeAt(0);
-
-    _currentPromptId = DateTime.now().millisecondsSinceEpoch.toString();
-
-    _promptCompleters[_currentPromptId] = Completer<void>();
-
-    nextPrompt.idCompleter.complete(_currentPromptId);
-
-    _isGenerating = true;
-    _status = LlamaStatus.generating;
-
-    _childIsolate.sendToChild(
-      id: 1,
-      data: LlamaPrompt(nextPrompt.prompt, _currentPromptId),
-    );
-
-    _promptCompleters[_currentPromptId]!.future
-        .then((_) {
-          _processNextPrompt();
-        })
-        .catchError((e) {
-          _processNextPrompt();
-        });
   }
 
   Future<void> waitForCompletion(String promptId) async {
@@ -244,6 +144,109 @@ class LlamaParent {
     await Future.delayed(const Duration(milliseconds: 100));
 
     await _childIsolate.dispose();
+  }
+
+  // ------------------------------------------------------------
+  // private
+
+  void _processNextPrompt() {
+    if (_promptQueue.isEmpty) {
+      _isProcessingQueue = false;
+
+      return;
+    }
+
+    _isProcessingQueue = true;
+    final nextPrompt = _promptQueue.removeAt(0);
+
+    _currentPromptId = DateTime.now().millisecondsSinceEpoch.toString();
+
+    _promptCompleters[_currentPromptId] = Completer<void>();
+
+    nextPrompt.idCompleter.complete(_currentPromptId);
+
+    _isGenerating = true;
+    _status = LlamaStatus.generating;
+
+    _childIsolate.sendToChild(
+      id: 1,
+      data: LlamaPrompt(nextPrompt.prompt, _currentPromptId),
+    );
+
+    _promptCompleters[_currentPromptId]!.future
+        .then((_) {
+          _processNextPrompt();
+        })
+        .catchError((e) {
+          _processNextPrompt();
+        });
+  }
+
+  Future<void> _stopGeneration() async {
+    if (_isGenerating) {
+      await _sendCommand(LlamaStop(), 'generation stopping');
+      _isGenerating = false;
+    }
+  }
+
+  Future<void> _sendCommand(LlamaCommand command, String description) {
+    _operationCompleter = Completer<void>();
+
+    _childIsolate.sendToChild(data: command, id: 1);
+
+    return _operationCompleter!.future.timeout(
+      Duration(seconds: description == 'model loading' ? 60 : 30),
+      onTimeout: () {
+        throw TimeoutException('Operation "$description" timed out');
+      },
+    );
+  }
+
+  void _childIsolateListener(LlamaResponse data) {
+    if (data.status != null) {
+      _status = data.status!;
+
+      if (data.status == LlamaStatus.ready &&
+          _readyCompleter != null &&
+          !_readyCompleter!.isCompleted) {
+        _readyCompleter!.complete();
+      }
+    }
+
+    if (data.text.isNotEmpty) {
+      _controller.add(data.text);
+    }
+
+    if (data.isConfirmation) {
+      if (_operationCompleter != null && !_operationCompleter!.isCompleted) {
+        _operationCompleter!.complete();
+      }
+    }
+
+    if (data.isDone) {
+      _isGenerating = false;
+
+      final promptId = data.promptId ?? _currentPromptId;
+      if (_promptCompleters.containsKey(promptId)) {
+        if (!_promptCompleters[promptId]!.isCompleted) {
+          _promptCompleters[promptId]!.complete();
+        }
+        _promptCompleters.remove(promptId);
+      }
+
+      CompletionEvent event;
+      if (data.status == LlamaStatus.error) {
+        event = CompletionEvent(
+          promptId,
+          success: false,
+          errorDetails: data.errorDetails,
+        );
+      } else {
+        event = CompletionEvent(promptId, success: true);
+      }
+
+      _completionController.add(event);
+    }
   }
 }
 

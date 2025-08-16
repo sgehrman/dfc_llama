@@ -14,7 +14,6 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
 
   final String systemPrompt;
   final bool verbose;
-
   bool shouldStop = false;
   Llama? llama;
   String _template = '';
