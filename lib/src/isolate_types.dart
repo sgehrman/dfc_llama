@@ -85,11 +85,9 @@ class LlamaLoad extends LlamaCommand {
     required this.modelParams,
     required this.contextParams,
     required this.samplingParams,
-    this.mmprojPath,
   });
   final String path;
   final ModelParams modelParams;
   final ContextParams contextParams;
   final SamplerParams samplingParams;
-  final String? mmprojPath;
 }

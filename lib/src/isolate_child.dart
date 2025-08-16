@@ -38,15 +38,8 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
         :final modelParams,
         :final contextParams,
         :final samplingParams,
-        :final mmprojPath,
       ):
-        _handleLoad(
-          path,
-          modelParams,
-          contextParams,
-          samplingParams,
-          mmprojPath,
-        );
+        _handleLoad(path, modelParams, contextParams, samplingParams);
 
       case LlamaPrompt(:final prompt, :final promptId, :final images):
         _handlePrompt(prompt, promptId, images);
@@ -93,7 +86,6 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
     ModelParams modelParams,
     ContextParams contextParams,
     SamplerParams samplingParams,
-    String? mmprojPath,
   ) {
     try {
       llama = Llama(
@@ -102,7 +94,6 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
         contextParamsDart: contextParams,
         samplerParams: samplingParams,
         verbose: verbose,
-        mmprojPath: mmprojPath,
       );
 
       _template = llama?.chatTemplate() ?? '';
@@ -145,73 +136,45 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
         ),
       );
 
-      if (images != null && images.isNotEmpty) {
-        final stream = llama!.generateWithMeda(prompt, inputs: images);
+      String? newPrompt = prompt;
 
-        await for (final token in stream) {
-          if (shouldStop) {
-            break;
-          }
-
-          sendToParent(
-            LlamaResponse(
-              text: token,
-              isDone: false,
-              status: LlamaStatus.generating,
-              promptId: promptId,
+      if (_template.isNotEmpty) {
+        newPrompt = llama?.applyTemplate(_template, [
+          if (_firstPrompt)
+            Message(
+              role: Role.system,
+              content: systemPrompt.isNotEmpty
+                  ? systemPrompt
+                  : 'You are a helpful, funny assistant. Keep your answers informative but brief.',
             ),
-          );
-        }
+          Message(role: Role.user, content: prompt),
+        ]);
+
+        _firstPrompt = false;
+      }
+
+      llama?.setPrompt(newPrompt ?? prompt);
+
+      var asyncCount = 0;
+      var generationDone = false;
+      while (!generationDone && !shouldStop) {
+        final (text, isDone) = llama?.getNext() ?? ('', true);
 
         sendToParent(
           LlamaResponse(
-            text: '',
-            isDone: true,
-            status: LlamaStatus.ready,
+            text: text,
+            isDone: isDone,
+            status: isDone ? LlamaStatus.ready : LlamaStatus.generating,
             promptId: promptId,
           ),
         );
-      } else {
-        String? newPrompt = prompt;
 
-        if (_template.isNotEmpty) {
-          newPrompt = llama?.applyTemplate(_template, [
-            if (_firstPrompt)
-              Message(
-                role: Role.system,
-                content: systemPrompt.isNotEmpty
-                    ? systemPrompt
-                    : 'You are a helpful, funny assistant. Keep your answers informative but brief.',
-              ),
-            Message(role: Role.user, content: prompt),
-          ]);
+        generationDone = isDone;
 
-          _firstPrompt = false;
-        }
-
-        llama?.setPrompt(newPrompt ?? prompt);
-
-        var asyncCount = 0;
-        var generationDone = false;
-        while (!generationDone && !shouldStop) {
-          final (text, isDone) = llama?.getNext() ?? ('', true);
-
-          sendToParent(
-            LlamaResponse(
-              text: text,
-              isDone: isDone,
-              status: isDone ? LlamaStatus.ready : LlamaStatus.generating,
-              promptId: promptId,
-            ),
-          );
-
-          generationDone = isDone;
-
-          // gets us out of the loop so we can process the stop command if it comes in
-          asyncCount++;
-          if (asyncCount.isEven) {
-            await Future.delayed(const Duration(milliseconds: 1));
-          }
+        // gets us out of the loop so we can process the stop command if it comes in
+        asyncCount++;
+        if (asyncCount.isEven) {
+          await Future.delayed(const Duration(milliseconds: 1));
         }
       }
 
