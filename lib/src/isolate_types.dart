@@ -1,5 +1,4 @@
 import 'package:dfc_llama/src/llama.dart';
-import 'package:dfc_llama/src/llama_input.dart';
 import 'package:dfc_llama/src/params/context_params.dart';
 import 'package:dfc_llama/src/params/model_params.dart';
 import 'package:dfc_llama/src/params/sampler_params.dart';
@@ -32,10 +31,9 @@ class LlamaInit extends LlamaCommand {
 
 /// Command to send a prompt for generation
 class LlamaPrompt extends LlamaCommand {
-  LlamaPrompt(this.prompt, this.promptId, {this.images});
+  LlamaPrompt(this.prompt, this.promptId);
   final String prompt;
   final String promptId;
-  final List<LlamaImage>? images;
 }
 
 /// Response from the LlamaChild isolate

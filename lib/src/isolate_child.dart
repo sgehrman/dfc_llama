@@ -4,7 +4,6 @@ import 'package:dfc_llama/src/additions/llama_extension.dart';
 import 'package:dfc_llama/src/chat.dart';
 import 'package:dfc_llama/src/isolate_types.dart';
 import 'package:dfc_llama/src/llama.dart';
-import 'package:dfc_llama/src/llama_input.dart';
 import 'package:dfc_llama/src/params/context_params.dart';
 import 'package:dfc_llama/src/params/model_params.dart';
 import 'package:dfc_llama/src/params/sampler_params.dart';
@@ -41,8 +40,8 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
       ):
         _handleLoad(path, modelParams, contextParams, samplingParams);
 
-      case LlamaPrompt(:final prompt, :final promptId, :final images):
-        _handlePrompt(prompt, promptId, images);
+      case LlamaPrompt(:final prompt, :final promptId):
+        _handlePrompt(prompt, promptId);
 
       case LlamaInit(:final libraryPath):
         _handleInit(libraryPath);
@@ -104,9 +103,9 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
     }
   }
 
-  void _handlePrompt(String prompt, String promptId, List<LlamaImage>? images) {
+  void _handlePrompt(String prompt, String promptId) {
     shouldStop = false;
-    _sendPrompt(prompt, promptId, images);
+    _sendPrompt(prompt, promptId);
   }
 
   void _handleInit(String? libraryPath) {
@@ -114,11 +113,7 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
     sendToParent(LlamaResponse.confirmation(LlamaStatus.uninitialized));
   }
 
-  Future<void> _sendPrompt(
-    String prompt,
-    String promptId,
-    List<LlamaImage>? images,
-  ) async {
+  Future<void> _sendPrompt(String prompt, String promptId) async {
     if (llama == null) {
       sendToParent(
         LlamaResponse.error('Cannot generate: model not initialized', promptId),

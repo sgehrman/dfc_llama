@@ -4,7 +4,6 @@ import 'package:dfc_llama/src/completion_event.dart';
 import 'package:dfc_llama/src/isolate_child.dart';
 import 'package:dfc_llama/src/isolate_types.dart';
 import 'package:dfc_llama/src/llama.dart';
-import 'package:dfc_llama/src/llama_input.dart';
 import 'package:typed_isolate/typed_isolate.dart';
 
 class LlamaParent {
@@ -14,35 +13,30 @@ class LlamaParent {
     this.verbose = false,
   });
 
+  final LlamaLoad loadCommand;
   final String systemPrompt;
   final bool verbose;
+
   StreamController<String> _controller = StreamController<String>.broadcast();
   final _childIsolate = IsolateParent<LlamaCommand, LlamaResponse>();
-
   StreamSubscription<LlamaResponse>? _subscription;
   bool _isGenerating = false;
-
   LlamaStatus _status = LlamaStatus.uninitialized;
   LlamaStatus get status => _status;
-
-  final LlamaLoad loadCommand;
-
   Completer<void>? _readyCompleter;
   Completer<void>? _operationCompleter;
-
   final Map<String, Completer<void>> _promptCompleters = {};
-
-  Stream<String> get stream => _controller.stream;
-
-  bool get isGenerating => _isGenerating;
-
   final _completionController = StreamController<CompletionEvent>.broadcast();
-  Stream<CompletionEvent> get completions => _completionController.stream;
-
   String _currentPromptId = '';
-
   final List<_QueuedPrompt> _promptQueue = [];
   bool _isProcessingQueue = false;
+
+  // ------------------------------------
+  // getters
+
+  Stream<String> get stream => _controller.stream;
+  bool get isGenerating => _isGenerating;
+  Stream<CompletionEvent> get completions => _completionController.stream;
 
   void _childIsolateListener(LlamaResponse data) {
     if (data.status != null) {
@@ -192,11 +186,7 @@ class LlamaParent {
 
     _childIsolate.sendToChild(
       id: 1,
-      data: LlamaPrompt(
-        nextPrompt.prompt,
-        _currentPromptId,
-        images: nextPrompt.images,
-      ),
+      data: LlamaPrompt(nextPrompt.prompt, _currentPromptId),
     );
 
     _promptCompleters[_currentPromptId]!.future
@@ -255,37 +245,12 @@ class LlamaParent {
 
     await _childIsolate.dispose();
   }
-
-  Future<String> sendPromptWithImages(String prompt, List<LlamaImage> images) {
-    if (loadCommand.contextParams.embeddings) {
-      throw StateError(
-        'This LlamaParent instance is configured for embeddings only and cannot generate text.',
-      );
-    }
-
-    final queuedPrompt = _QueuedPromptWithImages(prompt, images);
-    _promptQueue.add(queuedPrompt);
-
-    if (!_isProcessingQueue) {
-      _processNextPrompt();
-    }
-
-    return queuedPrompt.idCompleter.future;
-  }
 }
 
 // ======================================================================
 
 class _QueuedPrompt {
-  _QueuedPrompt(this.prompt, {this.images});
+  _QueuedPrompt(this.prompt);
   final String prompt;
   final Completer<String> idCompleter = Completer<String>();
-  final List<LlamaImage>? images;
-}
-
-// ======================================================================
-
-class _QueuedPromptWithImages extends _QueuedPrompt {
-  _QueuedPromptWithImages(super.prompt, List<LlamaImage> images)
-    : super(images: images);
 }

@@ -5,7 +5,6 @@ export 'src/isolate_child.dart';
 export 'src/isolate_parent.dart';
 export 'src/isolate_types.dart';
 export 'src/llama.dart';
-export 'src/llama_input.dart';
 export 'src/params/context_params.dart';
 export 'src/params/model_params.dart';
 export 'src/params/sampler_params.dart';
