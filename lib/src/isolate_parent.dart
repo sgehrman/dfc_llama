@@ -40,7 +40,6 @@ class LlamaParent {
 
   Future<void> init() async {
     _readyCompleter = Completer<void>();
-
     _isGenerating = false;
     _status = LlamaStatus.uninitialized;
     _childIsolate.init();
