@@ -42,7 +42,7 @@ class Llama {
     this.verbose = false,
   }) {
     try {
-      _initializeLlama(modelPath, modelParamsDart, samplerParams);
+      _initializeLlama();
 
       // Always initialize the batch, even if contextParamsDart is null
       final contextParams = contextParamsDart.get();
@@ -110,11 +110,7 @@ class Llama {
   ) {}
 
   // Initializes the Llama instance with the given parameters
-  void _initializeLlama(
-    String modelPath,
-    ModelParams modelParamsDart,
-    SamplerParams samplerParams,
-  ) {
+  void _initializeLlama() {
     if (verbose == false) {
       final nullCallbackPointer = Pointer.fromFunction<LlamaLogCallback>(
         Llama.llamaLogCallbackNull,
