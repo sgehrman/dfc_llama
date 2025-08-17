@@ -43,7 +43,6 @@ class LlamaAppState extends State<LlamaApp> {
     }
 
     final contextParams = ContextParams();
-    // contextParams.nPredict = 111;
     // contextParams.nCtx = 111;
     // contextParams.nBatch = 512;
 

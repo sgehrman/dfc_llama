@@ -20,7 +20,6 @@ typedef LlamaLogCallback =
 typedef LlamaLogCallbackDart =
     void Function(int level, Pointer<Char> text, Pointer<Void> userData);
 
-/// Custom exception for Llama-specific errors
 class LlamaException implements Exception {
   LlamaException(this.message, [this.originalError]);
   final String message;
@@ -31,16 +30,10 @@ class LlamaException implements Exception {
       'LlamaException: $message${originalError != null ? ' ($originalError)' : ''}';
 }
 
-/// Status tracking for the Llama instance
-// enum LlamaStatus { initializing, uninitialized, ready, generating, error, disposed }
 enum LlamaStatus { uninitialized, loading, ready, generating, error, disposed }
 
-/// A Dart wrapper for llama.cpp functionality.
-/// Provides text generation capabilities using the llama model.
+// Throws [LlamaException] if model loading or initialization fails.
 class Llama {
-  /// Creates a new Llama instance with the specified model path and optional parameters.
-  ///
-  /// Throws [LlamaException] if model loading or initialization fails.
   Llama({
     required String modelPath,
     required ModelParams modelParamsDart,
@@ -50,7 +43,7 @@ class Llama {
   }) {
     try {
       _verbos = verbose ?? false;
-      _validateConfiguration();
+
       _initializeLlama(
         modelPath,
         modelParamsDart,
@@ -80,7 +73,6 @@ class Llama {
   Pointer<llama_token> _tokens = nullptr;
   Pointer<llama_token> _tokenPtr = nullptr;
   int _nPrompt = 0;
-  int _nPredict = 32;
   int _nPos = 0;
 
   bool _verbos = false;
@@ -112,16 +104,6 @@ class Llama {
 
   llama_cpp getLib() {
     return _lib!;
-  }
-
-  /// Validates the configuration parameters
-  void _validateConfiguration() {
-    // Allow nPredict = -1 for unlimited generation,
-    // but disallow 0 or other negative values.
-    if (_nPredict == 0 || _nPredict < -1) {
-      throw ArgumentError('nPredict must be positive or -1 for unlimited');
-    }
-    // No error if _nPredict > 0 or _nPredict == -1
   }
 
   static void llamaLogCallbackNull(
@@ -164,7 +146,7 @@ class Llama {
     }
 
     _contextParams = contextParamsDart;
-    _nPredict = contextParamsDart.nPredict;
+
     final contextParams = contextParamsDart.get();
     Pointer<llama_context> loadedContext = nullptr;
     try {
@@ -427,11 +409,6 @@ class Llama {
     }
 
     try {
-      final nGenerated = _nPos > _nPrompt ? _nPos - _nPrompt : 0;
-      if (_nPredict > 0 && nGenerated >= _nPredict) {
-        return ('', true);
-      }
-
       if (lib.llama_decode(context, batch) != 0) {
         throw LlamaException('Failed to eval');
       }
