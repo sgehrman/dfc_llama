@@ -1,3 +1,8 @@
+import 'dart:ffi';
+
+import 'package:dfc_llama/src/llama_cpp.dart';
+import 'package:ffi/ffi.dart';
+
 class SamplerParams {
   SamplerParams();
 
@@ -74,4 +79,141 @@ class SamplerParams {
       2; // tokens extending repetitions beyond this receive penalty
   int dryLookback = -1; // how many tokens to scan (-1 = context size)
   List<String> dryBreakers = ['\n', ':', '"', '*'];
+
+  static Pointer<llama_sampler> setSamplerParams(
+    llama_cpp lib,
+    SamplerParams samplerParams,
+    Pointer<llama_vocab> vocab,
+  ) {
+    Pointer<llama_sampler> smpl;
+
+    final sparams = lib.llama_sampler_chain_default_params();
+    sparams.no_perf = true;
+
+    smpl = lib.llama_sampler_chain_init(sparams);
+
+    if (samplerParams.greedy) {
+      lib.llama_sampler_chain_add(smpl, lib.llama_sampler_init_greedy());
+    }
+
+    lib.llama_sampler_chain_add(
+      smpl,
+      lib.llama_sampler_init_dist(samplerParams.seed),
+    );
+
+    if (samplerParams.softmax) {
+      lib.llama_sampler_chain_add(smpl, lib.llama_sampler_init_softmax());
+    }
+
+    lib.llama_sampler_chain_add(
+      smpl,
+      lib.llama_sampler_init_top_k(samplerParams.topK),
+    );
+    lib.llama_sampler_chain_add(
+      smpl,
+      lib.llama_sampler_init_top_p(samplerParams.topP, samplerParams.topPKeep),
+    );
+    lib.llama_sampler_chain_add(
+      smpl,
+      lib.llama_sampler_init_min_p(samplerParams.minP, samplerParams.minPKeep),
+    );
+    lib.llama_sampler_chain_add(
+      smpl,
+      lib.llama_sampler_init_typical(
+        samplerParams.typical,
+        samplerParams.typicalKeep,
+      ),
+    );
+    lib.llama_sampler_chain_add(
+      smpl,
+      lib.llama_sampler_init_temp(samplerParams.temp),
+    );
+    lib.llama_sampler_chain_add(
+      smpl,
+      lib.llama_sampler_init_xtc(
+        samplerParams.xtcTemperature,
+        samplerParams.xtcStartValue,
+        samplerParams.xtcKeep,
+        samplerParams.xtcLength,
+      ),
+    );
+
+    lib.llama_sampler_chain_add(
+      smpl,
+      lib.llama_sampler_init_mirostat(
+        lib.llama_n_vocab(vocab),
+        samplerParams.seed,
+        samplerParams.mirostatTau,
+        samplerParams.mirostatEta,
+        samplerParams.mirostatM,
+      ),
+    );
+
+    lib.llama_sampler_chain_add(
+      smpl,
+      lib.llama_sampler_init_mirostat_v2(
+        samplerParams.seed,
+        samplerParams.mirostat2Tau,
+        samplerParams.mirostat2Eta,
+      ),
+    );
+
+    final grammarStrPtr = samplerParams.grammarStr.toNativeUtf8().cast<Char>();
+    final grammarRootPtr = samplerParams.grammarRoot
+        .toNativeUtf8()
+        .cast<Char>();
+
+    final grammar = lib.llama_sampler_init_grammar(
+      vocab,
+      grammarStrPtr,
+      grammarRootPtr,
+    );
+    if (grammar != nullptr) {
+      lib.llama_sampler_chain_add(smpl, grammar);
+    }
+
+    if (grammarStrPtr != nullptr) {
+      malloc.free(grammarStrPtr);
+    }
+    if (grammarRootPtr != nullptr) {
+      malloc.free(grammarRootPtr);
+    }
+
+    lib.llama_sampler_chain_add(
+      smpl,
+      lib.llama_sampler_init_penalties(
+        samplerParams.penaltyLastTokens,
+        samplerParams.penaltyRepeat,
+        samplerParams.penaltyFreq,
+        samplerParams.penaltyPresent,
+      ),
+    );
+
+    final seqBreakers = samplerParams.dryBreakers;
+    final numBreakers = seqBreakers.length;
+    final seqBreakersPointer = calloc<Pointer<Char>>(numBreakers);
+
+    try {
+      for (var i = 0; i < numBreakers; i++) {
+        seqBreakersPointer[i] = seqBreakers[i].toNativeUtf8().cast<Char>();
+      }
+
+      lib.llama_sampler_chain_add(
+        smpl,
+        lib.llama_sampler_init_penalties(
+          samplerParams.penaltyLastTokens,
+          samplerParams.penaltyRepeat,
+          samplerParams.penaltyFreq,
+          samplerParams.penaltyPresent,
+        ),
+      );
+    } finally {
+      for (var i = 0; i < numBreakers; i++) {
+        malloc.free(seqBreakersPointer[i]);
+      }
+      calloc.free(seqBreakersPointer);
+    }
+
+    return smpl;
+  }
 }
