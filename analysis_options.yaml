@@ -5,6 +5,5 @@ include: package:dfc_lints/rules.yaml
 analyzer:
   exclude:
     - 'lib/src/llama_cpp.dart'
-    - 'lib/src/params/context_params.dart'
     - 'lib/src/params/model_params.dart'
     - 'lib/src/params/sampler_params.dart'
