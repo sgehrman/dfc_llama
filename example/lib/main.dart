@@ -7,13 +7,21 @@ import 'package:flutter/material.dart';
 void main() {
   Llama.libraryPath = LibraryPaths.path;
 
-  final contextParams = ContextParams();
+  // final contextParams = ContextParams();
+
+  // print('\n## built\n');
+  // contextParams.printParams();
+
+  // print('\n## defaults\n');
+  // contextParams.printParams(defaultParams: true);
+
+  final modelParams = ModelParams();
 
   print('\n## built\n');
-  contextParams.printParams();
+  modelParams.printParams();
 
   print('\n## defaults\n');
-  contextParams.printParams(defaultParams: true);
+  modelParams.printParams(defaultParams: true);
 
   runApp(const LlamaApp());
 }

@@ -15,7 +15,8 @@ class ModelParams {
   ModelParams();
 
   // Number of layers to store in VRAM
-  int nGpuLayers = 99;
+  // default is 0 since some computer might not have a gpu
+  int nGpuLayers = 0;
 
   // How to split the model across multiple GPUs
   LlamaSplitMode splitMode = LlamaSplitMode.none;
@@ -48,36 +49,6 @@ class ModelParams {
   Pointer<Float>? _tensorSplitPtr;
   Pointer<Char>? _rpcServersPtr;
 
-  // Constructs and returns a `llama_model_params` object with current settings
-  llama_model_params get() {
-    final modelParams = Llama.lib.llama_model_default_params();
-
-    // Basic parameters
-    modelParams.n_gpu_layers = nGpuLayers;
-    // modelParams.split_mode = splitMode.index; // @TODO split_mode setter
-    modelParams.main_gpu = mainGpu;
-    modelParams.vocab_only = vocabOnly;
-    modelParams.use_mmap = useMemorymap;
-    modelParams.use_mlock = useMemoryLock;
-    modelParams.check_tensors = checkTensors;
-
-    // Handle tensor_split
-    if (tensorSplit.isNotEmpty) {
-      _tensorSplitPtr = malloc<Float>(tensorSplit.length);
-      for (var i = 0; i < tensorSplit.length; i++) {
-        _tensorSplitPtr![i] = tensorSplit[i];
-      }
-      modelParams.tensor_split = _tensorSplitPtr!;
-    }
-
-    // Complex pointers set to null
-    modelParams.progress_callback = nullptr;
-    modelParams.progress_callback_user_data = nullptr;
-    modelParams.kv_overrides = nullptr;
-
-    return modelParams;
-  }
-
   // Free allocated memory
   void dispose() {
     if (_tensorSplitPtr != null) {
@@ -88,5 +59,54 @@ class ModelParams {
       malloc.free(_rpcServersPtr!);
       _rpcServersPtr = null;
     }
+  }
+
+  // Constructs and returns a `llama_model_params` object with current settings
+  llama_model_params get({bool defaultParams = false}) {
+    final modelParams = Llama.lib.llama_model_default_params();
+
+    if (!defaultParams) {
+      modelParams.n_gpu_layers = nGpuLayers;
+      // modelParams.split_mode = splitMode.index; // @TODO split_mode setter
+      modelParams.main_gpu = mainGpu;
+      modelParams.vocab_only = vocabOnly;
+      modelParams.use_mmap = useMemorymap;
+      modelParams.use_mlock = useMemoryLock;
+      modelParams.check_tensors = checkTensors;
+
+      // Handle tensor_split
+      if (tensorSplit.isNotEmpty) {
+        _tensorSplitPtr = malloc<Float>(tensorSplit.length);
+        for (var i = 0; i < tensorSplit.length; i++) {
+          _tensorSplitPtr![i] = tensorSplit[i];
+        }
+        modelParams.tensor_split = _tensorSplitPtr!;
+      }
+
+      // Complex pointers set to null
+      modelParams.progress_callback = nullptr;
+      modelParams.progress_callback_user_data = nullptr;
+      modelParams.kv_overrides = nullptr;
+    }
+
+    return modelParams;
+  }
+
+  void printParams({bool defaultParams = false}) {
+    final params = get(defaultParams: defaultParams);
+
+    print('### llama_model_params');
+    print('n_gpu_layers: ${params.n_gpu_layers}');
+    print('split_mode: ${params.split_mode}');
+    print('main_gpu: ${params.main_gpu}');
+    // print('tensor_split: ${duh.tensor_split}');
+    // print('progress_callback: ${duh.progress_callback}');
+    // print('progress_callback_user_data: ${duh.progress_callback_user_data}');
+    // print('kv_overrides: ${duh.kv_overrides}');
+    print('vocab_only: ${params.vocab_only}');
+    print('use_mmap: ${params.use_mmap}');
+    print('use_mlock: ${params.use_mlock}');
+    print('check_tensors: ${params.check_tensors}');
+    print('use_extra_bufts: ${params.use_extra_bufts}');
   }
 }

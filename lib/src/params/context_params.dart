@@ -157,35 +157,35 @@ class ContextParams {
   }
 
   void printParams({bool defaultParams = false}) {
-    final duh = get(defaultParams: defaultParams);
+    final params = get(defaultParams: defaultParams);
 
     print('### llama_context_params');
-    print('n_ctx: ${duh.n_ctx}');
-    print('n_batch: ${duh.n_batch}');
-    print('n_ubatch: ${duh.n_ubatch}');
-    print('n_seq_max: ${duh.n_seq_max}');
-    print('n_threads: ${duh.n_threads}');
-    print('n_threads_batch: ${duh.n_threads_batch}');
-    print('rope_scaling_type: ${duh.rope_scaling_type}');
-    print('pooling_type: ${duh.pooling_type}');
-    print('attention_type: ${duh.attention_type}');
-    print('rope_freq_base: ${duh.rope_freq_base}');
-    print('rope_freq_scale: ${duh.rope_freq_scale}');
-    print('yarn_ext_factor: ${duh.yarn_ext_factor}');
-    print('yarn_attn_factor: ${duh.yarn_attn_factor}');
-    print('yarn_beta_fast: ${duh.yarn_beta_fast}');
-    print('yarn_beta_slow: ${duh.yarn_beta_slow}');
-    print('yarn_orig_ctx: ${duh.yarn_orig_ctx}');
-    print('defrag_thold: ${duh.defrag_thold}');
-    print('embeddings: ${duh.embeddings}');
-    print('offload_kqv: ${duh.offload_kqv}');
-    print('flash_attn: ${duh.flash_attn}');
-    print('type_k: ${duh.type_k}');
-    print('type_v: ${duh.type_v}');
-    print('kv_unified: ${duh.kv_unified}');
-    print('no_perf: ${duh.no_perf}');
-    print('op_offload: ${duh.op_offload}');
-    print('swa_full: ${duh.swa_full}');
+    print('n_ctx: ${params.n_ctx}');
+    print('n_batch: ${params.n_batch}');
+    print('n_ubatch: ${params.n_ubatch}');
+    print('n_seq_max: ${params.n_seq_max}');
+    print('n_threads: ${params.n_threads}');
+    print('n_threads_batch: ${params.n_threads_batch}');
+    print('rope_scaling_type: ${params.rope_scaling_type}');
+    print('pooling_type: ${params.pooling_type}');
+    print('attention_type: ${params.attention_type}');
+    print('rope_freq_base: ${params.rope_freq_base}');
+    print('rope_freq_scale: ${params.rope_freq_scale}');
+    print('yarn_ext_factor: ${params.yarn_ext_factor}');
+    print('yarn_attn_factor: ${params.yarn_attn_factor}');
+    print('yarn_beta_fast: ${params.yarn_beta_fast}');
+    print('yarn_beta_slow: ${params.yarn_beta_slow}');
+    print('yarn_orig_ctx: ${params.yarn_orig_ctx}');
+    print('defrag_thold: ${params.defrag_thold}');
+    print('embeddings: ${params.embeddings}');
+    print('offload_kqv: ${params.offload_kqv}');
+    print('flash_attn: ${params.flash_attn}');
+    print('type_k: ${params.type_k}');
+    print('type_v: ${params.type_v}');
+    print('kv_unified: ${params.kv_unified}');
+    print('no_perf: ${params.no_perf}');
+    print('op_offload: ${params.op_offload}');
+    print('swa_full: ${params.swa_full}');
   }
 }
 
