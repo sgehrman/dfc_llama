@@ -5,6 +5,16 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  Llama.libraryPath = LibraryPaths.path;
+
+  final contextParams = ContextParams();
+
+  print('\n## built\n');
+  contextParams.printParams();
+
+  print('\n## defaults\n');
+  contextParams.printParams(defaultParams: true);
+
   runApp(const LlamaApp());
 }
 

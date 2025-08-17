@@ -51,14 +51,14 @@ class ContextParams {
 
   // controls the context window size
   // 2,048 – 8,192 is reasonable; this handles a substantial number of messages without high RAM use.
-  int nCtx = 2048;
+  int nCtx = 512;
 
   // The maximum number of tokens to be processed at once at the API/application level.
   // In chat AI, this means how many tokens you send to the model to decode in a single batch.
   // Common defaults for n_batch are 32, 64, 128, or even 512 for larger systems
   // Use moderate values (n_batch=32–128, n_ubatch=8–64) for most chat AI setups, tuning for your hardware and prompt needs.
-
-  int nBatch = 64;
+  // default is n_batch: 2048
+  int nBatch = 2048;
 
   // Divides n_batch into smaller chunks that fit the compute buffer; helps manage memory, especially on GPUs
   // Typical values: Usually set lower than n_batch; 8, 16, 32, or 64 are common, depending on
@@ -67,7 +67,7 @@ class ContextParams {
   // out-of-memory errors on your hardware.
   // For chat AI on consumer hardware: Try n_batch=64 and n_ubatch=16 or 32. Increase n_batch for longer prompts if your hardware allows.
   // Always ensure: n_ubatch ≤ n_batch.
-  int nUbatch = 16;
+  int nUbatch = 512;
 
   // Max number of sequences (i.e. distinct states for recurrent models)
   // a value of 1 means strictly single-threaded generation,
@@ -78,14 +78,7 @@ class ContextParams {
   // The default in llama.cpp is often set to half the number of CPU cores (e.g., max(cpu_count // 2, 1)), so for 12 cores, that would be 6 threads.
   // But this default is not always optimal. Some users report better performance using fewer threads than cores
   // (e.g., 6 or 8 instead of 12) because hyper-threading and thread management overhead can reduce efficiency.
-  int nThreads = 8;
-
-  // Number of threads to use for batch processing
-  // n_threads_batch: Threads used for processing batches.
-  // Default is to follow n_threads if unset.
-  // If n_threads_batch = -1 or unset, it usually defaults to the same number as n_threads.
-  // For a 12-core CPU, try values from 6 to 12, matching or near your n_threads.
-  int nThreadsBatch = 8;
+  int nThreads = 4;
 
   // RoPE scaling type
   LlamaRopeScalingType ropeScalingType = LlamaRopeScalingType.unspecified;
@@ -132,36 +125,97 @@ class ContextParams {
   // Whether to use flash attention [EXPERIMENTAL]
   bool flashAttn = false;
 
-  // Whether to measure performance timings
-  bool noPerfTimings = false;
-
   // Constructs and returns a `llama_context_params` object
-  llama_context_params get() {
+  llama_context_params get({bool defaultParams = false}) {
     final contextParams = Llama.lib.llama_context_default_params();
 
-    contextParams.n_ctx = nCtx;
-    contextParams.n_batch = nBatch;
-    contextParams.n_ubatch = nUbatch;
-    contextParams.n_seq_max = nSeqMax;
-    contextParams.n_threads = nThreads;
-    contextParams.n_threads_batch = nThreadsBatch;
-    contextParams.rope_scaling_type = ropeScalingType.value;
-    contextParams.pooling_type = poolingType.value;
-    contextParams.attention_type = attentionType.value;
-    contextParams.rope_freq_base = ropeFreqBase;
-    contextParams.rope_freq_scale = ropeFreqScale;
-    contextParams.yarn_ext_factor = yarnExtFactor;
-    contextParams.yarn_attn_factor = yarnAttnFactor;
-    contextParams.yarn_beta_fast = yarnBetaFast;
-    contextParams.yarn_beta_slow = yarnBetaSlow;
-    contextParams.yarn_orig_ctx = yarnOrigCtx;
-    contextParams.defrag_thold = defragThold;
-    // contextParams.logits_all = logitsAll;
-    contextParams.embeddings = embeddings;
-    contextParams.offload_kqv = offloadKqv;
-    contextParams.flash_attn = flashAttn;
-    contextParams.no_perf = noPerfTimings;
+    if (!defaultParams) {
+      contextParams.n_ctx = nCtx;
+      contextParams.n_batch = nBatch;
+      contextParams.n_ubatch = nUbatch;
+      contextParams.n_seq_max = nSeqMax;
+      contextParams.n_threads = nThreads;
+      contextParams.n_threads_batch = nThreads; // matches n_threads
+      contextParams.rope_scaling_type = ropeScalingType.value;
+      contextParams.pooling_type = poolingType.value;
+      contextParams.attention_type = attentionType.value;
+      contextParams.rope_freq_base = ropeFreqBase;
+      contextParams.rope_freq_scale = ropeFreqScale;
+      contextParams.yarn_ext_factor = yarnExtFactor;
+      contextParams.yarn_attn_factor = yarnAttnFactor;
+      contextParams.yarn_beta_fast = yarnBetaFast;
+      contextParams.yarn_beta_slow = yarnBetaSlow;
+      contextParams.yarn_orig_ctx = yarnOrigCtx;
+      contextParams.defrag_thold = defragThold;
+      contextParams.embeddings = embeddings;
+      contextParams.offload_kqv = offloadKqv;
+      contextParams.flash_attn = flashAttn;
+      contextParams.no_perf = true; // slows things down
+    }
 
     return contextParams;
   }
+
+  void printParams({bool defaultParams = false}) {
+    final duh = get(defaultParams: defaultParams);
+
+    print('### llama_context_params');
+    print('n_ctx: ${duh.n_ctx}');
+    print('n_batch: ${duh.n_batch}');
+    print('n_ubatch: ${duh.n_ubatch}');
+    print('n_seq_max: ${duh.n_seq_max}');
+    print('n_threads: ${duh.n_threads}');
+    print('n_threads_batch: ${duh.n_threads_batch}');
+    print('rope_scaling_type: ${duh.rope_scaling_type}');
+    print('pooling_type: ${duh.pooling_type}');
+    print('attention_type: ${duh.attention_type}');
+    print('rope_freq_base: ${duh.rope_freq_base}');
+    print('rope_freq_scale: ${duh.rope_freq_scale}');
+    print('yarn_ext_factor: ${duh.yarn_ext_factor}');
+    print('yarn_attn_factor: ${duh.yarn_attn_factor}');
+    print('yarn_beta_fast: ${duh.yarn_beta_fast}');
+    print('yarn_beta_slow: ${duh.yarn_beta_slow}');
+    print('yarn_orig_ctx: ${duh.yarn_orig_ctx}');
+    print('defrag_thold: ${duh.defrag_thold}');
+    print('embeddings: ${duh.embeddings}');
+    print('offload_kqv: ${duh.offload_kqv}');
+    print('flash_attn: ${duh.flash_attn}');
+    print('type_k: ${duh.type_k}');
+    print('type_v: ${duh.type_v}');
+    print('kv_unified: ${duh.kv_unified}');
+    print('no_perf: ${duh.no_perf}');
+    print('op_offload: ${duh.op_offload}');
+    print('swa_full: ${duh.swa_full}');
+  }
 }
+
+/*
+  ## defaults from llama_context_params
+
+  n_ctx: 512
+  n_batch: 2048
+  n_ubatch: 512
+  n_seq_max: 1
+  n_threads: 4
+  n_threads_batch: 4
+  rope_scaling_type: -1
+  pooling_type: -1
+  attention_type: -1
+  rope_freq_base: 0.0
+  rope_freq_scale: 0.0
+  yarn_ext_factor: -1.0
+  yarn_attn_factor: 1.0
+  yarn_beta_fast: 32.0
+  yarn_beta_slow: 1.0
+  yarn_orig_ctx: 0
+  defrag_thold: -1.0
+  embeddings: false
+  offload_kqv: true
+  flash_attn: false
+  type_k: 1
+  type_v: 1
+  kv_unified: false
+  no_perf: true
+  op_offload: true
+  swa_full: true
+*/
