@@ -113,9 +113,6 @@ class ContextParams {
   // Defragment the KV cache if holes/size > thold, < 0 disabled
   double defragThold = -1;
 
-  // The llama_decode() call computes all logits, not just the last one
-  // bool logitsAll = false;
-
   // If true, extract embeddings (together with logits)
   bool embeddings = false;
 

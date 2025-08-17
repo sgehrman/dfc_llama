@@ -27,15 +27,6 @@ class ModelParams {
   // Proportion of the model (layers or rows) to offload to each GPU
   List<double> tensorSplit = [];
 
-  // Comma separated list of RPC servers to use for offloading
-  String rpcServers = '';
-
-  // Override key-value pairs of the model metadata
-  Map<String, dynamic> kvOverrides = {};
-
-  // Only load the vocabulary, no weights
-  bool vocabOnly = false;
-
   // Use mmap if possible
   bool useMemorymap = true;
 
@@ -47,17 +38,12 @@ class ModelParams {
 
   // Pointers that need to be freed
   Pointer<Float>? _tensorSplitPtr;
-  Pointer<Char>? _rpcServersPtr;
 
   // Free allocated memory
   void dispose() {
     if (_tensorSplitPtr != null) {
       malloc.free(_tensorSplitPtr!);
       _tensorSplitPtr = null;
-    }
-    if (_rpcServersPtr != null) {
-      malloc.free(_rpcServersPtr!);
-      _rpcServersPtr = null;
     }
   }
 
@@ -67,9 +53,7 @@ class ModelParams {
 
     if (!defaultParams) {
       modelParams.n_gpu_layers = nGpuLayers;
-      // modelParams.split_mode = splitMode.index; // @TODO split_mode setter
       modelParams.main_gpu = mainGpu;
-      modelParams.vocab_only = vocabOnly;
       modelParams.use_mmap = useMemorymap;
       modelParams.use_mlock = useMemoryLock;
       modelParams.check_tensors = checkTensors;
