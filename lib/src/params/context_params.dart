@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:dfc_llama/src/llama.dart';
 import 'package:dfc_llama/src/llama_cpp.dart';
 
-/// RoPE scaling types
+// RoPE scaling types
 enum LlamaRopeScalingType {
   unspecified(-1),
   none(0),
@@ -15,7 +15,7 @@ enum LlamaRopeScalingType {
   const LlamaRopeScalingType(this.value);
 }
 
-/// Pooling types for embeddings
+// Pooling types for embeddings
 enum LlamaPoolingType {
   unspecified(-1),
   none(0),
@@ -28,7 +28,7 @@ enum LlamaPoolingType {
   const LlamaPoolingType(this.value);
 }
 
-/// Attention types for embeddings
+// Attention types for embeddings
 enum LlamaAttentionType {
   unspecified(-1),
   causal(0),
@@ -38,77 +38,77 @@ enum LlamaAttentionType {
   const LlamaAttentionType(this.value);
 }
 
-/// ContextParams holds configuration settings for the Llama model context
+// ContextParams holds configuration settings for the Llama model context
 class ContextParams {
   ContextParams();
 
-  /// Text context size. 0 = from model
+  // 2,048–8,192 is reasonable; this handles a substantial number of messages without high RAM use.
   int nCtx = 512;
 
-  /// Logical maximum batch size that can be submitted to llama_decode
+  // Logical maximum batch size that can be submitted to llama_decode
   int nBatch = 512;
 
-  /// Physical maximum batch size
+  // Physical maximum batch size
   int nUbatch = 512;
 
-  /// Max number of sequences (i.e. distinct states for recurrent models)
+  // Max number of sequences (i.e. distinct states for recurrent models)
   int nSeqMax = 1;
 
-  /// Number of threads to use for generation
+  // Number of threads to use for generation
   int nThreads = 8;
 
-  /// Number of threads to use for batch processing
+  // Number of threads to use for batch processing
   int nThreadsBatch = 8;
 
-  /// RoPE scaling type
+  // RoPE scaling type
   LlamaRopeScalingType ropeScalingType = LlamaRopeScalingType.unspecified;
 
-  /// Pooling type for embeddings
+  // Pooling type for embeddings
   LlamaPoolingType poolingType = LlamaPoolingType.unspecified;
 
-  /// Attention type to use for embeddings
+  // Attention type to use for embeddings
   LlamaAttentionType attentionType = LlamaAttentionType.unspecified;
 
-  /// RoPE base frequency, 0 = from model
+  // RoPE base frequency, 0 = from model
   double ropeFreqBase = 0.0;
 
-  /// RoPE frequency scaling factor, 0 = from model
+  // RoPE frequency scaling factor, 0 = from model
   double ropeFreqScale = 0.0;
 
-  /// YaRN extrapolation mix factor, negative = from model
+  // YaRN extrapolation mix factor, negative = from model
   double yarnExtFactor = -1.0;
 
-  /// YaRN magnitude scaling factor
+  // YaRN magnitude scaling factor
   double yarnAttnFactor = 1.0;
 
-  /// YaRN low correction dim
+  // YaRN low correction dim
   double yarnBetaFast = 32.0;
 
-  /// YaRN high correction dim
+  // YaRN high correction dim
   double yarnBetaSlow = 1.0;
 
-  /// YaRN original context size
+  // YaRN original context size
   int yarnOrigCtx = 0;
 
-  /// Defragment the KV cache if holes/size > thold, < 0 disabled
+  // Defragment the KV cache if holes/size > thold, < 0 disabled
   double defragThold = -1.0;
 
-  /// The llama_decode() call computes all logits, not just the last one
+  // The llama_decode() call computes all logits, not just the last one
   // bool logitsAll = false;
 
-  /// If true, extract embeddings (together with logits)
+  // If true, extract embeddings (together with logits)
   bool embeddings = false;
 
-  /// Whether to offload the KQV ops (including the KV cache) to GPU
+  // Whether to offload the KQV ops (including the KV cache) to GPU
   bool offloadKqv = true;
 
-  /// Whether to use flash attention [EXPERIMENTAL]
+  // Whether to use flash attention [EXPERIMENTAL]
   bool flashAttn = false;
 
-  /// Whether to measure performance timings
+  // Whether to measure performance timings
   bool noPerfTimings = false;
 
-  /// Constructs and returns a `llama_context_params` object
+  // Constructs and returns a `llama_context_params` object
   llama_context_params get() {
     final contextParams = Llama.lib.llama_context_default_params();
 
@@ -138,7 +138,7 @@ class ContextParams {
     return contextParams;
   }
 
-  /// Creates a ContextParams instance from JSON
+  // Creates a ContextParams instance from JSON
   factory ContextParams.fromJson(Map<String, dynamic> json) {
     return ContextParams()
       ..nCtx = json['nCtx'] ?? 512
@@ -170,7 +170,7 @@ class ContextParams {
       ..noPerfTimings = json['noPerfTimings'] ?? false;
   }
 
-  /// Converts to JSON
+  // Converts to JSON
   Map<String, dynamic> toJson() => {
     'nCtx': nCtx,
     'nBatch': nBatch,

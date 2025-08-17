@@ -83,10 +83,10 @@ class Llama {
 
   static String? libraryPath = Platform.isAndroid ? 'libllama.so' : null;
 
-  /// Gets the current status of the Llama instance
+  // Gets the current status of the Llama instance
   LlamaStatus get status => _status;
 
-  /// Checks if the instance has been disposed
+  // Checks if the instance has been disposed
   bool get isDisposed => _isDisposed;
 
   ContextParams? _contextParams;
@@ -112,7 +112,7 @@ class Llama {
     Pointer<Void> userData,
   ) {}
 
-  /// Initializes the Llama instance with the given parameters
+  // Initializes the Llama instance with the given parameters
   void _initializeLlama(
     String modelPath,
     ModelParams modelParamsDart,
@@ -294,13 +294,13 @@ class Llama {
     _tokenPtr = malloc<llama_token>();
   }
 
-  /// Sets the prompt for text generation.
-  ///
-  /// [prompt] - The input prompt text
-  /// [onProgress] - Optional callback for tracking tokenization progress
-  ///
-  /// Throws [ArgumentError] if prompt is empty
-  /// Throws [LlamaException] if tokenization fails
+  // Sets the prompt for text generation.
+  //
+  // [prompt] - The input prompt text
+  // [onProgress] - Optional callback for tracking tokenization progress
+  //
+  // Throws [ArgumentError] if prompt is empty
+  // Throws [LlamaException] if tokenization fails
   void setPrompt(
     String prompt, {
     void Function(int current, int total)? onProgress,
@@ -399,10 +399,10 @@ class Llama {
     }
   }
 
-  /// Generates the next token in the sequence.
-  ///
-  /// Returns a tuple containing the generated text and a boolean indicating if generation is complete.
-  /// Throws [LlamaException] if generation fails.
+  // Generates the next token in the sequence.
+  //
+  // Returns a tuple containing the generated text and a boolean indicating if generation is complete.
+  // Throws [LlamaException] if generation fails.
   (String, bool) getNext() {
     if (_isDisposed) {
       throw StateError('Cannot generate text on disposed instance');
@@ -460,7 +460,7 @@ class Llama {
     }
   }
 
-  /// Provides a stream of generated text tokens
+  // Provides a stream of generated text tokens
   Stream<String> generateText() async* {
     if (_isDisposed) {
       throw StateError('Cannot generate text on disposed instance');
@@ -480,7 +480,7 @@ class Llama {
     }
   }
 
-  /// Disposes of all resources held by this instance
+  // Disposes of all resources held by this instance
   void dispose() {
     if (_isDisposed) {
       return;
@@ -520,9 +520,9 @@ class Llama {
     _status = LlamaStatus.disposed;
   }
 
-  /// Clears the current state of the Llama instance
-  /// This allows reusing the same instance for a new generation
-  /// without creating a new instance
+  // Clears the current state of the Llama instance
+  // This allows reusing the same instance for a new generation
+  // without creating a new instance
   void clear() {
     if (_isDisposed) {
       throw StateError('Cannot clear disposed instance');
@@ -561,15 +561,15 @@ class Llama {
     }
   }
 
-  /// Converts a text string to a list of token IDs
-  ///
-  /// [text] - The input text to tokenize
-  /// [addBos] - Whether to add the beginning-of-sequence token
-  ///
-  /// Returns a List of integer token IDs
-  ///
-  /// Throws [ArgumentError] if text is empty
-  /// Throws [LlamaException] if tokenization fails
+  // Converts a text string to a list of token IDs
+  //
+  // [text] - The input text to tokenize
+  // [addBos] - Whether to add the beginning-of-sequence token
+  //
+  // Returns a List of integer token IDs
+  //
+  // Throws [ArgumentError] if text is empty
+  // Throws [LlamaException] if tokenization fails
   List<int> tokenize({required String text, required bool addBos}) {
     if (_isDisposed) {
       throw StateError('Cannot tokenize with disposed instance');
@@ -625,13 +625,13 @@ class Llama {
     }
   }
 
-  /// Generates embeddings for the given prompt.
-  ///
-  /// [prompt] - The input text for which to generate embeddings.
-  /// [addBos] - Whether to add the beginning-of-sequence token.
-  /// [normalize] - Whether to normalize the embeddings (default: true).
-  ///
-  /// Returns a List of floats representing the embedding.
+  // Generates embeddings for the given prompt.
+  //
+  // [prompt] - The input text for which to generate embeddings.
+  // [addBos] - Whether to add the beginning-of-sequence token.
+  // [normalize] - Whether to normalize the embeddings (default: true).
+  //
+  // Returns a List of floats representing the embedding.
   List<double> getEmbeddings(
     String prompt, {
     bool addBos = true,
@@ -755,10 +755,10 @@ class Llama {
     }
   }
 
-  /// season management
+  // season management
 
-  /// Loads a saved session state
-  /// Returns true if successful, false if session file doesn't exist
+  // Loads a saved session state
+  // Returns true if successful, false if session file doesn't exist
   bool loadSession(String path) {
     final bytes = File(path).readAsBytesSync();
     final hdr = ByteData.sublistView(bytes, 0, 12);
@@ -778,7 +778,7 @@ class Llama {
     return true;
   }
 
-  /// Saves the current session state
+  // Saves the current session state
   void saveSession(String path) {
     final size = lib.llama_get_state_size(context);
     final buf = malloc<Uint8>(size);
@@ -803,9 +803,9 @@ class Llama {
     malloc.free(buf);
   }
 
-  /// Ensures there is enough space in the context for a new batch of tokens.
-  /// If the context is full, it removes older tokens to make space, preserving
-  /// the first `_nKeep` tokens if specified.
+  // Ensures there is enough space in the context for a new batch of tokens.
+  // If the context is full, it removes older tokens to make space, preserving
+  // the first `_nKeep` tokens if specified.
   // void _ensureContextHasSpace(int tokensInBatch, int keep) {
   //   final nCtx = _contextParams?.nCtx ?? 2048;
 

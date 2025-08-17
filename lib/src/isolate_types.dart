@@ -3,19 +3,19 @@ import 'package:dfc_llama/src/params/context_params.dart';
 import 'package:dfc_llama/src/params/model_params.dart';
 import 'package:dfc_llama/src/params/sampler_params.dart';
 
-/// Base class for commands sent to the LlamaChild isolate
+// Base class for commands sent to the LlamaChild isolate
 sealed class LlamaCommand {}
 
-/// Command to stop ongoing generation
+// Command to stop ongoing generation
 class LlamaStop extends LlamaCommand {}
 
-/// Command to clear the model context
+// Command to clear the model context
 class LlamaClear extends LlamaCommand {}
 
-/// Command to destroy the model context
+// Command to destroy the model context
 class LlamaDestroy extends LlamaCommand {}
 
-/// Command to initialize the Llama library
+// Command to initialize the Llama library
 class LlamaInit extends LlamaCommand {
   LlamaInit(
     this.libraryPath,
@@ -29,14 +29,14 @@ class LlamaInit extends LlamaCommand {
   final SamplerParams samplingParams;
 }
 
-/// Command to send a prompt for generation
+// Command to send a prompt for generation
 class LlamaPrompt extends LlamaCommand {
   LlamaPrompt(this.prompt, this.promptId);
   final String prompt;
   final String promptId;
 }
 
-/// Response from the LlamaChild isolate
+// Response from the LlamaChild isolate
 class LlamaResponse {
   LlamaResponse({
     required this.text,
@@ -47,7 +47,7 @@ class LlamaResponse {
     this.isConfirmation = false,
   });
 
-  /// Create a confirmation response
+  // Create a confirmation response
   factory LlamaResponse.confirmation(LlamaStatus status, [String? promptId]) {
     return LlamaResponse(
       text: '',
@@ -58,7 +58,7 @@ class LlamaResponse {
     );
   }
 
-  /// Create an error response
+  // Create an error response
   factory LlamaResponse.error(String errorMessage, [String? promptId]) {
     return LlamaResponse(
       text: '',
@@ -76,7 +76,7 @@ class LlamaResponse {
   final bool isConfirmation;
 }
 
-/// Command to load a model
+// Command to load a model
 class LlamaLoad extends LlamaCommand {
   LlamaLoad({
     required this.path,

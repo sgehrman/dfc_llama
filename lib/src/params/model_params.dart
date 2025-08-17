@@ -5,7 +5,7 @@ import 'package:dfc_llama/dfc_llama_ffi.dart';
 import 'package:dfc_llama/src/llama.dart';
 import 'package:ffi/ffi.dart';
 
-/// Enum representing how to split the model across multiple GPUs
+// Enum representing how to split the model across multiple GPUs
 enum LlamaSplitMode {
   none, // single GPU
   layer, // split layers and KV across GPUs
@@ -15,41 +15,41 @@ enum LlamaSplitMode {
 class ModelParams {
   ModelParams();
 
-  /// Number of layers to store in VRAM
+  // Number of layers to store in VRAM
   int nGpuLayers = 99;
 
-  /// How to split the model across multiple GPUs
+  // How to split the model across multiple GPUs
   LlamaSplitMode splitMode = LlamaSplitMode.none;
 
-  /// The GPU that is used for the entire model when split_mode is LLAMA_SPLIT_MODE_NONE
+  // The GPU that is used for the entire model when split_mode is LLAMA_SPLIT_MODE_NONE
   int mainGpu = 0;
 
-  /// Proportion of the model (layers or rows) to offload to each GPU
+  // Proportion of the model (layers or rows) to offload to each GPU
   List<double> tensorSplit = [];
 
-  /// Comma separated list of RPC servers to use for offloading
+  // Comma separated list of RPC servers to use for offloading
   String rpcServers = '';
 
-  /// Override key-value pairs of the model metadata
+  // Override key-value pairs of the model metadata
   Map<String, dynamic> kvOverrides = {};
 
-  /// Only load the vocabulary, no weights
+  // Only load the vocabulary, no weights
   bool vocabOnly = false;
 
-  /// Use mmap if possible
+  // Use mmap if possible
   bool useMemorymap = true;
 
-  /// Force system to keep model in RAM
+  // Force system to keep model in RAM
   bool useMemoryLock = false;
 
-  /// Validate model tensor data
+  // Validate model tensor data
   bool checkTensors = false;
 
   // Pointers that need to be freed
   Pointer<Float>? _tensorSplitPtr;
   Pointer<Char>? _rpcServersPtr;
 
-  /// Constructs and returns a `llama_model_params` object with current settings
+  // Constructs and returns a `llama_model_params` object with current settings
   llama_model_params get() {
     final modelParams = Llama.lib.llama_model_default_params();
 
@@ -79,7 +79,7 @@ class ModelParams {
     return modelParams;
   }
 
-  /// Free allocated memory
+  // Free allocated memory
   void dispose() {
     if (_tensorSplitPtr != null) {
       malloc.free(_tensorSplitPtr!);
@@ -91,7 +91,7 @@ class ModelParams {
     }
   }
 
-  /// Constructs a ModelParams instance from a JSON map
+  // Constructs a ModelParams instance from a JSON map
   ModelParams.fromJson(Map<String, dynamic> json) {
     nGpuLayers = json['nGpuLayers'] ?? 99;
     splitMode = LlamaSplitMode.values[json['splitMode'] ?? 0];
@@ -110,7 +110,7 @@ class ModelParams {
     checkTensors = json['checkTensors'] ?? false;
   }
 
-  /// Converts the ModelParams instance to a JSON map
+  // Converts the ModelParams instance to a JSON map
   Map<String, dynamic> toJson() {
     return {
       'nGpuLayers': nGpuLayers,
@@ -126,7 +126,7 @@ class ModelParams {
     };
   }
 
-  /// Returns a string representation of the ModelParams instance
+  // Returns a string representation of the ModelParams instance
   @override
   String toString() => jsonEncode(toJson());
 }

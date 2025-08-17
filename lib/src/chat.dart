@@ -1,21 +1,11 @@
-/// Represents supported chat formats for export
-enum ChatFormat {
-  chatml,
-  alpaca,
-  gemini,
-  llama3;
-
-  String get value => name;
-}
-
-/// Represents different roles in a chat conversation
+// Represents different roles in a chat conversation
 enum Role {
   unknown,
   system,
   user,
   assistant;
 
-  /// Converts Role enum to its string representation
+  // Converts Role enum to its string representation
   String get value => switch (this) {
     Role.unknown => 'unknown',
     Role.system => 'system',
@@ -23,7 +13,7 @@ enum Role {
     Role.assistant => 'assistant',
   };
 
-  /// Creates a Role from a string value
+  // Creates a Role from a string value
   static Role fromString(String value) => switch (value.toLowerCase()) {
     'unknown' => Role.unknown,
     'system' => Role.system,
@@ -33,11 +23,11 @@ enum Role {
   };
 }
 
-/// Represents a single message in a chat conversation
+// Represents a single message in a chat conversation
 class Message {
   const Message({required this.role, required this.content});
 
-  /// Creates a Message from JSON
+  // Creates a Message from JSON
   factory Message.fromJson(Map<String, dynamic> json) {
     return Message(
       role: Role.fromString(json['role'] as String),
@@ -47,18 +37,18 @@ class Message {
   final Role role;
   final String content;
 
-  /// Converts Message to JSON
+  // Converts Message to JSON
   Map<String, dynamic> toJson() => {'role': role.value, 'content': content};
 
   @override
   String toString() => 'Message(role: ${role.value}, content: $content)';
 }
 
-/// Manages a collection of chat messages
+// Manages a collection of chat messages
 class ChatHistory {
   ChatHistory() : messages = [];
 
-  /// Creates a ChatHistory from JSON
+  // Creates a ChatHistory from JSON
   factory ChatHistory.fromJson(Map<String, dynamic> json) {
     final chatHistory = ChatHistory();
     final messagesList = json['messages'] as List<dynamic>;
@@ -73,140 +63,20 @@ class ChatHistory {
   }
   final List<Message> messages;
 
-  /// Adds a new message to the chat history
+  // Adds a new message to the chat history
   void addMessage({required Role role, required String content}) {
     messages.add(Message(role: role, content: content));
   }
 
-  /// Exports chat history in Llama 3 format
-  String _exportLlama3() {
-    final buffer = StringBuffer();
-    buffer.writeln('<|begin_of_text|>');
-    for (final message in messages) {
-      String roleHeader;
-      switch (message.role) {
-        case Role.system:
-          roleHeader = 'system';
-          break;
-        case Role.user:
-          roleHeader = 'user';
-          break;
-        case Role.assistant:
-          roleHeader = 'assistant';
-          break;
-        case Role.unknown:
-          roleHeader = 'unknown';
-          break;
-      }
-      buffer.writeln('<|start_header_id|>$roleHeader<|end_header_id|>');
-      buffer.writeln(message.content);
-      buffer.writeln('<|eot_id|>');
-    }
-    return buffer.toString();
-  }
-
-  /// Exports chat history in the specified format
-  String exportFormat(
-    ChatFormat format, {
-    bool leaveLastAssistantOpen = false,
-  }) {
-    switch (format) {
-      case ChatFormat.chatml:
-        return _exportChatML();
-      case ChatFormat.alpaca:
-        return _exportAlpaca();
-      case ChatFormat.gemini:
-        return _exportGemini(leaveLastAssistantOpen: leaveLastAssistantOpen);
-      case ChatFormat.llama3:
-        return _exportLlama3();
-    }
-  }
-
-  /// Exports chat history in ChatML format
-  String _exportChatML() {
-    final buffer = StringBuffer();
-
-    for (final message in messages) {
-      buffer.writeln('<|im_start|>${message.role.value}');
-      buffer.writeln(message.content);
-      buffer.writeln('<|im_end|>');
-    }
-
-    return buffer.toString();
-  }
-
-  /// Exports chat history in Alpaca format
-  String _exportAlpaca() {
-    final buffer = StringBuffer();
-
-    for (final message in messages) {
-      switch (message.role) {
-        case Role.system:
-          buffer.writeln('### Instruction:');
-        case Role.user:
-          buffer.writeln('### Input:');
-        case Role.assistant:
-          buffer.writeln('### Response:');
-        case Role.unknown:
-          buffer.writeln('### Unknown:');
-      }
-      buffer.writeln();
-      buffer.writeln(message.content);
-      buffer.writeln();
-    }
-
-    return buffer.toString();
-  }
-
-  /// Exports chat history in Gemini format
-  /// If leaveLastAssistantOpen is true and the last message is an empty assistant message,
-  /// it will not add the closing tag for that message
-  String _exportGemini({bool leaveLastAssistantOpen = false}) {
-    final buffer = StringBuffer();
-
-    for (var i = 0; i < messages.length; i++) {
-      final message = messages[i];
-      final isLastMessage = i == messages.length - 1;
-
-      // Handle special case for the last assistant message
-      final isEmptyAssistant =
-          message.role == Role.assistant && message.content.isEmpty;
-      final shouldLeaveOpen =
-          leaveLastAssistantOpen && isLastMessage && isEmptyAssistant;
-
-      switch (message.role) {
-        case Role.user:
-          buffer.write('<start_of_turn>user\n');
-          buffer.write(message.content);
-          buffer.writeln('<end_of_turn>');
-        case Role.assistant:
-          buffer.write('<start_of_turn>model\n');
-          buffer.write(message.content);
-          // Only add end tag if we're not leaving this message open
-          if (!shouldLeaveOpen) {
-            buffer.writeln('<end_of_turn>');
-          }
-        case Role.system:
-          buffer.write('<start_of_turn>user\n');
-          buffer.write('System instruction: ${message.content}');
-          buffer.writeln('<end_of_turn>');
-        case Role.unknown:
-          break;
-      }
-    }
-
-    return buffer.toString();
-  }
-
-  /// Converts ChatHistory to JSON
+  // Converts ChatHistory to JSON
   Map<String, dynamic> toJson() => {
     'messages': messages.map((message) => message.toJson()).toList(),
   };
 
-  /// Clears all messages from the chat history
+  // Clears all messages from the chat history
   void clear() => messages.clear();
 
-  /// Returns the number of messages in the chat history
+  // Returns the number of messages in the chat history
   int get length => messages.length;
 
   @override
