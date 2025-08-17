@@ -88,8 +88,6 @@ class SamplerParams {
     Pointer<llama_sampler> smpl;
 
     final sparams = lib.llama_sampler_chain_default_params();
-    sparams.no_perf = true;
-
     smpl = lib.llama_sampler_chain_init(sparams);
 
     if (samplerParams.greedy) {
