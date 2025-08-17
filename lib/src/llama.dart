@@ -35,21 +35,14 @@ enum LlamaStatus { uninitialized, loading, ready, generating, error, disposed }
 // Throws [LlamaException] if model loading or initialization fails.
 class Llama {
   Llama({
-    required String modelPath,
-    required ModelParams modelParamsDart,
-    required ContextParams contextParamsDart,
-    required SamplerParams samplerParams,
-    bool? verbose,
+    required this.modelPath,
+    required this.modelParamsDart,
+    required this.contextParamsDart,
+    required this.samplerParams,
+    this.verbose = false,
   }) {
     try {
-      _verbos = verbose ?? false;
-
-      _initializeLlama(
-        modelPath,
-        modelParamsDart,
-        contextParamsDart,
-        samplerParams,
-      );
+      _initializeLlama(modelPath, modelParamsDart, samplerParams);
 
       // Always initialize the batch, even if contextParamsDart is null
       final contextParams = contextParamsDart.get();
@@ -63,6 +56,13 @@ class Llama {
       throw LlamaException('Failed to initialize Llama', e);
     }
   }
+
+  final String modelPath;
+  final ModelParams modelParamsDart;
+  final ContextParams contextParamsDart;
+  final SamplerParams samplerParams;
+  final bool verbose;
+
   static llama_cpp? _lib;
   late Pointer<llama_model> model;
   late Pointer<llama_context> context;
@@ -75,7 +75,6 @@ class Llama {
   int _nPrompt = 0;
   int _nPos = 0;
 
-  bool _verbos = false;
   bool _isInitialized = false; // Track if initialization is complete
 
   bool _isDisposed = false;
@@ -88,8 +87,6 @@ class Llama {
 
   // Checks if the instance has been disposed
   bool get isDisposed => _isDisposed;
-
-  ContextParams? _contextParams;
 
   static llama_cpp get lib {
     if (_lib == null) {
@@ -116,10 +113,9 @@ class Llama {
   void _initializeLlama(
     String modelPath,
     ModelParams modelParamsDart,
-    ContextParams contextParamsDart,
     SamplerParams samplerParams,
   ) {
-    if (_verbos == false) {
+    if (verbose == false) {
       final nullCallbackPointer = Pointer.fromFunction<LlamaLogCallback>(
         Llama.llamaLogCallbackNull,
       );
@@ -144,8 +140,6 @@ class Llama {
     } finally {
       malloc.free(modelPathPtr);
     }
-
-    _contextParams = contextParamsDart;
 
     final contextParams = contextParamsDart.get();
     Pointer<llama_context> loadedContext = nullptr;
@@ -244,7 +238,7 @@ class Llama {
       }
       _nPrompt = actualTokens;
 
-      final batchCapacity = _contextParams?.nBatch ?? 512;
+      final batchCapacity = contextParamsDart.nBatch;
       if (_nPrompt > batchCapacity) {
         malloc.free(_tokens);
         _tokens = nullptr;
@@ -418,7 +412,7 @@ class Llama {
       }
 
       if (batch.seq_id != nullptr) {
-        final batchCapacity = _contextParams?.nBatch ?? 0;
+        final batchCapacity = contextParamsDart.nBatch;
         if (batchCapacity > 0) {
           for (var i = 0; i < batchCapacity; ++i) {
             if (batch.seq_id[i] != nullptr) {
@@ -529,7 +523,7 @@ class Llama {
       var nTokens = tokens.length;
 
       // Check if token count exceeds batch size
-      final batchSize = _contextParams?.nBatch ?? 512;
+      final batchSize = contextParamsDart.nBatch;
       if (nTokens > batchSize) {
         tokens = tokens.sublist(0, batchSize - 1);
         nTokens = tokens.length;
@@ -683,7 +677,7 @@ class Llama {
   // If the context is full, it removes older tokens to make space, preserving
   // the first `_nKeep` tokens if specified.
   // void _ensureContextHasSpace(int tokensInBatch, int keep) {
-  //   final nCtx = _contextParams?.nCtx ?? 2048;
+  //   final nCtx = contextParamsDart.nCtx;
 
   //   if (_nPos + tokensInBatch > nCtx) {
   //     final tokensToRemove = (_nPos + tokensInBatch) - nCtx;
