@@ -1,8 +1,7 @@
-import 'dart:convert';
 import 'dart:ffi';
 
-import 'package:dfc_llama/dfc_llama_ffi.dart';
 import 'package:dfc_llama/src/llama.dart';
+import 'package:dfc_llama/src/llama_cpp.dart';
 import 'package:ffi/ffi.dart';
 
 // Enum representing how to split the model across multiple GPUs
@@ -90,43 +89,4 @@ class ModelParams {
       _rpcServersPtr = null;
     }
   }
-
-  // Constructs a ModelParams instance from a JSON map
-  ModelParams.fromJson(Map<String, dynamic> json) {
-    nGpuLayers = json['nGpuLayers'] ?? 99;
-    splitMode = LlamaSplitMode.values[json['splitMode'] ?? 0];
-    mainGpu = json['mainGpu'] ?? 0;
-    tensorSplit =
-        ((json['tensorSplit'] as List<dynamic>?)
-                ?.map((e) => e.toDouble())
-                .toList()
-            as List<double>?) ??
-        [];
-    rpcServers = json['rpcServers'] ?? '';
-    kvOverrides = Map<String, dynamic>.from(json['kvOverrides'] ?? {});
-    vocabOnly = json['vocabOnly'] ?? false;
-    useMemorymap = json['useMemorymap'] ?? true;
-    useMemoryLock = json['useMemoryLock'] ?? false;
-    checkTensors = json['checkTensors'] ?? false;
-  }
-
-  // Converts the ModelParams instance to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'nGpuLayers': nGpuLayers,
-      'splitMode': splitMode.index,
-      'mainGpu': mainGpu,
-      'tensorSplit': tensorSplit,
-      'rpcServers': rpcServers,
-      'kvOverrides': kvOverrides,
-      'vocabOnly': vocabOnly,
-      'useMemorymap': useMemorymap,
-      'useMemoryLock': useMemoryLock,
-      'checkTensors': checkTensors,
-    };
-  }
-
-  // Returns a string representation of the ModelParams instance
-  @override
-  String toString() => jsonEncode(toJson());
 }
