@@ -14,7 +14,7 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
 
   final String systemPrompt;
   final bool verbose;
-  bool shouldStop = false;
+  bool _shouldStop = false;
   Llama? llama;
   String _template = '';
   bool _firstPrompt = true;
@@ -49,12 +49,12 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
   }
 
   void _handleStop() {
-    shouldStop = true;
+    _shouldStop = true;
     sendToParent(LlamaResponse.confirmation(LlamaStatus.ready));
   }
 
   void _handleClear() {
-    shouldStop = true;
+    _shouldStop = true;
     if (llama != null) {
       try {
         llama?.clear();
@@ -68,7 +68,7 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
   }
 
   void _handleDestroy() {
-    shouldStop = true;
+    _shouldStop = true;
     if (llama != null) {
       try {
         // I not seeing GPU memory freed, trying this but not sure if it helps
@@ -108,7 +108,7 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
   }
 
   void _handlePrompt(String prompt, String promptId) {
-    shouldStop = false;
+    _shouldStop = false;
     _sendPrompt(prompt, promptId);
   }
 
@@ -156,7 +156,7 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
 
       var asyncCount = 0;
       var generationDone = false;
-      while (!generationDone && !shouldStop) {
+      while (!generationDone && !_shouldStop) {
         final (text, isDone) = llama?.getNext() ?? ('', true);
 
         sendToParent(
@@ -177,7 +177,7 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
         }
       }
 
-      if (shouldStop) {
+      if (_shouldStop) {
         sendToParent(
           LlamaResponse(
             text: '',
