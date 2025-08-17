@@ -18,6 +18,7 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
   Llama? llama;
   String _template = '';
   bool _firstPrompt = true;
+  bool _disableSystemPrompt = false;
 
   @override
   void onData(LlamaCommand data) {
@@ -85,6 +86,10 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
     ContextParams contextParams,
     SamplerParams samplingParams,
   ) {
+    if (path.toLowerCase().contains('deepseek')) {
+      _disableSystemPrompt = true;
+    }
+
     try {
       llama = Llama(
         modelPath: path,
@@ -134,7 +139,7 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
 
       if (_template.isNotEmpty) {
         newPrompt = llama?.applyTemplate(_template, [
-          if (_firstPrompt)
+          if (_firstPrompt && !_disableSystemPrompt)
             Message(
               role: Role.system,
               content: systemPrompt.isNotEmpty
