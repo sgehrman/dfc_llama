@@ -42,9 +42,9 @@ ffigen: # dart run ffigen
   headers:
     entry-points:
       - 'src/llama.cpp/include/llama.h'
-      - 'src/llama.cpp/tools/mtmd/mtmd.h'
+      # - 'src/llama.cpp/tools/mtmd/mtmd.h'
   compiler-opts:
     - '-I/usr/lib/clang/17/include'
     - '-Isrc/llama.cpp/ggml/include'
     - '-Isrc/llama.cpp/include'
-    - '-Isrc/llama.cpp/tools/mtmd'
+    # - '-Isrc/llama.cpp/tools/mtmd'

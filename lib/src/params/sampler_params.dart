@@ -7,8 +7,9 @@ class SamplerParams {
 
   // see common_params_sampling in common/common.h
 
-  // Basic samplers
-  bool greedy = true;
+  // The sampling chain can be very simple (greedy) or more
+  // complex (top-k, top-p, etc).
+  bool greedy = false;
   int seed = LLAMA_DEFAULT_SEED; // For distribution sampler
   bool softmax = true;
 
