@@ -11,7 +11,7 @@ class SamplerParams {
   // complex (top-k, top-p, etc).
   bool greedy = false;
   int seed = LLAMA_DEFAULT_SEED; // For distribution sampler
-  bool softmax = true;
+  // bool softmax = true;
 
   // Top-K sampling
   // @details Top-K sampling described in academic paper "The Curious Case of Neural Text Degeneration" https://arxiv.org/abs/1904.09751
@@ -86,9 +86,9 @@ class SamplerParams {
       lib.llama_sampler_init_dist(samplerParams.seed),
     );
 
-    if (samplerParams.softmax) {
-      lib.llama_sampler_chain_add(smpl, lib.llama_sampler_init_softmax());
-    }
+    // if (samplerParams.softmax) {
+    //   lib.llama_sampler_chain_add(smpl, lib.llama_sampler_init_softmax());
+    // }
 
     lib.llama_sampler_chain_add(
       smpl,
