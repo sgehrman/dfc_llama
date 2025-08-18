@@ -1,14 +1,15 @@
 import 'dart:ffi';
 
 import 'package:dfc_llama/src/llama_cpp.dart';
-import 'package:ffi/ffi.dart';
 
 class SamplerParams {
   SamplerParams();
 
+  // see common_params_sampling in common/common.h
+
   // Basic samplers
-  bool greedy = false;
-  int seed = 0; // For distribution sampler
+  bool greedy = true;
+  int seed = LLAMA_DEFAULT_SEED; // For distribution sampler
   bool softmax = true;
 
   // Top-K sampling
@@ -55,10 +56,6 @@ class SamplerParams {
   double mirostat2Tau = 5;
   double mirostat2Eta = 0.10;
 
-  // Grammar
-  String grammarStr = '';
-  String grammarRoot = '';
-
   // Penalties
   // @details Token penalties configuration
   int penaltyLastTokens =
@@ -66,19 +63,6 @@ class SamplerParams {
   double penaltyRepeat = 1; // 1.0 = disabled
   double penaltyFreq = 0; // 0.0 = disabled
   double penaltyPresent = 0; // 0.0 = disabled
-  bool penaltyNewline = false; // consider newlines as repeatable token
-  bool ignoreEOS = false; // ignore end-of-sequence token
-
-  // DRY sampler
-  // @details DRY sampler, designed by p-e-w, described in: https://github.com/oobabooga/text-generation-webui/pull/5677
-  double dryPenalty =
-      0; // DRY repetition penalty for tokens extending repetition
-  double dryMultiplier =
-      1.75; // multiplier * base ^ (length of sequence before token - allowed length)
-  int dryAllowedLen =
-      2; // tokens extending repetitions beyond this receive penalty
-  int dryLookback = -1; // how many tokens to scan (-1 = context size)
-  List<String> dryBreakers = ['\n', ':', '"', '*'];
 
   static Pointer<llama_sampler> setSamplerParams(
     llama_cpp lib,
@@ -88,6 +72,8 @@ class SamplerParams {
     Pointer<llama_sampler> smpl;
 
     final sparams = lib.llama_sampler_chain_default_params();
+    sparams.no_perf = true;
+
     smpl = lib.llama_sampler_chain_init(sparams);
 
     if (samplerParams.greedy) {
@@ -107,14 +93,17 @@ class SamplerParams {
       smpl,
       lib.llama_sampler_init_top_k(samplerParams.topK),
     );
+
     lib.llama_sampler_chain_add(
       smpl,
       lib.llama_sampler_init_top_p(samplerParams.topP, samplerParams.topPKeep),
     );
+
     lib.llama_sampler_chain_add(
       smpl,
       lib.llama_sampler_init_min_p(samplerParams.minP, samplerParams.minPKeep),
     );
+
     lib.llama_sampler_chain_add(
       smpl,
       lib.llama_sampler_init_typical(
@@ -122,10 +111,12 @@ class SamplerParams {
         samplerParams.typicalKeep,
       ),
     );
+
     lib.llama_sampler_chain_add(
       smpl,
       lib.llama_sampler_init_temp(samplerParams.temp),
     );
+
     lib.llama_sampler_chain_add(
       smpl,
       lib.llama_sampler_init_xtc(
@@ -156,27 +147,6 @@ class SamplerParams {
       ),
     );
 
-    final grammarStrPtr = samplerParams.grammarStr.toNativeUtf8().cast<Char>();
-    final grammarRootPtr = samplerParams.grammarRoot
-        .toNativeUtf8()
-        .cast<Char>();
-
-    final grammar = lib.llama_sampler_init_grammar(
-      vocab,
-      grammarStrPtr,
-      grammarRootPtr,
-    );
-    if (grammar != nullptr) {
-      lib.llama_sampler_chain_add(smpl, grammar);
-    }
-
-    if (grammarStrPtr != nullptr) {
-      malloc.free(grammarStrPtr);
-    }
-    if (grammarRootPtr != nullptr) {
-      malloc.free(grammarRootPtr);
-    }
-
     lib.llama_sampler_chain_add(
       smpl,
       lib.llama_sampler_init_penalties(
@@ -186,31 +156,6 @@ class SamplerParams {
         samplerParams.penaltyPresent,
       ),
     );
-
-    final seqBreakers = samplerParams.dryBreakers;
-    final numBreakers = seqBreakers.length;
-    final seqBreakersPointer = calloc<Pointer<Char>>(numBreakers);
-
-    try {
-      for (var i = 0; i < numBreakers; i++) {
-        seqBreakersPointer[i] = seqBreakers[i].toNativeUtf8().cast<Char>();
-      }
-
-      lib.llama_sampler_chain_add(
-        smpl,
-        lib.llama_sampler_init_penalties(
-          samplerParams.penaltyLastTokens,
-          samplerParams.penaltyRepeat,
-          samplerParams.penaltyFreq,
-          samplerParams.penaltyPresent,
-        ),
-      );
-    } finally {
-      for (var i = 0; i < numBreakers; i++) {
-        malloc.free(seqBreakersPointer[i]);
-      }
-      calloc.free(seqBreakersPointer);
-    }
 
     return smpl;
   }
