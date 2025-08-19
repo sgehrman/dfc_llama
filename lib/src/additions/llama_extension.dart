@@ -7,7 +7,7 @@ import 'package:ffi/ffi.dart';
 
 extension LlamaExtension on Llama {
   String chatTemplate() {
-    final ptr = Llama.lib.llama_model_chat_template(model, nullptr);
+    final ptr = lib.llama_model_chat_template(model, nullptr);
 
     //  String piece = '';
     //     final bytes = buf.cast<Uint8>().asTypedList(n);
@@ -54,7 +54,7 @@ extension LlamaExtension on Llama {
       final bufLen = totalLen * 2 + 1024;
       final bufPtr = calloc<Char>(bufLen);
       try {
-        final written = Llama.lib.llama_chat_apply_template(
+        final written = lib.llama_chat_apply_template(
           templatePtr,
           chatPtr,
           nMsg,

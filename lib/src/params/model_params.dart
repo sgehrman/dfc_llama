@@ -1,6 +1,5 @@
 import 'dart:ffi';
 
-import 'package:dfc_llama/src/llama.dart';
 import 'package:dfc_llama/src/llama_cpp.dart';
 import 'package:ffi/ffi.dart';
 
@@ -48,8 +47,8 @@ class ModelParams {
   }
 
   // Constructs and returns a `llama_model_params` object with current settings
-  llama_model_params get({bool defaultParams = false}) {
-    final modelParams = Llama.lib.llama_model_default_params();
+  llama_model_params get(llama_cpp lib, {bool defaultParams = false}) {
+    final modelParams = lib.llama_model_default_params();
 
     if (!defaultParams) {
       modelParams.n_gpu_layers = nGpuLayers;
@@ -76,8 +75,8 @@ class ModelParams {
     return modelParams;
   }
 
-  void printParams({bool defaultParams = false}) {
-    final params = get(defaultParams: defaultParams);
+  void printParams(llama_cpp lib, {bool defaultParams = false}) {
+    final params = get(lib, defaultParams: defaultParams);
 
     print('### llama_model_params');
     print('n_gpu_layers: ${params.n_gpu_layers}');

@@ -1,4 +1,3 @@
-import 'package:dfc_llama/src/llama.dart';
 import 'package:dfc_llama/src/llama_cpp.dart';
 
 // RoPE scaling types
@@ -10,35 +9,6 @@ enum LlamaRopeScalingType {
   maxValue(2);
 
   const LlamaRopeScalingType(this.value);
-
-  final int value;
-}
-
-// ===============================================================
-
-// Pooling types for embeddings
-enum LlamaPoolingType {
-  unspecified(-1),
-  none(0),
-  mean(1),
-  cls(2),
-  last(3),
-  rank(4);
-
-  const LlamaPoolingType(this.value);
-
-  final int value;
-}
-
-// ===============================================================
-
-// Attention types for embeddings
-enum LlamaAttentionType {
-  unspecified(-1),
-  causal(0),
-  nonCausal(1);
-
-  const LlamaAttentionType(this.value);
 
   final int value;
 }
@@ -83,12 +53,6 @@ class ContextParams {
   // RoPE scaling type
   LlamaRopeScalingType ropeScalingType = LlamaRopeScalingType.unspecified;
 
-  // Pooling type for embeddings
-  LlamaPoolingType poolingType = LlamaPoolingType.unspecified;
-
-  // Attention type to use for embeddings
-  LlamaAttentionType attentionType = LlamaAttentionType.unspecified;
-
   // RoPE base frequency, 0 = from model
   double ropeFreqBase = 0;
 
@@ -113,9 +77,6 @@ class ContextParams {
   // Defragment the KV cache if holes/size > thold, < 0 disabled
   double defragThold = -1;
 
-  // If true, extract embeddings (together with logits)
-  bool embeddings = false;
-
   // Whether to offload the KQV ops (including the KV cache) to GPU
   bool offloadKqv = true;
 
@@ -123,8 +84,8 @@ class ContextParams {
   bool flashAttn = false;
 
   // Constructs and returns a `llama_context_params` object
-  llama_context_params get({bool defaultParams = false}) {
-    final contextParams = Llama.lib.llama_context_default_params();
+  llama_context_params get(llama_cpp lib, {bool defaultParams = false}) {
+    final contextParams = lib.llama_context_default_params();
 
     if (!defaultParams) {
       contextParams.n_ctx = nCtx;
@@ -134,8 +95,6 @@ class ContextParams {
       contextParams.n_threads = nThreads;
       contextParams.n_threads_batch = nThreads; // matches n_threads
       contextParams.rope_scaling_type = ropeScalingType.value;
-      contextParams.pooling_type = poolingType.value;
-      contextParams.attention_type = attentionType.value;
       contextParams.rope_freq_base = ropeFreqBase;
       contextParams.rope_freq_scale = ropeFreqScale;
       contextParams.yarn_ext_factor = yarnExtFactor;
@@ -144,7 +103,6 @@ class ContextParams {
       contextParams.yarn_beta_slow = yarnBetaSlow;
       contextParams.yarn_orig_ctx = yarnOrigCtx;
       contextParams.defrag_thold = defragThold;
-      contextParams.embeddings = embeddings;
       contextParams.offload_kqv = offloadKqv;
       contextParams.flash_attn = flashAttn;
       contextParams.no_perf = true; // slows things down
@@ -153,8 +111,8 @@ class ContextParams {
     return contextParams;
   }
 
-  void printParams({bool defaultParams = false}) {
-    final params = get(defaultParams: defaultParams);
+  void printParams(llama_cpp lib, {bool defaultParams = false}) {
+    final params = get(lib, defaultParams: defaultParams);
 
     print('### llama_context_params');
     print('n_ctx: ${params.n_ctx}');

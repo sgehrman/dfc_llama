@@ -36,6 +36,7 @@ enum LlamaStatus { uninitialized, loading, ready, generating, error, disposed }
 class Llama {
   Llama({
     required this.modelPath,
+    required this.libraryPath,
     required this.modelParamsDart,
     required this.contextParamsDart,
     required this.samplerParams,
@@ -45,7 +46,7 @@ class Llama {
       _initializeLlama();
 
       // Always initialize the batch, even if contextParamsDart is null
-      final contextParams = contextParamsDart.get();
+      final contextParams = contextParamsDart.get(lib);
       batch = lib.llama_batch_init(contextParams.n_batch, 0, 1);
 
       _isInitialized = true; // Mark initialization as complete
@@ -62,6 +63,7 @@ class Llama {
   final ContextParams contextParamsDart;
   final SamplerParams samplerParams;
   final bool verbose;
+  final String libraryPath;
 
   static llama_cpp? _lib;
   late Pointer<llama_model> model;
@@ -80,22 +82,14 @@ class Llama {
   bool _isDisposed = false;
   LlamaStatus _status = LlamaStatus.uninitialized;
 
-  static String? libraryPath = Platform.isAndroid ? 'libllama.so' : null;
-
   // Gets the current status of the Llama instance
   LlamaStatus get status => _status;
 
   // Checks if the instance has been disposed
   bool get isDisposed => _isDisposed;
 
-  static llama_cpp get lib {
-    if (_lib == null) {
-      if (libraryPath != null) {
-        _lib = llama_cpp(DynamicLibrary.open(libraryPath!));
-      } else {
-        _lib = llama_cpp(DynamicLibrary.process());
-      }
-    }
+  llama_cpp get lib {
+    _lib ??= llama_cpp(DynamicLibrary.open(libraryPath));
     return _lib!;
   }
 
@@ -120,7 +114,7 @@ class Llama {
 
     lib.llama_backend_init();
 
-    final modelParams = modelParamsDart.get();
+    final modelParams = modelParamsDart.get(lib);
 
     final modelPathPtr = modelPath.toNativeUtf8().cast<Char>();
     Pointer<llama_model> loadedModel = nullptr; // Use a local variable
@@ -137,7 +131,7 @@ class Llama {
       malloc.free(modelPathPtr);
     }
 
-    final contextParams = contextParamsDart.get();
+    final contextParams = contextParamsDart.get(lib);
     Pointer<llama_context> loadedContext = nullptr;
     try {
       loadedContext = lib.llama_new_context_with_model(model, contextParams);

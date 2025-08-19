@@ -5,8 +5,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  Llama.libraryPath = LibraryPaths.path;
-
   // final contextParams = ContextParams();
 
   // print('\n## built\n');
@@ -15,13 +13,13 @@ void main() {
   // print('\n## defaults\n');
   // contextParams.printParams(defaultParams: true);
 
-  final modelParams = ModelParams();
+  // final modelParams = ModelParams();
 
-  print('\n## built\n');
-  modelParams.printParams();
+  // print('\n## built\n');
+  // modelParams.printParams();
 
-  print('\n## defaults\n');
-  modelParams.printParams(defaultParams: true);
+  // print('\n## defaults\n');
+  // modelParams.printParams(defaultParams: true);
 
   runApp(const LlamaApp());
 }
@@ -75,9 +73,9 @@ class LlamaAppState extends State<LlamaApp> {
     // 30 crashed too
     modelParams.nGpuLayers = 20;
 
-    Llama.libraryPath = LibraryPaths.path;
     model = Llama(
       modelPath: resultFile.path,
+      libraryPath: LibraryPaths.path,
       modelParamsDart: modelParams,
       contextParamsDart: contextParams,
       samplerParams: samplerParams,

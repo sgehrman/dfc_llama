@@ -18,7 +18,6 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
   Llama? llama;
   String _template = '';
   bool _firstPrompt = true;
-  bool _disableSystemPrompt = false;
 
   @override
   void onData(LlamaCommand data) {
@@ -26,45 +25,31 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
       case LlamaStop():
         _handleStop();
 
-      case LlamaClear():
-        _handleClear();
-
       case LlamaDestroy():
         _handleDestroy();
 
       case LlamaLoad(
         :final path,
+        :final libraryPath,
         :final modelParams,
         :final contextParams,
         :final samplingParams,
       ):
-        _handleLoad(path, modelParams, contextParams, samplingParams);
+        _handleLoad(
+          path: path,
+          libraryPath: libraryPath,
+          modelParams: modelParams,
+          contextParams: contextParams,
+          samplingParams: samplingParams,
+        );
 
-      case LlamaPrompt(:final prompt, :final promptId):
-        _handlePrompt(prompt, promptId);
-
-      case LlamaInit(:final libraryPath):
-        _handleInit(libraryPath);
+      case LlamaPrompt(:final prompt):
+        _handlePrompt(prompt);
     }
   }
 
   void _handleStop() {
     _shouldStop = true;
-    sendToParent(LlamaResponse.confirmation(LlamaStatus.ready));
-  }
-
-  void _handleClear() {
-    _shouldStop = true;
-    if (llama != null) {
-      try {
-        llama?.clear();
-        sendToParent(LlamaResponse.confirmation(LlamaStatus.ready));
-      } catch (e) {
-        sendToParent(LlamaResponse.error('Error clearing context: $e'));
-      }
-    } else {
-      sendToParent(LlamaResponse.error('Cannot clear: model not initialized'));
-    }
   }
 
   void _handleDestroy() {
@@ -80,19 +65,17 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
     }
   }
 
-  void _handleLoad(
-    String path,
-    ModelParams modelParams,
-    ContextParams contextParams,
-    SamplerParams samplingParams,
-  ) {
-    if (path.toLowerCase().contains('deepseek')) {
-      _disableSystemPrompt = true;
-    }
-
+  void _handleLoad({
+    required String path,
+    required String libraryPath,
+    required ModelParams modelParams,
+    required ContextParams contextParams,
+    required SamplerParams samplingParams,
+  }) {
     try {
       llama = Llama(
         modelPath: path,
+        libraryPath: libraryPath,
         modelParamsDart: modelParams,
         contextParamsDart: contextParams,
         samplerParams: samplingParams,
@@ -107,45 +90,30 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
     }
   }
 
-  void _handlePrompt(String prompt, String promptId) {
+  void _handlePrompt(String prompt) {
     _shouldStop = false;
-    _sendPrompt(prompt, promptId);
+    _sendPrompt(prompt);
   }
 
-  void _handleInit(String? libraryPath) {
-    Llama.libraryPath = libraryPath;
-    sendToParent(LlamaResponse.confirmation(LlamaStatus.uninitialized));
-  }
-
-  Future<void> _sendPrompt(String prompt, String promptId) async {
+  Future<void> _sendPrompt(String prompt) async {
     if (llama == null) {
       sendToParent(
-        LlamaResponse.error('Cannot generate: model not initialized', promptId),
+        LlamaResponse.error('Cannot generate: model not initialized'),
       );
       return;
     }
 
     try {
       sendToParent(
-        LlamaResponse(
-          text: '',
-          isDone: false,
-          status: LlamaStatus.generating,
-          promptId: promptId,
-        ),
+        LlamaResponse(text: '', isDone: false, status: LlamaStatus.generating),
       );
 
       String? newPrompt = prompt;
 
       if (_template.isNotEmpty) {
         newPrompt = llama?.applyTemplate(_template, [
-          if (_firstPrompt && !_disableSystemPrompt)
-            Message(
-              role: Role.system,
-              content: systemPrompt.isNotEmpty
-                  ? systemPrompt
-                  : 'You are a helpful, funny assistant. Keep your answers informative but brief.',
-            ),
+          if (_firstPrompt && systemPrompt.isNotEmpty)
+            Message(role: Role.system, content: systemPrompt),
           Message(role: Role.user, content: prompt),
         ]);
 
@@ -164,7 +132,6 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
             text: text,
             isDone: isDone,
             status: isDone ? LlamaStatus.ready : LlamaStatus.generating,
-            promptId: promptId,
           ),
         );
 
@@ -179,16 +146,11 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
 
       if (_shouldStop) {
         sendToParent(
-          LlamaResponse(
-            text: '',
-            isDone: true,
-            status: LlamaStatus.ready,
-            promptId: promptId,
-          ),
+          LlamaResponse(text: '', isDone: true, status: LlamaStatus.ready),
         );
       }
     } catch (e) {
-      sendToParent(LlamaResponse.error('Generation error: $e', promptId));
+      sendToParent(LlamaResponse.error('Generation error: $e'));
     }
   }
 }
