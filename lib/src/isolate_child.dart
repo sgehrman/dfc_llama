@@ -99,17 +99,9 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
         verbose: verbose,
       );
 
-      if (llama != null) {
-        _template = llama?.chatTemplate() ?? '';
+      _template = llama?.chatTemplate() ?? '';
 
-        sendToParent(LlamaResponse.confirmation(LlamaStatus.ready));
-      } else {
-        sendToParent(
-          LlamaResponse.error(
-            'Error loading model: null returned from Llama()',
-          ),
-        );
-      }
+      sendToParent(LlamaResponse.confirmation(LlamaStatus.ready));
     } catch (e) {
       sendToParent(LlamaResponse.error('Error loading model: $e'));
     }
