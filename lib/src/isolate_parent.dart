@@ -23,7 +23,7 @@ class LlamaParent {
   bool _isGenerating = false;
   LlamaStatus _status = LlamaStatus.uninitialized;
   LlamaStatus get status => _status;
-  Completer<void>? _readyCompleter;
+  final _readyCompleter = Completer<void>();
   Completer<void>? _operationCompleter;
   final Map<String, Completer<void>> _promptCompleters = {};
   final _completionController = StreamController<CompletionEvent>.broadcast();
@@ -39,12 +39,8 @@ class LlamaParent {
   Stream<CompletionEvent> get completions => _completionController.stream;
 
   Future<void> init() async {
-    _readyCompleter = Completer<void>();
-    _isGenerating = false;
-    _status = LlamaStatus.uninitialized;
     _childIsolate.init();
 
-    await _subscription?.cancel();
     _subscription = _childIsolate.stream.listen(_childIsolateListener);
 
     await _childIsolate.spawn(LlamaChild(systemPrompt, verbose: verbose));
@@ -62,7 +58,7 @@ class LlamaParent {
     _status = LlamaStatus.loading;
     await _sendCommand(loadCommand, 'model loading');
 
-    await _readyCompleter!.future;
+    await _readyCompleter.future;
   }
 
   Future<void> reset() async {
@@ -205,10 +201,8 @@ class LlamaParent {
     if (data.status != null) {
       _status = data.status!;
 
-      if (data.status == LlamaStatus.ready &&
-          _readyCompleter != null &&
-          !_readyCompleter!.isCompleted) {
-        _readyCompleter!.complete();
+      if (data.status == LlamaStatus.ready && !_readyCompleter.isCompleted) {
+        _readyCompleter.complete();
       }
     }
 
