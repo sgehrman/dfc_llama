@@ -194,7 +194,7 @@ class LlamaParent {
     _childIsolate.sendToChild(data: command, id: 1);
 
     return _operationCompleter!.future.timeout(
-      Duration(seconds: description == 'model loading' ? 60 : 30),
+      Duration(seconds: description == 'model loading' ? 30 : 10),
       onTimeout: () {
         throw TimeoutException('Operation "$description" timed out');
       },
