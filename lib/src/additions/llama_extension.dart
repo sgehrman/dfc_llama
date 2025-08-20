@@ -29,15 +29,18 @@ extension LlamaExtension on Llama {
   String applyTemplate(String template, List<Message> messages) {
     final templatePtr = template.toNativeUtf8().cast<Char>();
     final nMsg = messages.length;
+
     // Allocate array of llama_chat_message
     final chatPtr = calloc<llama_chat_message>(nMsg);
     final allocatedRoles = <Pointer<Char>>[];
     final allocatedContents = <Pointer<Char>>[];
+
     try {
       for (var i = 0; i < nMsg; i++) {
         final msg = messages[i];
         final rolePtr = msg.role.value.toNativeUtf8().cast<Char>();
         final contentPtr = msg.content.toNativeUtf8().cast<Char>();
+
         chatPtr[i].role = rolePtr;
         chatPtr[i].content = contentPtr;
         allocatedRoles.add(rolePtr);
@@ -62,11 +65,13 @@ extension LlamaExtension on Llama {
           bufPtr,
           bufLen,
         );
+
         if (written <= 0) {
           throw LlamaException(
             'llama_chat_apply_template failed or buffer too small',
           );
         }
+
         final result = bufPtr.cast<Utf8>().toDartString(length: written);
 
         return result;
