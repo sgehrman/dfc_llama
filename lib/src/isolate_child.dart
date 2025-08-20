@@ -120,7 +120,16 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
         _firstPrompt = false;
       }
 
-      llama?.setPrompt(newPrompt ?? prompt);
+      var finalPrompt = newPrompt ?? prompt;
+
+      // qwen models use /no_think
+      // if added to system prompt it seems to work only on first prompt
+      final modelPath = llama?.modelPath;
+      if (modelPath != null && modelPath.toLowerCase().contains('qwen')) {
+        finalPrompt += ' /no_think';
+      }
+
+      llama?.setPrompt(finalPrompt);
 
       var asyncCount = 0;
       var generationDone = false;
