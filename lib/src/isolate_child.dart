@@ -131,7 +131,7 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
         final formattedPrompt = llama?.applyTemplate(_template, [
           if (_firstPrompt && systemPrompt.isNotEmpty)
             Message(role: Role.system, content: systemPrompt),
-          Message(role: Role.user, content: prompt),
+          Message(role: Role.user, content: newPrompt),
         ]);
 
         if (formattedPrompt != null && formattedPrompt.isNotEmpty) {
