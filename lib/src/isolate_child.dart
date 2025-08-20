@@ -18,7 +18,7 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
   Llama? llama;
   String _template = '';
   bool _firstPrompt = true;
-  final bool _diableThinking = true;
+  final bool _diableThinking = false;
 
   @override
   void onData(LlamaCommand data) {
