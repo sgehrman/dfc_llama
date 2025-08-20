@@ -18,7 +18,6 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
   Llama? llama;
   String _template = '';
   bool _firstPrompt = true;
-  final bool _diableThinking = true;
 
   @override
   void onData(LlamaCommand data) {
@@ -44,8 +43,16 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
           samplingParams: samplingParams,
         );
 
-      case LlamaPrompt(:final prompt):
-        _handlePrompt(prompt);
+      case LlamaPrompt(
+        :final prompt,
+        :final diableThinking,
+        :final includeFormattedPrompt,
+      ):
+        _handlePrompt(
+          prompt: prompt,
+          diableThinking: diableThinking,
+          includeFormattedPrompt: includeFormattedPrompt,
+        );
     }
   }
 
@@ -91,16 +98,18 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
     }
   }
 
-  void _handlePrompt(String prompt) {
+  Future<void> _handlePrompt({
+    required String prompt,
+    required bool diableThinking,
+    required bool includeFormattedPrompt,
+  }) async {
     _shouldStop = false;
-    _sendPrompt(prompt);
-  }
 
-  Future<void> _sendPrompt(String prompt) async {
     if (llama == null) {
       sendToParent(
         LlamaResponse.error('Cannot generate: model not initialized'),
       );
+
       return;
     }
 
@@ -123,11 +132,21 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
 
       var finalPrompt = newPrompt ?? prompt;
 
-      if (_diableThinking) {
+      if (diableThinking) {
         final modelPath = llama?.modelPath;
         if (modelPath != null && modelPath.toLowerCase().contains('qwen3')) {
           finalPrompt += r' \no_think';
         }
+      }
+
+      if (includeFormattedPrompt) {
+        sendToParent(
+          LlamaResponse(
+            text: 'Prompt: "$finalPrompt"\n',
+            isDone: false,
+            status: LlamaStatus.ready,
+          ),
+        );
       }
 
       llama?.setPrompt(finalPrompt);

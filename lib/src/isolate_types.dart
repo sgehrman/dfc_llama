@@ -30,8 +30,14 @@ class LlamaLoad extends LlamaCommand {
 
 // Command to send a prompt for generation
 class LlamaPrompt extends LlamaCommand {
-  LlamaPrompt(this.prompt);
+  LlamaPrompt({
+    required this.prompt,
+    this.diableThinking = false,
+    this.includeFormattedPrompt = false,
+  });
   final String prompt;
+  final bool diableThinking;
+  final bool includeFormattedPrompt;
 }
 
 // Response from the LlamaChild isolate

@@ -40,11 +40,15 @@ class LlamaParent {
     _sendCommand(loadCommand);
   }
 
-  Future<void> sendPrompt(String prompt) async {
+  void sendPrompt(LlamaPrompt prompt) {
+    _sendPrompt(prompt);
+  }
+
+  Future<void> _sendPrompt(LlamaPrompt prompt) async {
     final loaded = await _loadedCompleter.future;
 
     if (loaded) {
-      _childIsolate.sendToChild(id: 1, data: LlamaPrompt(prompt));
+      _childIsolate.sendToChild(id: 1, data: prompt);
     } else {
       // should we tell parent, or just assume they already got an error completion?
     }
