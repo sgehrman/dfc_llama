@@ -118,38 +118,40 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
         LlamaResponse(text: '', isDone: false, status: LlamaStatus.generating),
       );
 
-      String? newPrompt = prompt;
+      var newPrompt = prompt;
+
+      if (diableThinking) {
+        final modelPath = llama?.modelPath;
+        if (modelPath != null && modelPath.toLowerCase().contains('qwen3')) {
+          newPrompt += r' \no_think';
+        }
+      }
 
       if (_template.isNotEmpty) {
-        newPrompt = llama?.applyTemplate(_template, [
+        final formattedPrompt = llama?.applyTemplate(_template, [
           if (_firstPrompt && systemPrompt.isNotEmpty)
             Message(role: Role.system, content: systemPrompt),
           Message(role: Role.user, content: prompt),
         ]);
 
-        _firstPrompt = false;
-      }
-
-      var finalPrompt = newPrompt ?? prompt;
-
-      if (diableThinking) {
-        final modelPath = llama?.modelPath;
-        if (modelPath != null && modelPath.toLowerCase().contains('qwen3')) {
-          finalPrompt += r' \no_think';
+        if (formattedPrompt != null && formattedPrompt.isNotEmpty) {
+          newPrompt = formattedPrompt;
         }
+
+        _firstPrompt = false;
       }
 
       if (includeFormattedPrompt) {
         sendToParent(
           LlamaResponse(
-            text: 'Prompt: "$finalPrompt"\n',
+            text: 'Prompt: "$newPrompt"\n',
             isDone: false,
             status: LlamaStatus.ready,
           ),
         );
       }
 
-      llama?.setPrompt(finalPrompt);
+      llama?.setPrompt(newPrompt);
 
       var asyncCount = 0;
       var generationDone = false;
