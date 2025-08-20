@@ -18,7 +18,7 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
   Llama? llama;
   String _template = '';
   bool _firstPrompt = true;
-  final bool _diableThinking = false;
+  final bool _diableThinking = true;
 
   @override
   void onData(LlamaCommand data) {
@@ -126,9 +126,9 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
       if (_diableThinking) {
         // qwen models use /no_think
         // if added to system prompt it seems to work only on first prompt
-        // produced garbage on some qwen models?
+        // produced garbage on some qwen2 models?
         final modelPath = llama?.modelPath;
-        if (modelPath != null && modelPath.toLowerCase().contains('qwen')) {
+        if (modelPath != null && modelPath.toLowerCase().contains('qwen3')) {
           finalPrompt += ' /no_think';
         }
       }
