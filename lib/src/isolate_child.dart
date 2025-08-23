@@ -121,10 +121,11 @@ class LlamaChild extends IsolateChild<LlamaResponse, LlamaCommand> {
       var newPrompt = prompt;
 
       if (diableThinking) {
-        final modelPath = llama?.modelPath;
-        if (modelPath != null && modelPath.toLowerCase().contains('qwen3')) {
-          newPrompt += r' \no_think';
-        }
+        // worked on one model, but not on deepseek qwen
+        // final modelPath = llama?.modelPath;
+        // if (modelPath != null && modelPath.toLowerCase().contains('qwen3')) {
+        //   newPrompt += r' \no_think';
+        // }
       }
 
       if (_template.isNotEmpty) {
