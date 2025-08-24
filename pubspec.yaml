@@ -39,6 +39,7 @@ ffigen: # dart run ffigen
   description: 'llama.cpp binding'
   output: 'lib/src/llama_cpp.dart'
   # ignore-source-errors: true
+  silence-enum-warning: true
   headers:
     entry-points:
       - 'src/llama.cpp/include/llama.h'
