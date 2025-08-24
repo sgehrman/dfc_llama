@@ -72,9 +72,7 @@ extension LlamaExtension on Llama {
           );
         }
 
-        final result = bufPtr.cast<Utf8>().toDartString(length: written);
-
-        return result;
+        return bufPtr.cast<Utf8>().toDartString(length: written);
       } finally {
         calloc.free(bufPtr);
       }

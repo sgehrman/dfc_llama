@@ -90,6 +90,7 @@ class Llama {
 
   llama_cpp get lib {
     _lib ??= llama_cpp(DynamicLibrary.open(libraryPath));
+
     return _lib!;
   }
 
@@ -105,7 +106,7 @@ class Llama {
 
   // Initializes the Llama instance with the given parameters
   void _initializeLlama() {
-    if (verbose == false) {
+    if (!verbose) {
       final nullCallbackPointer = Pointer.fromFunction<LlamaLogCallback>(
         Llama.llamaLogCallbackNull,
       );
@@ -310,6 +311,7 @@ class Llama {
         batch.n_tokens = 1;
 
         final isEos = newTokenId == lib.llama_token_eos(vocab);
+
         return (piece, isEos);
       } finally {
         malloc.free(buf);
@@ -473,6 +475,7 @@ class Llama {
           if (actualTokens < 0) {
             throw LlamaException('Tokenization failed');
           }
+
           return List<int>.generate(actualTokens, (i) => tokens[i]);
         } finally {
           malloc.free(tokens);
@@ -635,6 +638,7 @@ class Llama {
 
     lib.llama_set_state_data(context, ptr);
     malloc.free(ptr);
+
     return true;
   }
 

@@ -31,6 +31,7 @@ class SequenceFilter {
         return result;
       }
     }
+
     return null;
   }
 }

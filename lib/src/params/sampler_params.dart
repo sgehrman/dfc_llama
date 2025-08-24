@@ -34,7 +34,7 @@ class SamplerParams {
 
   // Temperature
   // @details Updates the logits l_i` = l_i/t. When t <= 0.0f, the maximum logit is kept at it's original value, the rest are set to -inf
-  double temp = 0.80;
+  double temp = 0.8;
 
   // XTC sampling
   // @details XTC sampler as described in https://github.com/oobabooga/text-generation-webui/pull/6335
@@ -49,13 +49,13 @@ class SamplerParams {
   // @param eta The learning rate used to update `mu` based on the error between target and observed surprisal
   // @param m The number of tokens considered in the estimation of `s_hat`
   double mirostatTau = 5;
-  double mirostatEta = 0.10;
+  double mirostatEta = 0.1;
   int mirostatM = 100;
 
   // Mirostat 2.0
   // @details Mirostat 2.0 algorithm described in the paper https://arxiv.org/abs/2007.14966
   double mirostat2Tau = 5;
-  double mirostat2Eta = 0.10;
+  double mirostat2Eta = 0.1;
 
   // Penalties
   // @details Token penalties configuration
