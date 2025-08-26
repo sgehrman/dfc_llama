@@ -44,3 +44,10 @@ set(llama_bundled_libraries
   PARENT_SCOPE
 )
  
+
+
+
+# set(mylib_dll_bundled_libraries
+#   "${CMAKE_CURRENT_SOURCE_DIR}/dlls/mylib.dll"
+#   PARENT_SCOPE
+# )
