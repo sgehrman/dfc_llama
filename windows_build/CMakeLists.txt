@@ -43,14 +43,3 @@ set(llama_bundled_libraries
   $<TARGET_FILE:llama>
   PARENT_SCOPE
 )
- 
-# notes
-# https://github.com/ggml-org/llama.cpp/discussions/3790
-# https://github.com/flutter/flutter/issues/95530
-# https://cmake.org/cmake/help/latest/guide/tutorial/Adding%20a%20Library.html
-
-
-# set(mylib_dll_bundled_libraries
-#   "${CMAKE_CURRENT_SOURCE_DIR}/dlls/mylib.dll"
-#   PARENT_SCOPE
-# )

@@ -8,9 +8,3 @@ set(dfc_llama_bundled_libraries
   ${DLL_LIST}
   PARENT_SCOPE
 )
-
-# notes
-# https://github.com/ggml-org/llama.cpp/discussions/3790
-# https://github.com/flutter/flutter/issues/95530
-# https://cmake.org/cmake/help/latest/guide/tutorial/Adding%20a%20Library.html
-
