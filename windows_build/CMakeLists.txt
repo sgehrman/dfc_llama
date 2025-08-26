@@ -23,20 +23,10 @@ set(GGML_BLAS_DEFAULT ON)
 set(GGML_OPENMP ON)
 
 set(BUILD_SHARED_LIBS ON)
-set(CMAKE_INSTALL_LIBDIR lib CACHE PATH "library install dir" FORCE)
-# Set the linker flags for shared libraries 
-### Windows doesn't like this?
-# set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--build-id=none")
 
-# Invoke the build for native code shared with the other target platforms.
-# This can be changed to accommodate different builds.
+set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+set(CMAKE_INSTALL_RPATH "$ORIGIN")
+
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../src/llama.cpp" "${CMAKE_CURRENT_BINARY_DIR}/shared")
 
-set_target_properties(llama PROPERTIES
-  BUILD_WITH_INSTALL_RPATH TRUE
-  INSTALL_RPATH "$ORIGIN"
-)
-
 target_compile_definitions(llama PUBLIC DART_SHARED_LIB)
-
- 
