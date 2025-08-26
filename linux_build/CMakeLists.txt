@@ -38,3 +38,8 @@ set_target_properties(llama PROPERTIES
 )
 
 target_compile_definitions(llama PUBLIC DART_SHARED_LIB)
+
+set(llama_bundled_libraries
+  $<TARGET_FILE:llama>
+  PARENT_SCOPE
+)
