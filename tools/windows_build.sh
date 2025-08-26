@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd windows
+cd windows_build
 
 cmake -B build  
 cmake --build build --config Release -j $(nproc)
