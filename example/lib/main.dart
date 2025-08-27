@@ -71,7 +71,7 @@ class LlamaAppState extends State<LlamaApp> {
     final modelParams = ModelParams();
     // default of 99 crashes, not enough memory
     // 30 crashed too
-    modelParams.nGpuLayers = 20;
+    modelParams.nGpuLayers = 0;
 
     model = Llama(
       modelPath: resultFile.path,
