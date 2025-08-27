@@ -2,11 +2,6 @@
 
 echo '### START building macos framework'
 
-# must rebuild ffi, the one in git is built for linux
-# dart run ffigen (does it in update_llama.sh)
-# ./update_llama.sh
-dart run ffigen
-
 pushd "src/llama.cpp" > /dev/null
 ./build-xcframework.sh 
 popd > /dev/null
