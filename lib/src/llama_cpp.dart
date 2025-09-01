@@ -11395,6 +11395,25 @@ class llama_cpp {
             )
           >();
 
+  void ggml_backend_sched_split_graph(
+    ggml_backend_sched_t sched,
+    ffi.Pointer<ggml_cgraph> graph,
+  ) {
+    return _ggml_backend_sched_split_graph(sched, graph);
+  }
+
+  late final _ggml_backend_sched_split_graphPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Void Function(ggml_backend_sched_t, ffi.Pointer<ggml_cgraph>)
+        >
+      >('ggml_backend_sched_split_graph');
+  late final _ggml_backend_sched_split_graph =
+      _ggml_backend_sched_split_graphPtr
+          .asFunction<
+            void Function(ggml_backend_sched_t, ffi.Pointer<ggml_cgraph>)
+          >();
+
   bool ggml_backend_sched_alloc_graph(
     ggml_backend_sched_t sched,
     ffi.Pointer<ggml_cgraph> graph,
@@ -13269,6 +13288,19 @@ class llama_cpp {
         )
       >();
 
+  ffi.Pointer<ffi.Char> llama_flash_attn_type_name(
+    llama_flash_attn_type flash_attn_type,
+  ) {
+    return _llama_flash_attn_type_name(flash_attn_type.value);
+  }
+
+  late final _llama_flash_attn_type_namePtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Int)>>(
+        'llama_flash_attn_type_name',
+      );
+  late final _llama_flash_attn_type_name = _llama_flash_attn_type_namePtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(int)>();
+
   llama_model_params llama_model_default_params() {
     return _llama_model_default_params();
   }
@@ -14187,6 +14219,109 @@ class llama_cpp {
           ffi.Pointer<ffi.Char>,
         )
       >();
+
+  int llama_adapter_meta_val_str(
+    ffi.Pointer<llama_adapter_lora> adapter,
+    ffi.Pointer<ffi.Char> key,
+    ffi.Pointer<ffi.Char> buf,
+    int buf_size,
+  ) {
+    return _llama_adapter_meta_val_str(adapter, key, buf, buf_size);
+  }
+
+  late final _llama_adapter_meta_val_strPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Int32 Function(
+            ffi.Pointer<llama_adapter_lora>,
+            ffi.Pointer<ffi.Char>,
+            ffi.Pointer<ffi.Char>,
+            ffi.Size,
+          )
+        >
+      >('llama_adapter_meta_val_str');
+  late final _llama_adapter_meta_val_str = _llama_adapter_meta_val_strPtr
+      .asFunction<
+        int Function(
+          ffi.Pointer<llama_adapter_lora>,
+          ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Char>,
+          int,
+        )
+      >();
+
+  int llama_adapter_meta_count(ffi.Pointer<llama_adapter_lora> adapter) {
+    return _llama_adapter_meta_count(adapter);
+  }
+
+  late final _llama_adapter_meta_countPtr =
+      _lookup<
+        ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<llama_adapter_lora>)>
+      >('llama_adapter_meta_count');
+  late final _llama_adapter_meta_count = _llama_adapter_meta_countPtr
+      .asFunction<int Function(ffi.Pointer<llama_adapter_lora>)>();
+
+  int llama_adapter_meta_key_by_index(
+    ffi.Pointer<llama_adapter_lora> adapter,
+    int i,
+    ffi.Pointer<ffi.Char> buf,
+    int buf_size,
+  ) {
+    return _llama_adapter_meta_key_by_index(adapter, i, buf, buf_size);
+  }
+
+  late final _llama_adapter_meta_key_by_indexPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Int32 Function(
+            ffi.Pointer<llama_adapter_lora>,
+            ffi.Int32,
+            ffi.Pointer<ffi.Char>,
+            ffi.Size,
+          )
+        >
+      >('llama_adapter_meta_key_by_index');
+  late final _llama_adapter_meta_key_by_index =
+      _llama_adapter_meta_key_by_indexPtr
+          .asFunction<
+            int Function(
+              ffi.Pointer<llama_adapter_lora>,
+              int,
+              ffi.Pointer<ffi.Char>,
+              int,
+            )
+          >();
+
+  int llama_adapter_meta_val_str_by_index(
+    ffi.Pointer<llama_adapter_lora> adapter,
+    int i,
+    ffi.Pointer<ffi.Char> buf,
+    int buf_size,
+  ) {
+    return _llama_adapter_meta_val_str_by_index(adapter, i, buf, buf_size);
+  }
+
+  late final _llama_adapter_meta_val_str_by_indexPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Int32 Function(
+            ffi.Pointer<llama_adapter_lora>,
+            ffi.Int32,
+            ffi.Pointer<ffi.Char>,
+            ffi.Size,
+          )
+        >
+      >('llama_adapter_meta_val_str_by_index');
+  late final _llama_adapter_meta_val_str_by_index =
+      _llama_adapter_meta_val_str_by_indexPtr
+          .asFunction<
+            int Function(
+              ffi.Pointer<llama_adapter_lora>,
+              int,
+              ffi.Pointer<ffi.Char>,
+              int,
+            )
+          >();
 
   void llama_adapter_lora_free(ffi.Pointer<llama_adapter_lora> adapter) {
     return _llama_adapter_lora_free(adapter);
@@ -16122,17 +16257,6 @@ class llama_cpp {
       >('llama_sampler_init_dist');
   late final _llama_sampler_init_dist = _llama_sampler_init_distPtr
       .asFunction<ffi.Pointer<llama_sampler> Function(int)>();
-
-  ffi.Pointer<llama_sampler> llama_sampler_init_softmax() {
-    return _llama_sampler_init_softmax();
-  }
-
-  late final _llama_sampler_init_softmaxPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<llama_sampler> Function()>>(
-        'llama_sampler_init_softmax',
-      );
-  late final _llama_sampler_init_softmax = _llama_sampler_init_softmaxPtr
-      .asFunction<ffi.Pointer<llama_sampler> Function()>();
 
   /// @details Top-K sampling described in academic paper "The Curious Case of Neural Text Degeneration" https://arxiv.org/abs/1904.09751
   /// Setting k <= 0 makes this a noop
@@ -18535,6 +18659,22 @@ enum llama_attention_type {
   };
 }
 
+enum llama_flash_attn_type {
+  LLAMA_FLASH_ATTN_TYPE_AUTO(-1),
+  LLAMA_FLASH_ATTN_TYPE_DISABLED(0),
+  LLAMA_FLASH_ATTN_TYPE_ENABLED(1);
+
+  final int value;
+  const llama_flash_attn_type(this.value);
+
+  static llama_flash_attn_type fromValue(int value) => switch (value) {
+    -1 => LLAMA_FLASH_ATTN_TYPE_AUTO,
+    0 => LLAMA_FLASH_ATTN_TYPE_DISABLED,
+    1 => LLAMA_FLASH_ATTN_TYPE_ENABLED,
+    _ => throw ArgumentError("Unknown value for llama_flash_attn_type: $value"),
+  };
+}
+
 enum llama_split_mode {
   LLAMA_SPLIT_MODE_NONE(0),
   LLAMA_SPLIT_MODE_LAYER(1),
@@ -18696,6 +18836,9 @@ final class llama_context_params extends ffi.Struct {
   @ffi.Int()
   external int attention_type;
 
+  @ffi.Int()
+  external int flash_attn_type;
+
   @ffi.Float()
   external double rope_freq_base;
 
@@ -18739,9 +18882,6 @@ final class llama_context_params extends ffi.Struct {
 
   @ffi.Bool()
   external bool offload_kqv;
-
-  @ffi.Bool()
-  external bool flash_attn;
 
   @ffi.Bool()
   external bool no_perf;

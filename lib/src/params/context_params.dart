@@ -80,9 +80,6 @@ class ContextParams {
   // Whether to offload the KQV ops (including the KV cache) to GPU
   bool offloadKqv = true;
 
-  // Whether to use flash attention [EXPERIMENTAL]
-  bool flashAttn = false;
-
   // Constructs and returns a `llama_context_params` object
   llama_context_params get(llama_cpp lib, {bool defaultParams = false}) {
     final contextParams = lib.llama_context_default_params();
@@ -104,7 +101,6 @@ class ContextParams {
       contextParams.yarn_orig_ctx = yarnOrigCtx;
       contextParams.defrag_thold = defragThold;
       contextParams.offload_kqv = offloadKqv;
-      contextParams.flash_attn = flashAttn;
       contextParams.no_perf = true; // slows things down
     }
 
@@ -134,7 +130,6 @@ class ContextParams {
     print('defrag_thold: ${params.defrag_thold}');
     print('embeddings: ${params.embeddings}');
     print('offload_kqv: ${params.offload_kqv}');
-    print('flash_attn: ${params.flash_attn}');
     print('type_k: ${params.type_k}');
     print('type_v: ${params.type_v}');
     print('kv_unified: ${params.kv_unified}');
@@ -166,7 +161,6 @@ class ContextParams {
   defrag_thold: -1.0
   embeddings: false
   offload_kqv: true
-  flash_attn: false
   type_k: 1
   type_v: 1
   kv_unified: false
