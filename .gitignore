@@ -12,6 +12,8 @@
 .swiftpm/
 migrate_working_dir/
 
+src/llama.cpp/
+
 # IntelliJ related
 *.iml
 *.ipr
