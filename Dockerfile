@@ -48,7 +48,11 @@ RUN cmake -B build -DBUILD_SHARED_LIBS=ON \
   -DLLAMA_BUILD_TESTS=OFF \
   -DLLAMA_BUILD_EXAMPLES=OFF \
   -DLLAMA_BUILD_SERVER=OFF \
-  -DLLAMA_BUILD_TOOLS=OFF && \
+  -DLLAMA_BUILD_TOOLS=OFF \
+  -DGGML_BLAS_DEFAULT=ON \
+  -DGGML_OPENMP=ON \
+  -DCMAKE_BUILD_WITH_INSTALL_RPATH=TRUE \
+  -DCMAKE_INSTALL_RPATH="\$ORIGIN" && \
    cmake --build build --config Release -j$(nproc)
 
 CMD mkdir -p /output && cp /workspace/src/llama.cpp/build/bin/*.so /output/ && \
