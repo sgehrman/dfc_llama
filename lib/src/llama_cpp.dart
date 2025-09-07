@@ -240,6 +240,33 @@ class llama_cpp {
   late final _fdopen = _fdopenPtr
       .asFunction<ffi.Pointer<FILE> Function(int, ffi.Pointer<ffi.Char>)>();
 
+  ffi.Pointer<FILE> fopencookie(
+    ffi.Pointer<ffi.Void> __magic_cookie,
+    ffi.Pointer<ffi.Char> __modes,
+    cookie_io_functions_t __io_funcs,
+  ) {
+    return _fopencookie(__magic_cookie, __modes, __io_funcs);
+  }
+
+  late final _fopencookiePtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Pointer<FILE> Function(
+            ffi.Pointer<ffi.Void>,
+            ffi.Pointer<ffi.Char>,
+            cookie_io_functions_t,
+          )
+        >
+      >('fopencookie');
+  late final _fopencookie = _fopencookiePtr
+      .asFunction<
+        ffi.Pointer<FILE> Function(
+          ffi.Pointer<ffi.Void>,
+          ffi.Pointer<ffi.Char>,
+          cookie_io_functions_t,
+        )
+      >();
+
   ffi.Pointer<FILE> fmemopen(
     ffi.Pointer<ffi.Void> __s,
     int __len,
@@ -519,6 +546,75 @@ class llama_cpp {
           ffi.Pointer<ffi.Char>,
           ffi.Pointer<__va_list_tag>,
         )
+      >();
+
+  int vasprintf(
+    ffi.Pointer<ffi.Pointer<ffi.Char>> __ptr,
+    ffi.Pointer<ffi.Char> __f,
+    ffi.Pointer<__va_list_tag> __arg,
+  ) {
+    return _vasprintf(__ptr, __f, __arg);
+  }
+
+  late final _vasprintfPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Int Function(
+            ffi.Pointer<ffi.Pointer<ffi.Char>>,
+            ffi.Pointer<ffi.Char>,
+            ffi.Pointer<__va_list_tag>,
+          )
+        >
+      >('vasprintf');
+  late final _vasprintf = _vasprintfPtr
+      .asFunction<
+        int Function(
+          ffi.Pointer<ffi.Pointer<ffi.Char>>,
+          ffi.Pointer<ffi.Char>,
+          ffi.Pointer<__va_list_tag>,
+        )
+      >();
+
+  int __asprintf(
+    ffi.Pointer<ffi.Pointer<ffi.Char>> __ptr,
+    ffi.Pointer<ffi.Char> __fmt,
+  ) {
+    return ___asprintf(__ptr, __fmt);
+  }
+
+  late final ___asprintfPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Int Function(
+            ffi.Pointer<ffi.Pointer<ffi.Char>>,
+            ffi.Pointer<ffi.Char>,
+          )
+        >
+      >('__asprintf');
+  late final ___asprintf = ___asprintfPtr
+      .asFunction<
+        int Function(ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Pointer<ffi.Char>)
+      >();
+
+  int asprintf(
+    ffi.Pointer<ffi.Pointer<ffi.Char>> __ptr,
+    ffi.Pointer<ffi.Char> __fmt,
+  ) {
+    return _asprintf(__ptr, __fmt);
+  }
+
+  late final _asprintfPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Int Function(
+            ffi.Pointer<ffi.Pointer<ffi.Char>>,
+            ffi.Pointer<ffi.Char>,
+          )
+        >
+      >('asprintf');
+  late final _asprintf = _asprintfPtr
+      .asFunction<
+        int Function(ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Pointer<ffi.Char>)
       >();
 
   int vdprintf(
@@ -7462,6 +7558,138 @@ class llama_cpp {
         )
       >();
 
+  ffi.Pointer<ggml_tensor> ggml_im2col_3d(
+    ffi.Pointer<ggml_context> ctx,
+    ffi.Pointer<ggml_tensor> a,
+    ffi.Pointer<ggml_tensor> b,
+    int IC,
+    int s0,
+    int s1,
+    int s2,
+    int p0,
+    int p1,
+    int p2,
+    int d0,
+    int d1,
+    int d2,
+    ggml_type dst_type,
+  ) {
+    return _ggml_im2col_3d(
+      ctx,
+      a,
+      b,
+      IC,
+      s0,
+      s1,
+      s2,
+      p0,
+      p1,
+      p2,
+      d0,
+      d1,
+      d2,
+      dst_type.value,
+    );
+  }
+
+  late final _ggml_im2col_3dPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Pointer<ggml_tensor> Function(
+            ffi.Pointer<ggml_context>,
+            ffi.Pointer<ggml_tensor>,
+            ffi.Pointer<ggml_tensor>,
+            ffi.Int64,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+            ffi.UnsignedInt,
+          )
+        >
+      >('ggml_im2col_3d');
+  late final _ggml_im2col_3d = _ggml_im2col_3dPtr
+      .asFunction<
+        ffi.Pointer<ggml_tensor> Function(
+          ffi.Pointer<ggml_context>,
+          ffi.Pointer<ggml_tensor>,
+          ffi.Pointer<ggml_tensor>,
+          int,
+          int,
+          int,
+          int,
+          int,
+          int,
+          int,
+          int,
+          int,
+          int,
+          int,
+        )
+      >();
+
+  ffi.Pointer<ggml_tensor> ggml_conv_3d(
+    ffi.Pointer<ggml_context> ctx,
+    ffi.Pointer<ggml_tensor> a,
+    ffi.Pointer<ggml_tensor> b,
+    int IC,
+    int s0,
+    int s1,
+    int s2,
+    int p0,
+    int p1,
+    int p2,
+    int d0,
+    int d1,
+    int d2,
+  ) {
+    return _ggml_conv_3d(ctx, a, b, IC, s0, s1, s2, p0, p1, p2, d0, d1, d2);
+  }
+
+  late final _ggml_conv_3dPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Pointer<ggml_tensor> Function(
+            ffi.Pointer<ggml_context>,
+            ffi.Pointer<ggml_tensor>,
+            ffi.Pointer<ggml_tensor>,
+            ffi.Int64,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+          )
+        >
+      >('ggml_conv_3d');
+  late final _ggml_conv_3d = _ggml_conv_3dPtr
+      .asFunction<
+        ffi.Pointer<ggml_tensor> Function(
+          ffi.Pointer<ggml_context>,
+          ffi.Pointer<ggml_tensor>,
+          ffi.Pointer<ggml_tensor>,
+          int,
+          int,
+          int,
+          int,
+          int,
+          int,
+          int,
+          int,
+          int,
+          int,
+        )
+      >();
+
   ffi.Pointer<ggml_tensor> ggml_conv_2d_sk_p0(
     ffi.Pointer<ggml_context> ctx,
     ffi.Pointer<ggml_tensor> a,
@@ -7691,7 +7919,7 @@ class llama_cpp {
         )
       >();
 
-  ffi.Pointer<ggml_tensor> ggml_conv_3d(
+  ffi.Pointer<ggml_tensor> ggml_conv_3d_direct(
     ffi.Pointer<ggml_context> ctx,
     ffi.Pointer<ggml_tensor> a,
     ffi.Pointer<ggml_tensor> b,
@@ -7708,7 +7936,7 @@ class llama_cpp {
     int n_batch,
     int n_channels_out,
   ) {
-    return _ggml_conv_3d(
+    return _ggml_conv_3d_direct(
       ctx,
       a,
       b,
@@ -7727,7 +7955,7 @@ class llama_cpp {
     );
   }
 
-  late final _ggml_conv_3dPtr =
+  late final _ggml_conv_3d_directPtr =
       _lookup<
         ffi.NativeFunction<
           ffi.Pointer<ggml_tensor> Function(
@@ -7748,8 +7976,8 @@ class llama_cpp {
             ffi.Int,
           )
         >
-      >('ggml_conv_3d');
-  late final _ggml_conv_3d = _ggml_conv_3dPtr
+      >('ggml_conv_3d_direct');
+  late final _ggml_conv_3d_direct = _ggml_conv_3d_directPtr
       .asFunction<
         ffi.Pointer<ggml_tensor> Function(
           ffi.Pointer<ggml_context>,
@@ -8036,6 +8264,54 @@ class llama_cpp {
         ffi.Pointer<ggml_tensor> Function(
           ffi.Pointer<ggml_context>,
           ffi.Pointer<ggml_tensor>,
+          int,
+          int,
+          int,
+          int,
+        )
+      >();
+
+  ffi.Pointer<ggml_tensor> ggml_pad_ext(
+    ffi.Pointer<ggml_context> ctx,
+    ffi.Pointer<ggml_tensor> a,
+    int lp0,
+    int rp0,
+    int lp1,
+    int rp1,
+    int lp2,
+    int rp2,
+    int lp3,
+    int rp3,
+  ) {
+    return _ggml_pad_ext(ctx, a, lp0, rp0, lp1, rp1, lp2, rp2, lp3, rp3);
+  }
+
+  late final _ggml_pad_extPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Pointer<ggml_tensor> Function(
+            ffi.Pointer<ggml_context>,
+            ffi.Pointer<ggml_tensor>,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+          )
+        >
+      >('ggml_pad_ext');
+  late final _ggml_pad_ext = _ggml_pad_extPtr
+      .asFunction<
+        ffi.Pointer<ggml_tensor> Function(
+          ffi.Pointer<ggml_context>,
+          ffi.Pointer<ggml_tensor>,
+          int,
+          int,
+          int,
+          int,
           int,
           int,
           int,
@@ -12293,15 +12569,6 @@ class llama_cpp {
   late final _ggml_cpu_has_vxe = _ggml_cpu_has_vxePtr
       .asFunction<int Function()>();
 
-  int ggml_cpu_has_nnpa() {
-    return _ggml_cpu_has_nnpa();
-  }
-
-  late final _ggml_cpu_has_nnpaPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>('ggml_cpu_has_nnpa');
-  late final _ggml_cpu_has_nnpa = _ggml_cpu_has_nnpaPtr
-      .asFunction<int Function()>();
-
   int ggml_cpu_has_wasm_simd() {
     return _ggml_cpu_has_wasm_simd();
   }
@@ -14333,6 +14600,38 @@ class llama_cpp {
       >('llama_adapter_lora_free');
   late final _llama_adapter_lora_free = _llama_adapter_lora_freePtr
       .asFunction<void Function(ffi.Pointer<llama_adapter_lora>)>();
+
+  int llama_adapter_get_alora_n_invocation_tokens(
+    ffi.Pointer<llama_adapter_lora> adapter,
+  ) {
+    return _llama_adapter_get_alora_n_invocation_tokens(adapter);
+  }
+
+  late final _llama_adapter_get_alora_n_invocation_tokensPtr =
+      _lookup<
+        ffi.NativeFunction<ffi.Uint64 Function(ffi.Pointer<llama_adapter_lora>)>
+      >('llama_adapter_get_alora_n_invocation_tokens');
+  late final _llama_adapter_get_alora_n_invocation_tokens =
+      _llama_adapter_get_alora_n_invocation_tokensPtr
+          .asFunction<int Function(ffi.Pointer<llama_adapter_lora>)>();
+
+  ffi.Pointer<llama_token> llama_adapter_get_alora_invocation_tokens(
+    ffi.Pointer<llama_adapter_lora> adapter,
+  ) {
+    return _llama_adapter_get_alora_invocation_tokens(adapter);
+  }
+
+  late final _llama_adapter_get_alora_invocation_tokensPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Pointer<llama_token> Function(ffi.Pointer<llama_adapter_lora>)
+        >
+      >('llama_adapter_get_alora_invocation_tokens');
+  late final _llama_adapter_get_alora_invocation_tokens =
+      _llama_adapter_get_alora_invocation_tokensPtr
+          .asFunction<
+            ffi.Pointer<llama_token> Function(ffi.Pointer<llama_adapter_lora>)
+          >();
 
   int llama_set_adapter_lora(
     ffi.Pointer<llama_context> ctx,
@@ -17058,87 +17357,54 @@ final class _G_fpos64_t extends ffi.Struct {
 typedef __off64_t = ffi.Long;
 typedef Dart__off64_t = int;
 
-final class _IO_FILE extends ffi.Struct {
-  @ffi.Int()
-  external int _flags;
-
-  external ffi.Pointer<ffi.Char> _IO_read_ptr;
-
-  external ffi.Pointer<ffi.Char> _IO_read_end;
-
-  external ffi.Pointer<ffi.Char> _IO_read_base;
-
-  external ffi.Pointer<ffi.Char> _IO_write_base;
-
-  external ffi.Pointer<ffi.Char> _IO_write_ptr;
-
-  external ffi.Pointer<ffi.Char> _IO_write_end;
-
-  external ffi.Pointer<ffi.Char> _IO_buf_base;
-
-  external ffi.Pointer<ffi.Char> _IO_buf_end;
-
-  external ffi.Pointer<ffi.Char> _IO_save_base;
-
-  external ffi.Pointer<ffi.Char> _IO_backup_base;
-
-  external ffi.Pointer<ffi.Char> _IO_save_end;
-
-  external ffi.Pointer<_IO_marker> _markers;
-
-  external ffi.Pointer<_IO_FILE> _chain;
-
-  @ffi.Int()
-  external int _fileno;
-
-  @ffi.Int()
-  external int _flags2;
-
-  @__off_t()
-  external int _old_offset;
-
-  @ffi.UnsignedShort()
-  external int _cur_column;
-
-  @ffi.SignedChar()
-  external int _vtable_offset;
-
-  @ffi.Array.multi([1])
-  external ffi.Array<ffi.Char> _shortbuf;
-
-  external ffi.Pointer<_IO_lock_t> _lock;
-
-  @__off64_t()
-  external int _offset;
-
-  external ffi.Pointer<_IO_codecvt> _codecvt;
-
-  external ffi.Pointer<_IO_wide_data> _wide_data;
-
-  external ffi.Pointer<_IO_FILE> _freeres_list;
-
-  external ffi.Pointer<ffi.Void> _freeres_buf;
-
-  @ffi.Size()
-  external int __pad5;
-
-  @ffi.Int()
-  external int _mode;
-
-  @ffi.Array.multi([20])
-  external ffi.Array<ffi.Char> _unused2;
-}
+final class _IO_FILE extends ffi.Opaque {}
 
 final class _IO_marker extends ffi.Opaque {}
-
-typedef _IO_lock_t = ffi.Void;
-typedef Dart_IO_lock_t = void;
 
 final class _IO_codecvt extends ffi.Opaque {}
 
 final class _IO_wide_data extends ffi.Opaque {}
 
+final class _IO_cookie_io_functions_t extends ffi.Struct {
+  external ffi.Pointer<cookie_read_function_t> read;
+
+  external ffi.Pointer<cookie_write_function_t> write;
+
+  external ffi.Pointer<cookie_seek_function_t> seek;
+
+  external ffi.Pointer<cookie_close_function_t> close;
+}
+
+typedef cookie_read_function_t =
+    ffi.NativeFunction<
+      __ssize_t Function(
+        ffi.Pointer<ffi.Void> __cookie,
+        ffi.Pointer<ffi.Char> __buf,
+        ffi.Size __nbytes,
+      )
+    >;
+typedef __ssize_t = ffi.Long;
+typedef Dart__ssize_t = int;
+typedef cookie_write_function_t =
+    ffi.NativeFunction<
+      __ssize_t Function(
+        ffi.Pointer<ffi.Void> __cookie,
+        ffi.Pointer<ffi.Char> __buf,
+        ffi.Size __nbytes,
+      )
+    >;
+typedef cookie_seek_function_t =
+    ffi.NativeFunction<
+      ffi.Int Function(
+        ffi.Pointer<ffi.Void> __cookie,
+        ffi.Pointer<__off64_t> __pos,
+        ffi.Int __w,
+      )
+    >;
+typedef cookie_close_function_t =
+    ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void> __cookie)>;
 typedef FILE = _IO_FILE;
+typedef cookie_io_functions_t = _IO_cookie_io_functions_t;
 
 final class __va_list_tag extends ffi.Struct {
   @ffi.UnsignedInt()
@@ -17152,8 +17418,6 @@ final class __va_list_tag extends ffi.Struct {
   external ffi.Pointer<ffi.Void> reg_save_area;
 }
 
-typedef __ssize_t = ffi.Long;
-typedef Dart__ssize_t = int;
 typedef fpos_t = __fpos_t;
 typedef __fpos_t = _G_fpos_t;
 typedef ggml_abort_callback_t =
@@ -17399,43 +17663,44 @@ enum ggml_op {
   GGML_OP_CONV_TRANSPOSE_1D(50),
   GGML_OP_IM2COL(51),
   GGML_OP_IM2COL_BACK(52),
-  GGML_OP_CONV_2D(53),
-  GGML_OP_CONV_3D(54),
-  GGML_OP_CONV_2D_DW(55),
-  GGML_OP_CONV_TRANSPOSE_2D(56),
-  GGML_OP_POOL_1D(57),
-  GGML_OP_POOL_2D(58),
-  GGML_OP_POOL_2D_BACK(59),
-  GGML_OP_UPSCALE(60),
-  GGML_OP_PAD(61),
-  GGML_OP_PAD_REFLECT_1D(62),
-  GGML_OP_ROLL(63),
-  GGML_OP_ARANGE(64),
-  GGML_OP_TIMESTEP_EMBEDDING(65),
-  GGML_OP_ARGSORT(66),
-  GGML_OP_LEAKY_RELU(67),
-  GGML_OP_FLASH_ATTN_EXT(68),
-  GGML_OP_FLASH_ATTN_BACK(69),
-  GGML_OP_SSM_CONV(70),
-  GGML_OP_SSM_SCAN(71),
-  GGML_OP_WIN_PART(72),
-  GGML_OP_WIN_UNPART(73),
-  GGML_OP_GET_REL_POS(74),
-  GGML_OP_ADD_REL_POS(75),
-  GGML_OP_RWKV_WKV6(76),
-  GGML_OP_GATED_LINEAR_ATTN(77),
-  GGML_OP_RWKV_WKV7(78),
-  GGML_OP_UNARY(79),
-  GGML_OP_MAP_CUSTOM1(80),
-  GGML_OP_MAP_CUSTOM2(81),
-  GGML_OP_MAP_CUSTOM3(82),
-  GGML_OP_CUSTOM(83),
-  GGML_OP_CROSS_ENTROPY_LOSS(84),
-  GGML_OP_CROSS_ENTROPY_LOSS_BACK(85),
-  GGML_OP_OPT_STEP_ADAMW(86),
-  GGML_OP_OPT_STEP_SGD(87),
-  GGML_OP_GLU(88),
-  GGML_OP_COUNT(89);
+  GGML_OP_IM2COL_3D(53),
+  GGML_OP_CONV_2D(54),
+  GGML_OP_CONV_3D(55),
+  GGML_OP_CONV_2D_DW(56),
+  GGML_OP_CONV_TRANSPOSE_2D(57),
+  GGML_OP_POOL_1D(58),
+  GGML_OP_POOL_2D(59),
+  GGML_OP_POOL_2D_BACK(60),
+  GGML_OP_UPSCALE(61),
+  GGML_OP_PAD(62),
+  GGML_OP_PAD_REFLECT_1D(63),
+  GGML_OP_ROLL(64),
+  GGML_OP_ARANGE(65),
+  GGML_OP_TIMESTEP_EMBEDDING(66),
+  GGML_OP_ARGSORT(67),
+  GGML_OP_LEAKY_RELU(68),
+  GGML_OP_FLASH_ATTN_EXT(69),
+  GGML_OP_FLASH_ATTN_BACK(70),
+  GGML_OP_SSM_CONV(71),
+  GGML_OP_SSM_SCAN(72),
+  GGML_OP_WIN_PART(73),
+  GGML_OP_WIN_UNPART(74),
+  GGML_OP_GET_REL_POS(75),
+  GGML_OP_ADD_REL_POS(76),
+  GGML_OP_RWKV_WKV6(77),
+  GGML_OP_GATED_LINEAR_ATTN(78),
+  GGML_OP_RWKV_WKV7(79),
+  GGML_OP_UNARY(80),
+  GGML_OP_MAP_CUSTOM1(81),
+  GGML_OP_MAP_CUSTOM2(82),
+  GGML_OP_MAP_CUSTOM3(83),
+  GGML_OP_CUSTOM(84),
+  GGML_OP_CROSS_ENTROPY_LOSS(85),
+  GGML_OP_CROSS_ENTROPY_LOSS_BACK(86),
+  GGML_OP_OPT_STEP_ADAMW(87),
+  GGML_OP_OPT_STEP_SGD(88),
+  GGML_OP_GLU(89),
+  GGML_OP_COUNT(90);
 
   final int value;
   const ggml_op(this.value);
@@ -17494,43 +17759,44 @@ enum ggml_op {
     50 => GGML_OP_CONV_TRANSPOSE_1D,
     51 => GGML_OP_IM2COL,
     52 => GGML_OP_IM2COL_BACK,
-    53 => GGML_OP_CONV_2D,
-    54 => GGML_OP_CONV_3D,
-    55 => GGML_OP_CONV_2D_DW,
-    56 => GGML_OP_CONV_TRANSPOSE_2D,
-    57 => GGML_OP_POOL_1D,
-    58 => GGML_OP_POOL_2D,
-    59 => GGML_OP_POOL_2D_BACK,
-    60 => GGML_OP_UPSCALE,
-    61 => GGML_OP_PAD,
-    62 => GGML_OP_PAD_REFLECT_1D,
-    63 => GGML_OP_ROLL,
-    64 => GGML_OP_ARANGE,
-    65 => GGML_OP_TIMESTEP_EMBEDDING,
-    66 => GGML_OP_ARGSORT,
-    67 => GGML_OP_LEAKY_RELU,
-    68 => GGML_OP_FLASH_ATTN_EXT,
-    69 => GGML_OP_FLASH_ATTN_BACK,
-    70 => GGML_OP_SSM_CONV,
-    71 => GGML_OP_SSM_SCAN,
-    72 => GGML_OP_WIN_PART,
-    73 => GGML_OP_WIN_UNPART,
-    74 => GGML_OP_GET_REL_POS,
-    75 => GGML_OP_ADD_REL_POS,
-    76 => GGML_OP_RWKV_WKV6,
-    77 => GGML_OP_GATED_LINEAR_ATTN,
-    78 => GGML_OP_RWKV_WKV7,
-    79 => GGML_OP_UNARY,
-    80 => GGML_OP_MAP_CUSTOM1,
-    81 => GGML_OP_MAP_CUSTOM2,
-    82 => GGML_OP_MAP_CUSTOM3,
-    83 => GGML_OP_CUSTOM,
-    84 => GGML_OP_CROSS_ENTROPY_LOSS,
-    85 => GGML_OP_CROSS_ENTROPY_LOSS_BACK,
-    86 => GGML_OP_OPT_STEP_ADAMW,
-    87 => GGML_OP_OPT_STEP_SGD,
-    88 => GGML_OP_GLU,
-    89 => GGML_OP_COUNT,
+    53 => GGML_OP_IM2COL_3D,
+    54 => GGML_OP_CONV_2D,
+    55 => GGML_OP_CONV_3D,
+    56 => GGML_OP_CONV_2D_DW,
+    57 => GGML_OP_CONV_TRANSPOSE_2D,
+    58 => GGML_OP_POOL_1D,
+    59 => GGML_OP_POOL_2D,
+    60 => GGML_OP_POOL_2D_BACK,
+    61 => GGML_OP_UPSCALE,
+    62 => GGML_OP_PAD,
+    63 => GGML_OP_PAD_REFLECT_1D,
+    64 => GGML_OP_ROLL,
+    65 => GGML_OP_ARANGE,
+    66 => GGML_OP_TIMESTEP_EMBEDDING,
+    67 => GGML_OP_ARGSORT,
+    68 => GGML_OP_LEAKY_RELU,
+    69 => GGML_OP_FLASH_ATTN_EXT,
+    70 => GGML_OP_FLASH_ATTN_BACK,
+    71 => GGML_OP_SSM_CONV,
+    72 => GGML_OP_SSM_SCAN,
+    73 => GGML_OP_WIN_PART,
+    74 => GGML_OP_WIN_UNPART,
+    75 => GGML_OP_GET_REL_POS,
+    76 => GGML_OP_ADD_REL_POS,
+    77 => GGML_OP_RWKV_WKV6,
+    78 => GGML_OP_GATED_LINEAR_ATTN,
+    79 => GGML_OP_RWKV_WKV7,
+    80 => GGML_OP_UNARY,
+    81 => GGML_OP_MAP_CUSTOM1,
+    82 => GGML_OP_MAP_CUSTOM2,
+    83 => GGML_OP_MAP_CUSTOM3,
+    84 => GGML_OP_CUSTOM,
+    85 => GGML_OP_CROSS_ENTROPY_LOSS,
+    86 => GGML_OP_CROSS_ENTROPY_LOSS_BACK,
+    87 => GGML_OP_OPT_STEP_ADAMW,
+    88 => GGML_OP_OPT_STEP_SGD,
+    89 => GGML_OP_GLU,
+    90 => GGML_OP_COUNT,
     _ => throw ArgumentError("Unknown value for ggml_op: $value"),
   };
 }
@@ -19018,11 +19284,11 @@ typedef Dartllama_opt_param_filterFunction =
       ffi.Pointer<ffi.Void> userdata,
     );
 
+const int __bool_true_false_are_defined = 1;
+
 const int true1 = 1;
 
 const int false1 = 0;
-
-const int __bool_true_false_are_defined = 1;
 
 const int NULL = 0;
 
@@ -19032,7 +19298,9 @@ const int _FEATURES_H = 1;
 
 const int _DEFAULT_SOURCE = 1;
 
-const int __GLIBC_USE_ISOC2X = 1;
+const int __GLIBC_USE_ISOC2Y = 1;
+
+const int __GLIBC_USE_ISOC23 = 1;
 
 const int __USE_ISOC11 = 1;
 
@@ -19066,6 +19334,8 @@ const int __SYSCALL_WORDSIZE = 64;
 
 const int __TIMESIZE = 64;
 
+const int __USE_TIME_BITS64 = 1;
+
 const int __USE_MISC = 1;
 
 const int __USE_ATFILE = 1;
@@ -19075,6 +19345,8 @@ const int __USE_FORTIFY_LEVEL = 0;
 const int __GLIBC_USE_DEPRECATED_GETS = 0;
 
 const int __GLIBC_USE_DEPRECATED_SCANF = 0;
+
+const int __GLIBC_USE_C23_STRTOL = 1;
 
 const int _STDC_PREDEF_H = 1;
 
@@ -19092,7 +19364,7 @@ const int __GNU_LIBRARY__ = 6;
 
 const int __GLIBC__ = 2;
 
-const int __GLIBC_MINOR__ = 36;
+const int __GLIBC_MINOR__ = 41;
 
 const int _SYS_CDEFS_H = 1;
 
@@ -19110,13 +19382,13 @@ const int __GLIBC_USE_LIB_EXT2 = 1;
 
 const int __GLIBC_USE_IEC_60559_BFP_EXT = 1;
 
-const int __GLIBC_USE_IEC_60559_BFP_EXT_C2X = 1;
+const int __GLIBC_USE_IEC_60559_BFP_EXT_C23 = 1;
 
 const int __GLIBC_USE_IEC_60559_EXT = 1;
 
 const int __GLIBC_USE_IEC_60559_FUNCS_EXT = 1;
 
-const int __GLIBC_USE_IEC_60559_FUNCS_EXT_C2X = 1;
+const int __GLIBC_USE_IEC_60559_FUNCS_EXT_C23 = 1;
 
 const int __GLIBC_USE_IEC_60559_TYPES_EXT = 1;
 
@@ -19147,6 +19419,8 @@ const int __WCHAR_MIN = -2147483648;
 const int _BITS_STDINT_INTN_H = 1;
 
 const int _BITS_STDINT_UINTN_H = 1;
+
+const int _BITS_STDINT_LEAST_H = 1;
 
 const int INT8_MIN = -128;
 
@@ -19252,8 +19526,6 @@ const int WINT_MAX = 4294967295;
 
 const int _STDIO_H = 1;
 
-const int __GNUC_VA_LIST = 1;
-
 const int _____fpos_t_defined = 1;
 
 const int ____mbstate_t_defined = 1;
@@ -19271,6 +19543,8 @@ const int _IO_EOF_SEEN = 16;
 const int _IO_ERR_SEEN = 32;
 
 const int _IO_USER_LOCK = 32768;
+
+const int __cookie_io_functions_t_defined = 1;
 
 const int _IOFBF = 0;
 
@@ -19290,11 +19564,11 @@ const int SEEK_END = 2;
 
 const String P_tmpdir = '/tmp';
 
-const int _BITS_STDIO_LIM_H = 1;
-
 const int L_tmpnam = 20;
 
 const int TMP_MAX = 238328;
+
+const int _BITS_STDIO_LIM_H = 1;
 
 const int FILENAME_MAX = 4096;
 
@@ -19302,9 +19576,9 @@ const int L_ctermid = 9;
 
 const int FOPEN_MAX = 16;
 
-const int __HAVE_FLOAT128 = 0;
+const int __HAVE_FLOAT128 = 1;
 
-const int __HAVE_DISTINCT_FLOAT128 = 0;
+const int __HAVE_DISTINCT_FLOAT128 = 1;
 
 const int __HAVE_FLOAT64X = 1;
 
@@ -19332,7 +19606,7 @@ const int __HAVE_DISTINCT_FLOAT64X = 0;
 
 const int __HAVE_DISTINCT_FLOAT128X = 0;
 
-const int __HAVE_FLOAT128_UNLIKE_LDBL = 0;
+const int __HAVE_FLOAT128_UNLIKE_LDBL = 1;
 
 const int __HAVE_FLOATN_NOT_TYPEDEF = 0;
 
