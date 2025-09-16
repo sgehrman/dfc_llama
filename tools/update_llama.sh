@@ -1,5 +1,8 @@
 #!/bin/bash
 
+rm -r src
+mkdir src
+
 cd src
 
 rm -rf ./llama.cpp
