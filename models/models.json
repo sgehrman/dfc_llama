@@ -21,13 +21,6 @@
         "url": "https://huggingface.co/bartowski/DeepSeek-R1-Distill-Qwen-7B-GGUF/resolve/main/DeepSeek-R1-Distill-Qwen-7B-Q4_0.gguf"
     },
     {
-        "name": "DeepSeek-R1-Distill-Qwen-14B",
-        "filename": "DeepSeek-R1-Distill-Qwen-14B-Q4_0.gguf",
-        "filesize": "8544267680",
-        "description": "<p>The official Qwen2.5-14B distillation of DeepSeek-R1.</p><ul><li>License: <a href=\"https://opensource.org/license/mit\">MIT</a></li><li>No restrictions on commercial use</li><li>#reasoning</li></ul>",
-        "url": "https://huggingface.co/bartowski/DeepSeek-R1-Distill-Qwen-14B-GGUF/resolve/main/DeepSeek-R1-Distill-Qwen-14B-Q4_0.gguf"
-    },
-    {
         "name": "DeepSeek-R1-Distill-Llama-8B",
         "filename": "DeepSeek-R1-Distill-Llama-8B-Q4_0.gguf",
         "filesize": "4675894112",
@@ -131,13 +124,6 @@
         "filesize": "7365834624",
         "description": "<strong>Very good overall model</strong><br><ul><li>Instruction based<li>Based on the same dataset as Groovy<li>Slower than Groovy, with higher quality responses<li>Trained by Nomic AI<li>Cannot be used commercially</ul>",
         "url": "https://gpt4all.io/models/gguf/gpt4all-13b-snoozy-q4_0.gguf"
-    },
-    {
-        "name": "MPT Chat",
-        "filename": "mpt-7b-chat-newbpe-q4_0.gguf",
-        "filesize": "3912373472",
-        "description": "<strong>Good model with novel architecture</strong><br><ul><li>Fast responses<li>Chat based<li>Trained by Mosaic ML<li>Cannot be used commercially</ul>",
-        "url": "https://gpt4all.io/models/gguf/mpt-7b-chat-newbpe-q4_0.gguf"
     },
     {
         "name": "MPT Chat",
