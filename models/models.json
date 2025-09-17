@@ -52,28 +52,28 @@
         "name": "Nous Hermes 2 Mistral DPO",
         "filename": "Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf",
         "filesize": "4108928000",
-        "description": "<ul><li>Good overall fast chat model</li><li>Fast responses</li><li>Chat based model</li><li>Accepts system prompts in ChatML format</li><li>Trained by Mistral AI</li><li>Finetuned by Nous Research on the OpenHermes-2.5 dataset</li><li>Licensed for commercial use</li></ul>",
+        "description": "<ul><li>Good overall fast chat model</li><li>Fast responses</li><li>Chat based model</li><li>Accepts system prompts in ChatML format</li><li>Trained by Mistral AI</li><li>Finetuned by Nous Research on the OpenHermes-2.5 dataset</li></ul>",
         "url": "https://huggingface.co/NousResearch/Nous-Hermes-2-Mistral-7B-DPO-GGUF/resolve/main/Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf"
     },
     {
         "name": "Mistral Instruct",
         "filename": "mistral-7b-instruct-v0.1.Q4_0.gguf",
         "filesize": "4108916384",
-        "description": "<ul><li>Strong overall fast instruction following model</li><li>Fast responses</li><li>Trained by Mistral AI</li><li>Uncensored</li><li>Licensed for commercial use</li></ul>",
+        "description": "<ul><li>Strong overall fast instruction following model</li><li>Fast responses</li><li>Trained by Mistral AI</li><li>Uncensored</li></ul>",
         "url": "https://gpt4all.io/models/gguf/mistral-7b-instruct-v0.1.Q4_0.gguf"
     },
     {
         "name": "Mistral OpenOrca",
         "filename": "mistral-7b-openorca.gguf2.Q4_0.gguf",
         "filesize": "4108928128",
-        "description": "<ul><li>Strong overall fast chat model</li><li>Fast responses</li><li>Chat based model</li><li>Trained by Mistral AI</li><li>Finetuned on OpenOrca dataset curated via <a href=\"https://atlas.nomic.ai/\">Nomic Atlas</a></li><li>Licensed for commercial use</li></ul>",
+        "description": "<ul><li>Strong overall fast chat model</li><li>Fast responses</li><li>Chat based model</li><li>Trained by Mistral AI</li><li>Finetuned on OpenOrca dataset curated via <a href=\"https://atlas.nomic.ai/\">Nomic Atlas</a></li></ul>",
         "url": "https://gpt4all.io/models/gguf/mistral-7b-openorca.gguf2.Q4_0.gguf"
     },
     {
         "name": "GPT4All Falcon",
         "filename": "gpt4all-falcon-newbpe-q4_0.gguf",
         "filesize": "4210994112",
-        "description": "<ul><li>Very fast model with good quality</li><li>Fastest responses</li><li>Instruction based</li><li>Trained by TII</li><li>Finetuned by Nomic AI</li><li>Licensed for commercial use</li></ul>",
+        "description": "<ul><li>Very fast model with good quality</li><li>Fastest responses</li><li>Instruction based</li><li>Trained by TII</li><li>Finetuned by Nomic AI</li></ul>",
         "url": "https://gpt4all.io/models/gguf/gpt4all-falcon-newbpe-q4_0.gguf"
     },
     {
@@ -122,7 +122,7 @@
         "name": "MPT Chat",
         "filename": "mpt-7b-chat.gguf4.Q4_0.gguf",
         "filesize": "3796178112",
-        "description": "<ul><li>Good model with novel architecture</li><li>Fast responses</li><li>Chat based</li><li>Trained by Mosaic ML</li><li>Cannot be used commercially</ul>",
+        "description": "<ul><li>Good model with novel architecture</li><li>Fast responses</li><li>Chat based</li><li>Trained by Mosaic ML</li></ul>",
         "url": "https://gpt4all.io/models/gguf/mpt-7b-chat.gguf4.Q4_0.gguf"
     },
     {
