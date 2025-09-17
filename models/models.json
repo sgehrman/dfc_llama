@@ -455,23 +455,6 @@
         "chatTemplate": null
     },
     {
-        "order": "w",
-        "md5sum": "dd90e2cb7f8e9316ac3796cece9883b5",
-        "name": "SBert",
-        "filename": "all-MiniLM-L6-v2.gguf2.f16.gguf",
-        "filesize": "45949216",
-        "requires": "2.7.4",
-        "removedIn": "3.0.0",
-        "ramrequired": "1",
-        "parameters": "40 million",
-        "quant": "f16",
-        "type": "Bert",
-        "embeddingModel": true,
-        "description": "<strong>LocalDocs text embeddings model</strong><br><ul><li>For use with LocalDocs feature<li>Used for retrieval augmented generation (RAG)",
-        "url": "https://gpt4all.io/models/gguf/all-MiniLM-L6-v2.gguf2.f16.gguf",
-        "chatTemplate": null
-    },
-    {
         "order": "x",
         "md5sum": "919de4dd6f25351bcb0223790db1932d",
         "name": "EM German Mistral",
