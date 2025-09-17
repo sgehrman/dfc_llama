@@ -3,49 +3,49 @@
         "name": "Reasoner v1",
         "filename": "qwen2.5-coder-7b-instruct-q4_0.gguf",
         "filesize": "4431390720",
-        "description": "<ul><li>Based on <a href=\"https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct\">Qwen2.5-Coder 7B</a></li><li>Uses built-in javascript code interpreter</li><li>Use for complex reasoning tasks that can be aided by computation analysis</li><li>License: <a href=\"https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct/blob/main/LICENSE\">Apache License Version 2.0</a></li><li>#reasoning</li></ul>",
+        "description": "<ul><li>Based on <a href=\"https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct\">Qwen2.5-Coder 7B</a></li><li>Uses built-in javascript code interpreter</li><li>Use for complex reasoning tasks that can be aided by computation analysis</li><li>#reasoning</li></ul>",
         "url": "https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct-GGUF/resolve/main/qwen2.5-coder-7b-instruct-q4_0.gguf"
     },
     {
         "name": "Llama 3 8B Instruct",
         "filename": "Meta-Llama-3-8B-Instruct.Q4_0.gguf",
         "filesize": "4661724384",
-        "description": "<ul><li>Fast responses</li><li>Chat based model</li><li>Accepts system prompts in Llama 3 format</li><li>Trained by Meta</li><li>License: <a href=\"https://llama.meta.com/llama3/license/\">Meta Llama 3 Community License</a></li></ul>",
+        "description": "<ul><li>Fast responses</li><li>Chat based model</li><li>Accepts system prompts in Llama 3 format</li><li>Trained by Meta</li></ul>",
         "url": "https://gpt4all.io/models/gguf/Meta-Llama-3-8B-Instruct.Q4_0.gguf"
     },
     {
         "name": "DeepSeek-R1-Distill-Qwen-7B",
         "filename": "DeepSeek-R1-Distill-Qwen-7B-Q4_0.gguf",
         "filesize": "4444121056",
-        "description": "<ul><li>The official Qwen2.5-Math-7B distillation of DeepSeek-R1.</li><li>License: <a href=\"https://opensource.org/license/mit\">MIT</a></li><li>No restrictions on commercial use</li><li>#reasoning</li></ul>",
+        "description": "<ul><li>The official Qwen2.5-Math-7B distillation of DeepSeek-R1.</li><li>License: <a href=\"https://opensource.org/license/mit\">MIT</a></li><li>#reasoning</li></ul>",
         "url": "https://huggingface.co/bartowski/DeepSeek-R1-Distill-Qwen-7B-GGUF/resolve/main/DeepSeek-R1-Distill-Qwen-7B-Q4_0.gguf"
     },
     {
         "name": "DeepSeek-R1-Distill-Llama-8B",
         "filename": "DeepSeek-R1-Distill-Llama-8B-Q4_0.gguf",
         "filesize": "4675894112",
-        "description": "<ul><li>The official Llama-3.1-8B distillation of DeepSeek-R1.</li><li>License: <a href=\"https://opensource.org/license/mit\">MIT</a></li><li>No restrictions on commercial use</li><li>#reasoning</li></ul>",
+        "description": "<ul><li>The official Llama-3.1-8B distillation of DeepSeek-R1.</li><li>License: <a href=\"https://opensource.org/license/mit\">MIT</a></li><li>#reasoning</li></ul>",
         "url": "https://huggingface.co/bartowski/DeepSeek-R1-Distill-Llama-8B-GGUF/resolve/main/DeepSeek-R1-Distill-Llama-8B-Q4_0.gguf"
     },
     {
         "name": "DeepSeek-R1-Distill-Qwen-1.5B",
         "filename": "DeepSeek-R1-Distill-Qwen-1.5B-Q4_0.gguf",
         "filesize": "1068807776",
-        "description": "<ul><li>The official Qwen2.5-Math-1.5B distillation of DeepSeek-R1.</li><li>License: <a href=\"https://opensource.org/license/mit\">MIT</a></li><li>No restrictions on commercial use</li><li>#reasoning</li></ul>",
+        "description": "<ul><li>The official Qwen2.5-Math-1.5B distillation of DeepSeek-R1.</li><li>License: <a href=\"https://opensource.org/license/mit\">MIT</a></li><li>#reasoning</li></ul>",
         "url": "https://huggingface.co/bartowski/DeepSeek-R1-Distill-Qwen-1.5B-GGUF/resolve/main/DeepSeek-R1-Distill-Qwen-1.5B-Q4_0.gguf"
     },
     {
         "name": "Llama 3.2 3B Instruct",
         "filename": "Llama-3.2-3B-Instruct-Q4_0.gguf",
         "filesize": "1921909280",
-        "description": "<ul><li>Fast responses</li><li>Instruct model</li><li>Multilingual dialogue use</li><li>Agentic system capable</li><li>Trained by Meta</li><li>License: <a href=\"https://llama.meta.com/llama3_2/license/\">Meta Llama 3.2 Community License</a></li></ul>",
+        "description": "<ul><li>Fast responses</li><li>Instruct model</li><li>Multilingual dialogue use</li><li>Agentic system capable</li><li>Trained by Meta</li></ul>",
         "url": "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_0.gguf"
     },
     {
         "name": "Llama 3.2 1B Instruct",
         "filename": "Llama-3.2-1B-Instruct-Q4_0.gguf",
         "filesize": "773025920",
-        "description": "<ul><li>Fast responses</li><li>Instruct model</li><li>Multilingual dialogue use</li><li>Agentic system capable</li><li>Trained by Meta</li><li>License: <a href=\"https://llama.meta.com/llama3_2/license/\">Meta Llama 3.2 Community License</a></li></ul>",
+        "description": "<ul><li>Fast responses</li><li>Instruct model</li><li>Multilingual dialogue use</li><li>Agentic system capable</li><li>Trained by Meta</li></ul>",
         "url": "https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_0.gguf"
     },
     {
@@ -80,21 +80,21 @@
         "name": "Orca 2 (Medium)",
         "filename": "orca-2-7b.Q4_0.gguf",
         "filesize": "3825824192",
-        "description": "<ul><li>Instruction based</li><li>Trained by Microsoft</li><li>Cannot be used commercially</li></ul>",
+        "description": "<ul><li>Instruction based</li><li>Trained by Microsoft</li></ul>",
         "url": "https://gpt4all.io/models/gguf/orca-2-7b.Q4_0.gguf"
     },
     {
         "name": "Orca 2 (Full)",
         "filename": "orca-2-13b.Q4_0.gguf",
         "filesize": "7365856064",
-        "description": "<ul><li>Instruction based</li><li>Trained by Microsoft</li><li>Cannot be used commercially</li></ul>",
+        "description": "<ul><li>Instruction based</li><li>Trained by Microsoft</li></ul>",
         "url": "https://gpt4all.io/models/gguf/orca-2-13b.Q4_0.gguf"
     },
     {
         "name": "Wizard v1.2",
         "filename": "wizardlm-13b-v1.2.Q4_0.gguf",
         "filesize": "7365834624",
-        "description": "<ul><li>Strong overall larger model</li><li>Instruction based</li><li>Gives very long responses</li><li>Finetuned with only 1k of high-quality data</li><li>Trained by Microsoft and Peking University</li><li>Cannot be used commercially</li></ul>",
+        "description": "<ul><li>Strong overall larger model</li><li>Instruction based</li><li>Gives very long responses</li><li>Finetuned with only 1k of high-quality data</li><li>Trained by Microsoft and Peking University</li></ul>",
         "url": "https://gpt4all.io/models/gguf/wizardlm-13b-v1.2.Q4_0.gguf"
     },
     {
@@ -108,14 +108,14 @@
         "name": "Hermes",
         "filename": "nous-hermes-llama2-13b.Q4_0.gguf",
         "filesize": "7366062080",
-        "description": "<ul><li>Extremely good model</li><li>Instruction based</li><li>Gives long responses</li><li>Curated with 300,000 uncensored instructions</li><li>Trained by Nous Research</li><li>Cannot be used commercially</li></ul>",
+        "description": "<ul><li>Extremely good model</li><li>Instruction based</li><li>Gives long responses</li><li>Curated with 300,000 uncensored instructions</li><li>Trained by Nous Research</li></ul>",
         "url": "https://gpt4all.io/models/gguf/nous-hermes-llama2-13b.Q4_0.gguf"
     },
     {
         "name": "Snoozy",
         "filename": "gpt4all-13b-snoozy-q4_0.gguf",
         "filesize": "7365834624",
-        "description": "<ul><li>Very good overall model</li><li>Instruction based</li><li>Based on the same dataset as Groovy</li><li>Slower than Groovy, with higher quality responses</li><li>Trained by Nomic AI</li><li>Cannot be used commercially</li></ul>",
+        "description": "<ul><li>Very good overall model</li><li>Instruction based</li><li>Based on the same dataset as Groovy</li><li>Slower than Groovy, with higher quality responses</li><li>Trained by Nomic AI</li></ul>",
         "url": "https://gpt4all.io/models/gguf/gpt4all-13b-snoozy-q4_0.gguf"
     },
     {
@@ -129,28 +129,28 @@
         "name": "Phi-3 Mini Instruct",
         "filename": "Phi-3-mini-4k-instruct.Q4_0.gguf",
         "filesize": "2176181568",
-        "description": "<ul><li>Very fast responses</li><li>Chat based model</li><li>Accepts system prompts in Phi-3 format</li><li>Trained by Microsoft</li><li>License: <a href=\"https://opensource.org/license/mit\">MIT</a></li><li>No restrictions on commercial use</li></ul>",
+        "description": "<ul><li>Very fast responses</li><li>Chat based model</li><li>Accepts system prompts in Phi-3 format</li><li>Trained by Microsoft</li></ul>",
         "url": "https://gpt4all.io/models/gguf/Phi-3-mini-4k-instruct.Q4_0.gguf"
     },
     {
         "name": "Mini Orca (Small)",
         "filename": "orca-mini-3b-gguf2-q4_0.gguf",
         "filesize": "1979946720",
-        "description": "<ul><li>Small version of new model with novel dataset</li><li>Very fast responses</li><li>Instruction based</li><li>Explain tuned datasets</li><li>Orca Research Paper dataset construction approaches</li><li>Cannot be used commercially</li></ul>",
+        "description": "<ul><li>Small version of new model with novel dataset</li><li>Very fast responses</li><li>Instruction based</li><li>Explain tuned datasets</li><li>Orca Research Paper dataset construction approaches</li></ul>",
         "url": "https://gpt4all.io/models/gguf/orca-mini-3b-gguf2-q4_0.gguf"
     },
     {
         "name": "EM German Mistral",
         "filename": "em_german_mistral_v01.Q4_0.gguf",
         "filesize": "4108916352",
-        "description": "<ul><li>Mistral-based model for German-language applications</li><li>Fast responses</li><li>Chat based model</li><li>Trained by ellamind</li><li>Finetuned on German instruction and chat data</li><li>Licensed for commercial use</li></ul>",
+        "description": "<ul><li>Mistral-based model for German-language applications</li><li>Fast responses</li><li>Chat based model</li><li>Trained by ellamind</li><li>Finetuned on German instruction and chat data</li></ul>",
         "url": "https://huggingface.co/TheBloke/em_german_mistral_v01-GGUF/resolve/main/em_german_mistral_v01.Q4_0.gguf"
     },
     {
         "name": "Qwen2-1.5B-Instruct",
         "filename": "qwen2-1_5b-instruct-q4_0.gguf",
         "filesize": "937532800",
-        "description": "<ul><li>Very fast responses</li><li>Instruction based model</li><li>Usage of LocalDocs (RAG): Highly recommended</li><li>Supports context length of up to 32768</li><li>Trained and finetuned by Qwen (Alibaba Cloud)</li><li>License: <a href=\"https://www.apache.org/licenses/LICENSE-2.0.html/\">Apache 2.0</a></li></ul>",
+        "description": "<ul><li>Very fast responses</li><li>Instruction based model</li><li>Usage of LocalDocs (RAG): Highly recommended</li><li>Supports context length of up to 32768</li><li>Trained and finetuned by Qwen (Alibaba Cloud)</li></ul>",
         "url": "https://huggingface.co/Qwen/Qwen2-1.5B-Instruct-GGUF/resolve/main/qwen2-1_5b-instruct-q4_0.gguf"
     },
     {
