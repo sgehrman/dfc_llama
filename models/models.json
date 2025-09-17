@@ -17,21 +17,21 @@
         "name": "DeepSeek-R1-Distill-Qwen-7B",
         "filename": "DeepSeek-R1-Distill-Qwen-7B-Q4_0.gguf",
         "filesize": "4444121056",
-        "description": "<p>The official Qwen2.5-Math-7B distillation of DeepSeek-R1.</p><ul><li>License: <a href=\"https://opensource.org/license/mit\">MIT</a></li><li>No restrictions on commercial use</li><li>#reasoning</li></ul>",
+        "description": "<ul><li>The official Qwen2.5-Math-7B distillation of DeepSeek-R1.</li><li>License: <a href=\"https://opensource.org/license/mit\">MIT</a></li><li>No restrictions on commercial use</li><li>#reasoning</li></ul>",
         "url": "https://huggingface.co/bartowski/DeepSeek-R1-Distill-Qwen-7B-GGUF/resolve/main/DeepSeek-R1-Distill-Qwen-7B-Q4_0.gguf"
     },
     {
         "name": "DeepSeek-R1-Distill-Llama-8B",
         "filename": "DeepSeek-R1-Distill-Llama-8B-Q4_0.gguf",
         "filesize": "4675894112",
-        "description": "<p>The official Llama-3.1-8B distillation of DeepSeek-R1.</p><ul><li>License: <a href=\"https://opensource.org/license/mit\">MIT</a></li><li>No restrictions on commercial use</li><li>#reasoning</li></ul>",
+        "description": "<ul><li>The official Llama-3.1-8B distillation of DeepSeek-R1.</li><li>License: <a href=\"https://opensource.org/license/mit\">MIT</a></li><li>No restrictions on commercial use</li><li>#reasoning</li></ul>",
         "url": "https://huggingface.co/bartowski/DeepSeek-R1-Distill-Llama-8B-GGUF/resolve/main/DeepSeek-R1-Distill-Llama-8B-Q4_0.gguf"
     },
     {
         "name": "DeepSeek-R1-Distill-Qwen-1.5B",
         "filename": "DeepSeek-R1-Distill-Qwen-1.5B-Q4_0.gguf",
         "filesize": "1068807776",
-        "description": "<p>The official Qwen2.5-Math-1.5B distillation of DeepSeek-R1.</p><ul><li>License: <a href=\"https://opensource.org/license/mit\">MIT</a></li><li>No restrictions on commercial use</li><li>#reasoning</li></ul>",
+        "description": "<ul><li>The official Qwen2.5-Math-1.5B distillation of DeepSeek-R1.</li><li>License: <a href=\"https://opensource.org/license/mit\">MIT</a></li><li>No restrictions on commercial use</li><li>#reasoning</li></ul>",
         "url": "https://huggingface.co/bartowski/DeepSeek-R1-Distill-Qwen-1.5B-GGUF/resolve/main/DeepSeek-R1-Distill-Qwen-1.5B-Q4_0.gguf"
     },
     {
@@ -52,84 +52,77 @@
         "name": "Nous Hermes 2 Mistral DPO",
         "filename": "Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf",
         "filesize": "4108928000",
-        "description": "<strong>Good overall fast chat model</strong><br><ul><li>Fast responses</li><li>Chat based model</li><li>Accepts system prompts in ChatML format</li><li>Trained by Mistral AI<li>Finetuned by Nous Research on the OpenHermes-2.5 dataset<li>Licensed for commercial use</ul>",
+        "description": "<ul><li>Good overall fast chat model</li><li>Fast responses</li><li>Chat based model</li><li>Accepts system prompts in ChatML format</li><li>Trained by Mistral AI</li><li>Finetuned by Nous Research on the OpenHermes-2.5 dataset</li><li>Licensed for commercial use</li></ul>",
         "url": "https://huggingface.co/NousResearch/Nous-Hermes-2-Mistral-7B-DPO-GGUF/resolve/main/Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf"
     },
     {
         "name": "Mistral Instruct",
         "filename": "mistral-7b-instruct-v0.1.Q4_0.gguf",
         "filesize": "4108916384",
-        "description": "<strong>Strong overall fast instruction following model</strong><br><ul><li>Fast responses</li><li>Trained by Mistral AI<li>Uncensored</li><li>Licensed for commercial use</li></ul>",
+        "description": "<ul><li>Strong overall fast instruction following model</li><li>Fast responses</li><li>Trained by Mistral AI</li><li>Uncensored</li><li>Licensed for commercial use</li></ul>",
         "url": "https://gpt4all.io/models/gguf/mistral-7b-instruct-v0.1.Q4_0.gguf"
-    },
-    {
-        "name": "Llama 3.1 8B Instruct 128k",
-        "filename": "Meta-Llama-3.1-8B-Instruct-128k-Q4_0.gguf",
-        "filesize": "4661212096",
-        "description": "<ul><li><strong>For advanced users only. Not recommended for use on Windows or Linux without selecting CUDA due to speed issues.</strong></li><li>Fast responses</li><li>Chat based model</li><li>Large context size of 128k</li><li>Accepts agentic system prompts in Llama 3.1 format</li><li>Trained by Meta</li><li>License: <a href=\"https://llama.meta.com/llama3_1/license/\">Meta Llama 3.1 Community License</a></li></ul>",
-        "url": "https://huggingface.co/GPT4All-Community/Meta-Llama-3.1-8B-Instruct-128k/resolve/main/Meta-Llama-3.1-8B-Instruct-128k-Q4_0.gguf"
     },
     {
         "name": "Mistral OpenOrca",
         "filename": "mistral-7b-openorca.gguf2.Q4_0.gguf",
         "filesize": "4108928128",
-        "description": "<strong>Strong overall fast chat model</strong><br><ul><li>Fast responses</li><li>Chat based model</li><li>Trained by Mistral AI<li>Finetuned on OpenOrca dataset curated via <a href=\"https://atlas.nomic.ai/\">Nomic Atlas</a><li>Licensed for commercial use</ul>",
+        "description": "<ul><li>Strong overall fast chat model</li><li>Fast responses</li><li>Chat based model</li><li>Trained by Mistral AI</li><li>Finetuned on OpenOrca dataset curated via <a href=\"https://atlas.nomic.ai/\">Nomic Atlas</a></li><li>Licensed for commercial use</li></ul>",
         "url": "https://gpt4all.io/models/gguf/mistral-7b-openorca.gguf2.Q4_0.gguf"
     },
     {
         "name": "GPT4All Falcon",
         "filename": "gpt4all-falcon-newbpe-q4_0.gguf",
         "filesize": "4210994112",
-        "description": "<strong>Very fast model with good quality</strong><br><ul><li>Fastest responses</li><li>Instruction based</li><li>Trained by TII<li>Finetuned by Nomic AI<li>Licensed for commercial use</ul>",
+        "description": "<ul><li>Very fast model with good quality</li><li>Fastest responses</li><li>Instruction based</li><li>Trained by TII</li><li>Finetuned by Nomic AI</li><li>Licensed for commercial use</li></ul>",
         "url": "https://gpt4all.io/models/gguf/gpt4all-falcon-newbpe-q4_0.gguf"
     },
     {
         "name": "Orca 2 (Medium)",
         "filename": "orca-2-7b.Q4_0.gguf",
         "filesize": "3825824192",
-        "description": "<ul><li>Instruction based<li>Trained by Microsoft<li>Cannot be used commercially</ul>",
+        "description": "<ul><li>Instruction based</li><li>Trained by Microsoft</li><li>Cannot be used commercially</li></ul>",
         "url": "https://gpt4all.io/models/gguf/orca-2-7b.Q4_0.gguf"
     },
     {
         "name": "Orca 2 (Full)",
         "filename": "orca-2-13b.Q4_0.gguf",
         "filesize": "7365856064",
-        "description": "<ul><li>Instruction based<li>Trained by Microsoft<li>Cannot be used commercially</ul>",
+        "description": "<ul><li>Instruction based</li><li>Trained by Microsoft</li><li>Cannot be used commercially</li></ul>",
         "url": "https://gpt4all.io/models/gguf/orca-2-13b.Q4_0.gguf"
     },
     {
         "name": "Wizard v1.2",
         "filename": "wizardlm-13b-v1.2.Q4_0.gguf",
         "filesize": "7365834624",
-        "description": "<strong>Strong overall larger model</strong><br><ul><li>Instruction based<li>Gives very long responses<li>Finetuned with only 1k of high-quality data<li>Trained by Microsoft and Peking University<li>Cannot be used commercially</ul>",
+        "description": "<ul><li>Strong overall larger model</li><li>Instruction based</li><li>Gives very long responses</li><li>Finetuned with only 1k of high-quality data</li><li>Trained by Microsoft and Peking University</li><li>Cannot be used commercially</li></ul>",
         "url": "https://gpt4all.io/models/gguf/wizardlm-13b-v1.2.Q4_0.gguf"
     },
     {
         "name": "Ghost 7B v0.9.1",
         "filename": "ghost-7b-v0.9.1-Q4_0.gguf",
         "filesize": "4108916960",
-        "description": "<strong>Ghost 7B v0.9.1</strong> fast, powerful and smooth for Vietnamese and English languages.",
+        "description": "<ul><li>Ghost 7B v0.9.1</li><li>fast, powerful and smooth for Vietnamese and English languages.</li></ul>",
         "url": "https://huggingface.co/lamhieu/ghost-7b-v0.9.1-gguf/resolve/main/ghost-7b-v0.9.1-Q4_0.gguf"
     },
     {
         "name": "Hermes",
         "filename": "nous-hermes-llama2-13b.Q4_0.gguf",
         "filesize": "7366062080",
-        "description": "<strong>Extremely good model</strong><br><ul><li>Instruction based<li>Gives long responses<li>Curated with 300,000 uncensored instructions<li>Trained by Nous Research<li>Cannot be used commercially</ul>",
+        "description": "<ul><li>Extremely good model</li><li>Instruction based</li><li>Gives long responses</li><li>Curated with 300,000 uncensored instructions</li><li>Trained by Nous Research</li><li>Cannot be used commercially</li></ul>",
         "url": "https://gpt4all.io/models/gguf/nous-hermes-llama2-13b.Q4_0.gguf"
     },
     {
         "name": "Snoozy",
         "filename": "gpt4all-13b-snoozy-q4_0.gguf",
         "filesize": "7365834624",
-        "description": "<strong>Very good overall model</strong><br><ul><li>Instruction based<li>Based on the same dataset as Groovy<li>Slower than Groovy, with higher quality responses<li>Trained by Nomic AI<li>Cannot be used commercially</ul>",
+        "description": "<ul><li>Very good overall model</li><li>Instruction based</li><li>Based on the same dataset as Groovy</li><li>Slower than Groovy, with higher quality responses</li><li>Trained by Nomic AI</li><li>Cannot be used commercially</li></ul>",
         "url": "https://gpt4all.io/models/gguf/gpt4all-13b-snoozy-q4_0.gguf"
     },
     {
         "name": "MPT Chat",
         "filename": "mpt-7b-chat.gguf4.Q4_0.gguf",
         "filesize": "3796178112",
-        "description": "<strong>Good model with novel architecture</strong><br><ul><li>Fast responses<li>Chat based<li>Trained by Mosaic ML<li>Cannot be used commercially</ul>",
+        "description": "<ul><li>Good model with novel architecture</li><li>Fast responses</li><li>Chat based</li><li>Trained by Mosaic ML</li><li>Cannot be used commercially</ul>",
         "url": "https://gpt4all.io/models/gguf/mpt-7b-chat.gguf4.Q4_0.gguf"
     },
     {
@@ -143,14 +136,14 @@
         "name": "Mini Orca (Small)",
         "filename": "orca-mini-3b-gguf2-q4_0.gguf",
         "filesize": "1979946720",
-        "description": "<strong>Small version of new model with novel dataset</strong><br><ul><li>Very fast responses</li><li>Instruction based</li><li>Explain tuned datasets</li><li>Orca Research Paper dataset construction approaches</li><li>Cannot be used commercially</li></ul>",
+        "description": "<ul><li>Small version of new model with novel dataset</li><li>Very fast responses</li><li>Instruction based</li><li>Explain tuned datasets</li><li>Orca Research Paper dataset construction approaches</li><li>Cannot be used commercially</li></ul>",
         "url": "https://gpt4all.io/models/gguf/orca-mini-3b-gguf2-q4_0.gguf"
     },
     {
         "name": "EM German Mistral",
         "filename": "em_german_mistral_v01.Q4_0.gguf",
         "filesize": "4108916352",
-        "description": "<strong>Mistral-based model for German-language applications</strong><br><ul><li>Fast responses</li><li>Chat based model</li><li>Trained by ellamind<li>Finetuned on German instruction and chat data</a><li>Licensed for commercial use</ul>",
+        "description": "<ul><li>Mistral-based model for German-language applications</li><li>Fast responses</li><li>Chat based model</li><li>Trained by ellamind</li><li>Finetuned on German instruction and chat data</li><li>Licensed for commercial use</li></ul>",
         "url": "https://huggingface.co/TheBloke/em_german_mistral_v01-GGUF/resolve/main/em_german_mistral_v01.Q4_0.gguf"
     },
     {
