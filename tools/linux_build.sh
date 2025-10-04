@@ -1,14 +1,30 @@
 #!/bin/bash
 
-cd linux_build
+# ===========================
+# Now using Docker for builds
 
-rm -rf build
+# We need to build llama.cpp with an older linux version to ensure compatibility
+# with a wide range of systems. Otherwise if I build with a newer glibc, 
+# then it will not work on older systems.
 
-cmake -B build  
-cmake --build build --config Release -j $(nproc)
+# ===========================
 
-rm -rf ../linux/libs/
-mkdir -p ../linux/libs/
+# cd linux_build
 
-# you need -rP to preserve the symlinks
-cp -rP build/bin/*.so ../linux/libs/
+# rm -rf build
+
+# cmake -B build  
+# cmake --build build --config Release -j $(nproc)
+
+# rm -rf ../linux/libs/
+# mkdir -p ../linux/libs/
+
+# ===========================
+
+docker build -t llama-cpp-build .
+docker run -e UID=$(id -u) -e GID=$(id -g) --rm -v "$(pwd)/docker_build:/output" llama-cpp-build
+
+rm -rf ./linux/libs/
+mkdir -p ./linux/libs/
+
+cp -rP ./docker_build/*.so ./linux/libs/
