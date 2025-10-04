@@ -50,9 +50,6 @@ class ContextParams {
   // (e.g., 6 or 8 instead of 12) because hyper-threading and thread management overhead can reduce efficiency.
   int nThreads = 4;
 
-  // RoPE scaling type
-  LlamaRopeScalingType ropeScalingType = LlamaRopeScalingType.unspecified;
-
   // RoPE base frequency, 0 = from model
   double ropeFreqBase = 0;
 
@@ -91,7 +88,6 @@ class ContextParams {
       contextParams.n_seq_max = nSeqMax;
       contextParams.n_threads = nThreads;
       contextParams.n_threads_batch = nThreads; // matches n_threads
-      contextParams.rope_scaling_type = ropeScalingType.value;
       contextParams.rope_freq_base = ropeFreqBase;
       contextParams.rope_freq_scale = ropeFreqScale;
       contextParams.yarn_ext_factor = yarnExtFactor;
