@@ -4428,6 +4428,42 @@ class llama_cpp {
         )
       >();
 
+  ffi.Pointer<ggml_tensor> ggml_xielu(
+    ffi.Pointer<ggml_context> ctx,
+    ffi.Pointer<ggml_tensor> a,
+    double alpha_n,
+    double alpha_p,
+    double beta,
+    double eps,
+  ) {
+    return _ggml_xielu(ctx, a, alpha_n, alpha_p, beta, eps);
+  }
+
+  late final _ggml_xieluPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Pointer<ggml_tensor> Function(
+            ffi.Pointer<ggml_context>,
+            ffi.Pointer<ggml_tensor>,
+            ffi.Float,
+            ffi.Float,
+            ffi.Float,
+            ffi.Float,
+          )
+        >
+      >('ggml_xielu');
+  late final _ggml_xielu = _ggml_xieluPtr
+      .asFunction<
+        ffi.Pointer<ggml_tensor> Function(
+          ffi.Pointer<ggml_context>,
+          ffi.Pointer<ggml_tensor>,
+          double,
+          double,
+          double,
+          double,
+        )
+      >();
+
   ffi.Pointer<ggml_tensor> ggml_glu(
     ffi.Pointer<ggml_context> ctx,
     ffi.Pointer<ggml_tensor> a,
@@ -5190,11 +5226,11 @@ class llama_cpp {
 
   ffi.Pointer<ggml_tensor> ggml_mul_mat_id(
     ffi.Pointer<ggml_context> ctx,
-    ffi.Pointer<ggml_tensor> as1,
+    ffi.Pointer<ggml_tensor> as$,
     ffi.Pointer<ggml_tensor> b,
     ffi.Pointer<ggml_tensor> ids,
   ) {
-    return _ggml_mul_mat_id(ctx, as1, b, ids);
+    return _ggml_mul_mat_id(ctx, as$, b, ids);
   }
 
   late final _ggml_mul_mat_idPtr =
@@ -6426,6 +6462,39 @@ class llama_cpp {
         >
       >('ggml_soft_max_ext');
   late final _ggml_soft_max_ext = _ggml_soft_max_extPtr
+      .asFunction<
+        ffi.Pointer<ggml_tensor> Function(
+          ffi.Pointer<ggml_context>,
+          ffi.Pointer<ggml_tensor>,
+          ffi.Pointer<ggml_tensor>,
+          double,
+          double,
+        )
+      >();
+
+  ffi.Pointer<ggml_tensor> ggml_soft_max_ext_inplace(
+    ffi.Pointer<ggml_context> ctx,
+    ffi.Pointer<ggml_tensor> a,
+    ffi.Pointer<ggml_tensor> mask,
+    double scale,
+    double max_bias,
+  ) {
+    return _ggml_soft_max_ext_inplace(ctx, a, mask, scale, max_bias);
+  }
+
+  late final _ggml_soft_max_ext_inplacePtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Pointer<ggml_tensor> Function(
+            ffi.Pointer<ggml_context>,
+            ffi.Pointer<ggml_tensor>,
+            ffi.Pointer<ggml_tensor>,
+            ffi.Float,
+            ffi.Float,
+          )
+        >
+      >('ggml_soft_max_ext_inplace');
+  late final _ggml_soft_max_ext_inplace = _ggml_soft_max_ext_inplacePtr
       .asFunction<
         ffi.Pointer<ggml_tensor> Function(
           ffi.Pointer<ggml_context>,
@@ -11052,15 +11121,15 @@ class llama_cpp {
         )
       >();
 
-  ggml_backend_dev_type ggml_backend_dev_type1(ggml_backend_dev_t device) {
-    return ggml_backend_dev_type.fromValue(_ggml_backend_dev_type1(device));
+  ggml_backend_dev_type ggml_backend_dev_type$1(ggml_backend_dev_t device) {
+    return ggml_backend_dev_type.fromValue(_ggml_backend_dev_type$1(device));
   }
 
-  late final _ggml_backend_dev_type1Ptr =
+  late final _ggml_backend_dev_type$1Ptr =
       _lookup<ffi.NativeFunction<ffi.UnsignedInt Function(ggml_backend_dev_t)>>(
         'ggml_backend_dev_type',
       );
-  late final _ggml_backend_dev_type1 = _ggml_backend_dev_type1Ptr
+  late final _ggml_backend_dev_type$1 = _ggml_backend_dev_type$1Ptr
       .asFunction<int Function(ggml_backend_dev_t)>();
 
   void ggml_backend_dev_get_props(
@@ -11299,6 +11368,17 @@ class llama_cpp {
               ffi.Pointer<ffi.Char>,
             )
           >();
+
+  void ggml_backend_register(ggml_backend_reg_t reg) {
+    return _ggml_backend_register(reg);
+  }
+
+  late final _ggml_backend_registerPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ggml_backend_reg_t)>>(
+        'ggml_backend_register',
+      );
+  late final _ggml_backend_register = _ggml_backend_registerPtr
+      .asFunction<void Function(ggml_backend_reg_t)>();
 
   void ggml_backend_device_register(ggml_backend_dev_t device) {
     return _ggml_backend_device_register(device);
@@ -11601,6 +11681,31 @@ class llama_cpp {
       _ggml_backend_sched_get_n_copiesPtr
           .asFunction<int Function(ggml_backend_sched_t)>();
 
+  ggml_backend_buffer_type_t ggml_backend_sched_get_buffer_type(
+    ggml_backend_sched_t sched,
+    ggml_backend_t backend,
+  ) {
+    return _ggml_backend_sched_get_buffer_type(sched, backend);
+  }
+
+  late final _ggml_backend_sched_get_buffer_typePtr =
+      _lookup<
+        ffi.NativeFunction<
+          ggml_backend_buffer_type_t Function(
+            ggml_backend_sched_t,
+            ggml_backend_t,
+          )
+        >
+      >('ggml_backend_sched_get_buffer_type');
+  late final _ggml_backend_sched_get_buffer_type =
+      _ggml_backend_sched_get_buffer_typePtr
+          .asFunction<
+            ggml_backend_buffer_type_t Function(
+              ggml_backend_sched_t,
+              ggml_backend_t,
+            )
+          >();
+
   int ggml_backend_sched_get_buffer_size(
     ggml_backend_sched_t sched,
     ggml_backend_t backend,
@@ -11802,14 +11907,14 @@ class llama_cpp {
             )
           >();
 
-  ggml_backend_graph_copy ggml_backend_graph_copy1(
+  ggml_backend_graph_copy ggml_backend_graph_copy$1(
     ggml_backend_t backend,
     ffi.Pointer<ggml_cgraph> graph,
   ) {
-    return _ggml_backend_graph_copy1(backend, graph);
+    return _ggml_backend_graph_copy$1(backend, graph);
   }
 
-  late final _ggml_backend_graph_copy1Ptr =
+  late final _ggml_backend_graph_copy$1Ptr =
       _lookup<
         ffi.NativeFunction<
           ggml_backend_graph_copy Function(
@@ -11818,7 +11923,7 @@ class llama_cpp {
           )
         >
       >('ggml_backend_graph_copy');
-  late final _ggml_backend_graph_copy1 = _ggml_backend_graph_copy1Ptr
+  late final _ggml_backend_graph_copy$1 = _ggml_backend_graph_copy$1Ptr
       .asFunction<
         ggml_backend_graph_copy Function(
           ggml_backend_t,
@@ -12724,6 +12829,29 @@ class llama_cpp {
   late final _ggml_cpu_fp32_to_fp32 = _ggml_cpu_fp32_to_fp32Ptr
       .asFunction<
         void Function(ffi.Pointer<ffi.Float>, ffi.Pointer<ffi.Float>, int)
+      >();
+
+  void ggml_cpu_fp32_to_i32(
+    ffi.Pointer<ffi.Float> arg0,
+    ffi.Pointer<ffi.Int32> arg1,
+    int arg2,
+  ) {
+    return _ggml_cpu_fp32_to_i32(arg0, arg1, arg2);
+  }
+
+  late final _ggml_cpu_fp32_to_i32Ptr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Void Function(
+            ffi.Pointer<ffi.Float>,
+            ffi.Pointer<ffi.Int32>,
+            ffi.Int64,
+          )
+        >
+      >('ggml_cpu_fp32_to_i32');
+  late final _ggml_cpu_fp32_to_i32 = _ggml_cpu_fp32_to_i32Ptr
+      .asFunction<
+        void Function(ffi.Pointer<ffi.Float>, ffi.Pointer<ffi.Int32>, int)
       >();
 
   void ggml_cpu_fp32_to_fp16(
@@ -14046,15 +14174,15 @@ class llama_cpp {
   late final _llama_get_memory = _llama_get_memoryPtr
       .asFunction<llama_memory_t Function(ffi.Pointer<llama_context>)>();
 
-  llama_pooling_type llama_pooling_type1(ffi.Pointer<llama_context> ctx) {
-    return llama_pooling_type.fromValue(_llama_pooling_type1(ctx));
+  llama_pooling_type llama_pooling_type$1(ffi.Pointer<llama_context> ctx) {
+    return llama_pooling_type.fromValue(_llama_pooling_type$1(ctx));
   }
 
-  late final _llama_pooling_type1Ptr =
+  late final _llama_pooling_type$1Ptr =
       _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<llama_context>)>>(
         'llama_pooling_type',
       );
-  late final _llama_pooling_type1 = _llama_pooling_type1Ptr
+  late final _llama_pooling_type$1 = _llama_pooling_type$1Ptr
       .asFunction<int Function(ffi.Pointer<llama_context>)>();
 
   ffi.Pointer<llama_vocab> llama_model_get_vocab(
@@ -14192,15 +14320,15 @@ class llama_cpp {
         ffi.Pointer<ffi.Char> Function(ffi.Pointer<llama_model>, int)
       >();
 
-  llama_vocab_type llama_vocab_type1(ffi.Pointer<llama_vocab> vocab) {
-    return llama_vocab_type.fromValue(_llama_vocab_type1(vocab));
+  llama_vocab_type llama_vocab_type$1(ffi.Pointer<llama_vocab> vocab) {
+    return llama_vocab_type.fromValue(_llama_vocab_type$1(vocab));
   }
 
-  late final _llama_vocab_type1Ptr =
+  late final _llama_vocab_type$1Ptr =
       _lookup<
         ffi.NativeFunction<ffi.UnsignedInt Function(ffi.Pointer<llama_vocab>)>
       >('llama_vocab_type');
-  late final _llama_vocab_type1 = _llama_vocab_type1Ptr
+  late final _llama_vocab_type$1 = _llama_vocab_type$1Ptr
       .asFunction<int Function(ffi.Pointer<llama_vocab>)>();
 
   int llama_vocab_n_tokens(ffi.Pointer<llama_vocab> vocab) {
@@ -14423,6 +14551,17 @@ class llama_cpp {
         'llama_model_is_recurrent',
       );
   late final _llama_model_is_recurrent = _llama_model_is_recurrentPtr
+      .asFunction<bool Function(ffi.Pointer<llama_model>)>();
+
+  bool llama_model_is_hybrid(ffi.Pointer<llama_model> model) {
+    return _llama_model_is_hybrid(model);
+  }
+
+  late final _llama_model_is_hybridPtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<llama_model>)>>(
+        'llama_model_is_hybrid',
+      );
+  late final _llama_model_is_hybrid = _llama_model_is_hybridPtr
       .asFunction<bool Function(ffi.Pointer<llama_model>)>();
 
   bool llama_model_is_diffusion(ffi.Pointer<llama_model> model) {
@@ -17222,6 +17361,17 @@ class llama_cpp {
   late final _llama_perf_sampler_reset = _llama_perf_sampler_resetPtr
       .asFunction<void Function(ffi.Pointer<llama_sampler>)>();
 
+  void llama_memory_breakdown_print(ffi.Pointer<llama_context> ctx) {
+    return _llama_memory_breakdown_print(ctx);
+  }
+
+  late final _llama_memory_breakdown_printPtr =
+      _lookup<
+        ffi.NativeFunction<ffi.Void Function(ffi.Pointer<llama_context>)>
+      >('llama_memory_breakdown_print');
+  late final _llama_memory_breakdown_print = _llama_memory_breakdown_printPtr
+      .asFunction<void Function(ffi.Pointer<llama_context>)>();
+
   bool llama_opt_param_filter_all(
     ffi.Pointer<ggml_tensor> tensor,
     ffi.Pointer<ffi.Void> userdata,
@@ -17315,19 +17465,156 @@ class llama_cpp {
       >();
 }
 
+typedef ptrdiff_t = ffi.Long;
+typedef Dartptrdiff_t = int;
+
 final class max_align_t extends ffi.Opaque {}
+
+typedef __u_char = ffi.UnsignedChar;
+typedef Dart__u_char = int;
+typedef __u_short = ffi.UnsignedShort;
+typedef Dart__u_short = int;
+typedef __u_int = ffi.UnsignedInt;
+typedef Dart__u_int = int;
+typedef __u_long = ffi.UnsignedLong;
+typedef Dart__u_long = int;
+typedef __int8_t = ffi.SignedChar;
+typedef Dart__int8_t = int;
+typedef __uint8_t = ffi.UnsignedChar;
+typedef Dart__uint8_t = int;
+typedef __int16_t = ffi.Short;
+typedef Dart__int16_t = int;
+typedef __uint16_t = ffi.UnsignedShort;
+typedef Dart__uint16_t = int;
+typedef __int32_t = ffi.Int;
+typedef Dart__int32_t = int;
+typedef __uint32_t = ffi.UnsignedInt;
+typedef Dart__uint32_t = int;
+typedef __int64_t = ffi.Long;
+typedef Dart__int64_t = int;
+typedef __uint64_t = ffi.UnsignedLong;
+typedef Dart__uint64_t = int;
+typedef __int_least8_t = __int8_t;
+typedef __uint_least8_t = __uint8_t;
+typedef __int_least16_t = __int16_t;
+typedef __uint_least16_t = __uint16_t;
+typedef __int_least32_t = __int32_t;
+typedef __uint_least32_t = __uint32_t;
+typedef __int_least64_t = __int64_t;
+typedef __uint_least64_t = __uint64_t;
+typedef __quad_t = ffi.Long;
+typedef Dart__quad_t = int;
+typedef __u_quad_t = ffi.UnsignedLong;
+typedef Dart__u_quad_t = int;
+typedef __intmax_t = ffi.Long;
+typedef Dart__intmax_t = int;
+typedef __uintmax_t = ffi.UnsignedLong;
+typedef Dart__uintmax_t = int;
+typedef __dev_t = ffi.UnsignedLong;
+typedef Dart__dev_t = int;
+typedef __uid_t = ffi.UnsignedInt;
+typedef Dart__uid_t = int;
+typedef __gid_t = ffi.UnsignedInt;
+typedef Dart__gid_t = int;
+typedef __ino_t = ffi.UnsignedLong;
+typedef Dart__ino_t = int;
+typedef __ino64_t = ffi.UnsignedLong;
+typedef Dart__ino64_t = int;
+typedef __mode_t = ffi.UnsignedInt;
+typedef Dart__mode_t = int;
+typedef __nlink_t = ffi.UnsignedLong;
+typedef Dart__nlink_t = int;
+typedef __off_t = ffi.Long;
+typedef Dart__off_t = int;
+typedef __off64_t = ffi.Long;
+typedef Dart__off64_t = int;
+typedef __pid_t = ffi.Int;
+typedef Dart__pid_t = int;
 
 final class __fsid_t extends ffi.Struct {
   @ffi.Array.multi([2])
   external ffi.Array<ffi.Int> __val;
 }
 
-final class __mbstate_t extends ffi.Struct {
-  @ffi.Int()
-  external int __count;
-
-  external UnnamedUnion1 __value;
-}
+typedef __clock_t = ffi.Long;
+typedef Dart__clock_t = int;
+typedef __rlim_t = ffi.UnsignedLong;
+typedef Dart__rlim_t = int;
+typedef __rlim64_t = ffi.UnsignedLong;
+typedef Dart__rlim64_t = int;
+typedef __id_t = ffi.UnsignedInt;
+typedef Dart__id_t = int;
+typedef __time_t = ffi.Long;
+typedef Dart__time_t = int;
+typedef __useconds_t = ffi.UnsignedInt;
+typedef Dart__useconds_t = int;
+typedef __suseconds_t = ffi.Long;
+typedef Dart__suseconds_t = int;
+typedef __suseconds64_t = ffi.Long;
+typedef Dart__suseconds64_t = int;
+typedef __daddr_t = ffi.Int;
+typedef Dart__daddr_t = int;
+typedef __key_t = ffi.Int;
+typedef Dart__key_t = int;
+typedef __clockid_t = ffi.Int;
+typedef Dart__clockid_t = int;
+typedef __timer_t = ffi.Pointer<ffi.Void>;
+typedef __blksize_t = ffi.Long;
+typedef Dart__blksize_t = int;
+typedef __blkcnt_t = ffi.Long;
+typedef Dart__blkcnt_t = int;
+typedef __blkcnt64_t = ffi.Long;
+typedef Dart__blkcnt64_t = int;
+typedef __fsblkcnt_t = ffi.UnsignedLong;
+typedef Dart__fsblkcnt_t = int;
+typedef __fsblkcnt64_t = ffi.UnsignedLong;
+typedef Dart__fsblkcnt64_t = int;
+typedef __fsfilcnt_t = ffi.UnsignedLong;
+typedef Dart__fsfilcnt_t = int;
+typedef __fsfilcnt64_t = ffi.UnsignedLong;
+typedef Dart__fsfilcnt64_t = int;
+typedef __fsword_t = ffi.Long;
+typedef Dart__fsword_t = int;
+typedef __ssize_t = ffi.Long;
+typedef Dart__ssize_t = int;
+typedef __syscall_slong_t = ffi.Long;
+typedef Dart__syscall_slong_t = int;
+typedef __syscall_ulong_t = ffi.UnsignedLong;
+typedef Dart__syscall_ulong_t = int;
+typedef __loff_t = __off64_t;
+typedef __caddr_t = ffi.Pointer<ffi.Char>;
+typedef __intptr_t = ffi.Long;
+typedef Dart__intptr_t = int;
+typedef __socklen_t = ffi.UnsignedInt;
+typedef Dart__socklen_t = int;
+typedef __sig_atomic_t = ffi.Int;
+typedef Dart__sig_atomic_t = int;
+typedef int_least8_t = __int_least8_t;
+typedef int_least16_t = __int_least16_t;
+typedef int_least32_t = __int_least32_t;
+typedef int_least64_t = __int_least64_t;
+typedef uint_least8_t = __uint_least8_t;
+typedef uint_least16_t = __uint_least16_t;
+typedef uint_least32_t = __uint_least32_t;
+typedef uint_least64_t = __uint_least64_t;
+typedef int_fast8_t = ffi.SignedChar;
+typedef Dartint_fast8_t = int;
+typedef int_fast16_t = ffi.Long;
+typedef Dartint_fast16_t = int;
+typedef int_fast32_t = ffi.Long;
+typedef Dartint_fast32_t = int;
+typedef int_fast64_t = ffi.Long;
+typedef Dartint_fast64_t = int;
+typedef uint_fast8_t = ffi.UnsignedChar;
+typedef Dartuint_fast8_t = int;
+typedef uint_fast16_t = ffi.UnsignedLong;
+typedef Dartuint_fast16_t = int;
+typedef uint_fast32_t = ffi.UnsignedLong;
+typedef Dartuint_fast32_t = int;
+typedef uint_fast64_t = ffi.UnsignedLong;
+typedef Dartuint_fast64_t = int;
+typedef intmax_t = __intmax_t;
+typedef uintmax_t = __uintmax_t;
 
 final class UnnamedUnion1 extends ffi.Union {
   @ffi.UnsignedInt()
@@ -17337,6 +17624,13 @@ final class UnnamedUnion1 extends ffi.Union {
   external ffi.Array<ffi.Char> __wchb;
 }
 
+final class __mbstate_t extends ffi.Struct {
+  @ffi.Int()
+  external int __count;
+
+  external UnnamedUnion1 __value;
+}
+
 final class _G_fpos_t extends ffi.Struct {
   @__off_t()
   external int __pos;
@@ -17344,8 +17638,7 @@ final class _G_fpos_t extends ffi.Struct {
   external __mbstate_t __state;
 }
 
-typedef __off_t = ffi.Long;
-typedef Dart__off_t = int;
+typedef __fpos_t = _G_fpos_t;
 
 final class _G_fpos64_t extends ffi.Struct {
   @__off64_t()
@@ -17354,10 +17647,12 @@ final class _G_fpos64_t extends ffi.Struct {
   external __mbstate_t __state;
 }
 
-typedef __off64_t = ffi.Long;
-typedef Dart__off64_t = int;
+typedef __fpos64_t = _G_fpos64_t;
 
 final class _IO_FILE extends ffi.Opaque {}
+
+typedef __FILE = _IO_FILE;
+typedef FILE = _IO_FILE;
 
 final class _IO_marker extends ffi.Opaque {}
 
@@ -17365,16 +17660,8 @@ final class _IO_codecvt extends ffi.Opaque {}
 
 final class _IO_wide_data extends ffi.Opaque {}
 
-final class _IO_cookie_io_functions_t extends ffi.Struct {
-  external ffi.Pointer<cookie_read_function_t> read;
-
-  external ffi.Pointer<cookie_write_function_t> write;
-
-  external ffi.Pointer<cookie_seek_function_t> seek;
-
-  external ffi.Pointer<cookie_close_function_t> close;
-}
-
+typedef _IO_lock_t = ffi.Void;
+typedef Dart_IO_lock_t = void;
 typedef cookie_read_function_t =
     ffi.NativeFunction<
       __ssize_t Function(
@@ -17383,8 +17670,6 @@ typedef cookie_read_function_t =
         ffi.Size __nbytes,
       )
     >;
-typedef __ssize_t = ffi.Long;
-typedef Dart__ssize_t = int;
 typedef cookie_write_function_t =
     ffi.NativeFunction<
       __ssize_t Function(
@@ -17403,8 +17688,21 @@ typedef cookie_seek_function_t =
     >;
 typedef cookie_close_function_t =
     ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void> __cookie)>;
-typedef FILE = _IO_FILE;
+
+final class _IO_cookie_io_functions_t extends ffi.Struct {
+  external ffi.Pointer<cookie_read_function_t> read;
+
+  external ffi.Pointer<cookie_write_function_t> write;
+
+  external ffi.Pointer<cookie_seek_function_t> seek;
+
+  external ffi.Pointer<cookie_close_function_t> close;
+}
+
 typedef cookie_io_functions_t = _IO_cookie_io_functions_t;
+typedef off_t = __off_t;
+typedef ssize_t = __ssize_t;
+typedef fpos_t = __fpos_t;
 
 final class __va_list_tag extends ffi.Struct {
   @ffi.UnsignedInt()
@@ -17418,14 +17716,18 @@ final class __va_list_tag extends ffi.Struct {
   external ffi.Pointer<ffi.Void> reg_save_area;
 }
 
-typedef fpos_t = __fpos_t;
-typedef __fpos_t = _G_fpos_t;
-typedef ggml_abort_callback_t =
-    ffi.Pointer<ffi.NativeFunction<ggml_abort_callback_tFunction>>;
+typedef _Float32 = ffi.Float;
+typedef Dart_Float32 = double;
+typedef _Float64 = ffi.Double;
+typedef Dart_Float64 = double;
+typedef _Float32x = ffi.Double;
+typedef Dart_Float32x = double;
 typedef ggml_abort_callback_tFunction =
     ffi.Void Function(ffi.Pointer<ffi.Char> error_message);
 typedef Dartggml_abort_callback_tFunction =
     void Function(ffi.Pointer<ffi.Char> error_message);
+typedef ggml_abort_callback_t =
+    ffi.Pointer<ffi.NativeFunction<ggml_abort_callback_tFunction>>;
 
 enum ggml_status {
   GGML_STATUS_ALLOC_FAILED(-2),
@@ -17441,7 +17743,7 @@ enum ggml_status {
     -1 => GGML_STATUS_FAILED,
     0 => GGML_STATUS_SUCCESS,
     1 => GGML_STATUS_ABORTED,
-    _ => throw ArgumentError("Unknown value for ggml_status: $value"),
+    _ => throw ArgumentError('Unknown value for ggml_status: $value'),
   };
 }
 
@@ -17531,7 +17833,7 @@ enum ggml_type {
     35 => GGML_TYPE_TQ2_0,
     39 => GGML_TYPE_MXFP4,
     40 => GGML_TYPE_COUNT,
-    _ => throw ArgumentError("Unknown value for ggml_type: $value"),
+    _ => throw ArgumentError('Unknown value for ggml_type: $value'),
   };
 }
 
@@ -17545,7 +17847,7 @@ enum ggml_prec {
   static ggml_prec fromValue(int value) => switch (value) {
     0 => GGML_PREC_DEFAULT,
     10 => GGML_PREC_F32,
-    _ => throw ArgumentError("Unknown value for ggml_prec: $value"),
+    _ => throw ArgumentError('Unknown value for ggml_prec: $value'),
   };
 }
 
@@ -17605,7 +17907,7 @@ enum ggml_ftype {
     23 => GGML_FTYPE_MOSTLY_IQ1_M,
     24 => GGML_FTYPE_MOSTLY_BF16,
     25 => GGML_FTYPE_MOSTLY_MXFP4,
-    _ => throw ArgumentError("Unknown value for ggml_ftype: $value"),
+    _ => throw ArgumentError('Unknown value for ggml_ftype: $value'),
   };
 }
 
@@ -17797,7 +18099,7 @@ enum ggml_op {
     88 => GGML_OP_OPT_STEP_SGD,
     89 => GGML_OP_GLU,
     90 => GGML_OP_COUNT,
-    _ => throw ArgumentError("Unknown value for ggml_op: $value"),
+    _ => throw ArgumentError('Unknown value for ggml_op: $value'),
   };
 }
 
@@ -17817,7 +18119,8 @@ enum ggml_unary_op {
   GGML_UNARY_OP_HARDSIGMOID(12),
   GGML_UNARY_OP_EXP(13),
   GGML_UNARY_OP_GELU_ERF(14),
-  GGML_UNARY_OP_COUNT(15);
+  GGML_UNARY_OP_XIELU(15),
+  GGML_UNARY_OP_COUNT(16);
 
   final int value;
   const ggml_unary_op(this.value);
@@ -17838,8 +18141,9 @@ enum ggml_unary_op {
     12 => GGML_UNARY_OP_HARDSIGMOID,
     13 => GGML_UNARY_OP_EXP,
     14 => GGML_UNARY_OP_GELU_ERF,
-    15 => GGML_UNARY_OP_COUNT,
-    _ => throw ArgumentError("Unknown value for ggml_unary_op: $value"),
+    15 => GGML_UNARY_OP_XIELU,
+    16 => GGML_UNARY_OP_COUNT,
+    _ => throw ArgumentError('Unknown value for ggml_unary_op: $value'),
   };
 }
 
@@ -17863,7 +18167,7 @@ enum ggml_glu_op {
     4 => GGML_GLU_OP_GEGLU_ERF,
     5 => GGML_GLU_OP_GEGLU_QUICK,
     6 => GGML_GLU_OP_COUNT,
-    _ => throw ArgumentError("Unknown value for ggml_glu_op: $value"),
+    _ => throw ArgumentError('Unknown value for ggml_glu_op: $value'),
   };
 }
 
@@ -17879,7 +18183,7 @@ enum ggml_object_type {
     0 => GGML_OBJECT_TYPE_TENSOR,
     1 => GGML_OBJECT_TYPE_GRAPH,
     2 => GGML_OBJECT_TYPE_WORK_BUFFER,
-    _ => throw ArgumentError("Unknown value for ggml_object_type: $value"),
+    _ => throw ArgumentError('Unknown value for ggml_object_type: $value'),
   };
 }
 
@@ -17901,7 +18205,7 @@ enum ggml_log_level {
     3 => GGML_LOG_LEVEL_WARN,
     4 => GGML_LOG_LEVEL_ERROR,
     5 => GGML_LOG_LEVEL_CONT,
-    _ => throw ArgumentError("Unknown value for ggml_log_level: $value"),
+    _ => throw ArgumentError('Unknown value for ggml_log_level: $value'),
   };
 }
 
@@ -17919,7 +18223,7 @@ enum ggml_tensor_flag {
     2 => GGML_TENSOR_FLAG_OUTPUT,
     4 => GGML_TENSOR_FLAG_PARAM,
     8 => GGML_TENSOR_FLAG_LOSS,
-    _ => throw ArgumentError("Unknown value for ggml_tensor_flag: $value"),
+    _ => throw ArgumentError('Unknown value for ggml_tensor_flag: $value'),
   };
 }
 
@@ -17933,9 +18237,13 @@ final class ggml_init_params extends ffi.Struct {
   external bool no_alloc;
 }
 
+final class ggml_backend_buffer extends ffi.Opaque {}
+
 final class ggml_tensor extends ffi.Struct {
   @ffi.UnsignedInt()
-  external int type;
+  external int typeAsInt;
+
+  ggml_type get type => ggml_type.fromValue(typeAsInt);
 
   external ffi.Pointer<ggml_backend_buffer> buffer;
 
@@ -17946,7 +18254,9 @@ final class ggml_tensor extends ffi.Struct {
   external ffi.Array<ffi.Size> nb;
 
   @ffi.UnsignedInt()
-  external int op;
+  external int opAsInt;
+
+  ggml_op get op => ggml_op.fromValue(opAsInt);
 
   @ffi.Array.multi([16])
   external ffi.Array<ffi.Int32> op_params;
@@ -17973,8 +18283,12 @@ final class ggml_tensor extends ffi.Struct {
   external ffi.Array<ffi.Char> padding;
 }
 
-final class ggml_backend_buffer extends ffi.Opaque {}
-
+typedef ggml_abort_callbackFunction =
+    ffi.Bool Function(ffi.Pointer<ffi.Void> data);
+typedef Dartggml_abort_callbackFunction =
+    bool Function(ffi.Pointer<ffi.Void> data);
+typedef ggml_abort_callback =
+    ffi.Pointer<ffi.NativeFunction<ggml_abort_callbackFunction>>;
 typedef ggml_guid_t = ffi.Pointer<ffi.Pointer<ffi.Uint8>>;
 
 enum ggml_op_pool {
@@ -17989,7 +18303,7 @@ enum ggml_op_pool {
     0 => GGML_OP_POOL_MAX,
     1 => GGML_OP_POOL_AVG,
     2 => GGML_OP_POOL_COUNT,
-    _ => throw ArgumentError("Unknown value for ggml_op_pool: $value"),
+    _ => throw ArgumentError('Unknown value for ggml_op_pool: $value'),
   };
 }
 
@@ -18005,7 +18319,7 @@ enum ggml_scale_mode {
     0 => GGML_SCALE_MODE_NEAREST,
     1 => GGML_SCALE_MODE_BILINEAR,
     2 => GGML_SCALE_MODE_COUNT,
-    _ => throw ArgumentError("Unknown value for ggml_scale_mode: $value"),
+    _ => throw ArgumentError('Unknown value for ggml_scale_mode: $value'),
   };
 }
 
@@ -18017,7 +18331,7 @@ enum ggml_scale_flag {
 
   static ggml_scale_flag fromValue(int value) => switch (value) {
     256 => GGML_SCALE_FLAG_ALIGN_CORNERS,
-    _ => throw ArgumentError("Unknown value for ggml_scale_flag: $value"),
+    _ => throw ArgumentError('Unknown value for ggml_scale_flag: $value'),
   };
 }
 
@@ -18031,12 +18345,10 @@ enum ggml_sort_order {
   static ggml_sort_order fromValue(int value) => switch (value) {
     0 => GGML_SORT_ORDER_ASC,
     1 => GGML_SORT_ORDER_DESC,
-    _ => throw ArgumentError("Unknown value for ggml_sort_order: $value"),
+    _ => throw ArgumentError('Unknown value for ggml_sort_order: $value'),
   };
 }
 
-typedef ggml_custom1_op_t =
-    ffi.Pointer<ffi.NativeFunction<ggml_custom1_op_tFunction>>;
 typedef ggml_custom1_op_tFunction =
     ffi.Void Function(
       ffi.Pointer<ggml_tensor> dst,
@@ -18053,8 +18365,8 @@ typedef Dartggml_custom1_op_tFunction =
       int nth,
       ffi.Pointer<ffi.Void> userdata,
     );
-typedef ggml_custom2_op_t =
-    ffi.Pointer<ffi.NativeFunction<ggml_custom2_op_tFunction>>;
+typedef ggml_custom1_op_t =
+    ffi.Pointer<ffi.NativeFunction<ggml_custom1_op_tFunction>>;
 typedef ggml_custom2_op_tFunction =
     ffi.Void Function(
       ffi.Pointer<ggml_tensor> dst,
@@ -18073,8 +18385,8 @@ typedef Dartggml_custom2_op_tFunction =
       int nth,
       ffi.Pointer<ffi.Void> userdata,
     );
-typedef ggml_custom3_op_t =
-    ffi.Pointer<ffi.NativeFunction<ggml_custom3_op_tFunction>>;
+typedef ggml_custom2_op_t =
+    ffi.Pointer<ffi.NativeFunction<ggml_custom2_op_tFunction>>;
 typedef ggml_custom3_op_tFunction =
     ffi.Void Function(
       ffi.Pointer<ggml_tensor> dst,
@@ -18095,8 +18407,8 @@ typedef Dartggml_custom3_op_tFunction =
       int nth,
       ffi.Pointer<ffi.Void> userdata,
     );
-typedef ggml_custom_op_t =
-    ffi.Pointer<ffi.NativeFunction<ggml_custom_op_tFunction>>;
+typedef ggml_custom3_op_t =
+    ffi.Pointer<ffi.NativeFunction<ggml_custom3_op_tFunction>>;
 typedef ggml_custom_op_tFunction =
     ffi.Void Function(
       ffi.Pointer<ggml_tensor> dst,
@@ -18111,8 +18423,8 @@ typedef Dartggml_custom_op_tFunction =
       int nth,
       ffi.Pointer<ffi.Void> userdata,
     );
-typedef ggml_log_callback =
-    ffi.Pointer<ffi.NativeFunction<ggml_log_callbackFunction>>;
+typedef ggml_custom_op_t =
+    ffi.Pointer<ffi.NativeFunction<ggml_custom_op_tFunction>>;
 typedef ggml_log_callbackFunction =
     ffi.Void Function(
       ffi.UnsignedInt level,
@@ -18125,6 +18437,28 @@ typedef Dartggml_log_callbackFunction =
       ffi.Pointer<ffi.Char> text,
       ffi.Pointer<ffi.Void> user_data,
     );
+typedef ggml_log_callback =
+    ffi.Pointer<ffi.NativeFunction<ggml_log_callbackFunction>>;
+typedef ggml_to_float_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<ffi.Void> x,
+      ffi.Pointer<ffi.Float> y,
+      ffi.Int64 k,
+    );
+typedef Dartggml_to_float_tFunction =
+    void Function(ffi.Pointer<ffi.Void> x, ffi.Pointer<ffi.Float> y, int k);
+typedef ggml_to_float_t =
+    ffi.Pointer<ffi.NativeFunction<ggml_to_float_tFunction>>;
+typedef ggml_from_float_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<ffi.Float> x,
+      ffi.Pointer<ffi.Void> y,
+      ffi.Int64 k,
+    );
+typedef Dartggml_from_float_tFunction =
+    void Function(ffi.Pointer<ffi.Float> x, ffi.Pointer<ffi.Void> y, int k);
+typedef ggml_from_float_t =
+    ffi.Pointer<ffi.NativeFunction<ggml_from_float_tFunction>>;
 
 final class ggml_type_traits extends ffi.Struct {
   external ffi.Pointer<ffi.Char> type_name;
@@ -18146,27 +18480,6 @@ final class ggml_type_traits extends ffi.Struct {
   external ggml_from_float_t from_float_ref;
 }
 
-typedef ggml_to_float_t =
-    ffi.Pointer<ffi.NativeFunction<ggml_to_float_tFunction>>;
-typedef ggml_to_float_tFunction =
-    ffi.Void Function(
-      ffi.Pointer<ffi.Void> x,
-      ffi.Pointer<ffi.Float> y,
-      ffi.Int64 k,
-    );
-typedef Dartggml_to_float_tFunction =
-    void Function(ffi.Pointer<ffi.Void> x, ffi.Pointer<ffi.Float> y, int k);
-typedef ggml_from_float_t =
-    ffi.Pointer<ffi.NativeFunction<ggml_from_float_tFunction>>;
-typedef ggml_from_float_tFunction =
-    ffi.Void Function(
-      ffi.Pointer<ffi.Float> x,
-      ffi.Pointer<ffi.Void> y,
-      ffi.Int64 k,
-    );
-typedef Dartggml_from_float_tFunction =
-    void Function(ffi.Pointer<ffi.Float> x, ffi.Pointer<ffi.Void> y, int k);
-
 enum ggml_sched_priority {
   GGML_SCHED_PRIO_LOW(-1),
   GGML_SCHED_PRIO_NORMAL(0),
@@ -18183,7 +18496,7 @@ enum ggml_sched_priority {
     1 => GGML_SCHED_PRIO_MEDIUM,
     2 => GGML_SCHED_PRIO_HIGH,
     3 => GGML_SCHED_PRIO_REALTIME,
-    _ => throw ArgumentError("Unknown value for ggml_sched_priority: $value"),
+    _ => throw ArgumentError('Unknown value for ggml_sched_priority: $value'),
   };
 }
 
@@ -18195,7 +18508,9 @@ final class ggml_threadpool_params extends ffi.Struct {
   external int n_threads;
 
   @ffi.Int()
-  external int prio;
+  external int prioAsInt;
+
+  ggml_sched_priority get prio => ggml_sched_priority.fromValue(prioAsInt);
 
   @ffi.Uint32()
   external int poll;
@@ -18209,9 +18524,16 @@ final class ggml_threadpool_params extends ffi.Struct {
 
 final class ggml_threadpool extends ffi.Opaque {}
 
+typedef ggml_threadpool_t = ffi.Pointer<ggml_threadpool>;
+
 final class ggml_backend_buffer_type extends ffi.Opaque {}
 
+typedef ggml_backend_buffer_type_t = ffi.Pointer<ggml_backend_buffer_type>;
+typedef ggml_backend_buffer_t = ffi.Pointer<ggml_backend_buffer>;
+
 final class ggml_backend extends ffi.Opaque {}
+
+typedef ggml_backend_t = ffi.Pointer<ggml_backend>;
 
 final class ggml_tallocr extends ffi.Struct {
   external ggml_backend_buffer_t buffer;
@@ -18225,17 +18547,18 @@ final class ggml_tallocr extends ffi.Struct {
   external int offset;
 }
 
-typedef ggml_backend_buffer_t = ffi.Pointer<ggml_backend_buffer>;
-
 final class ggml_gallocr extends ffi.Opaque {}
 
 typedef ggml_gallocr_t = ffi.Pointer<ggml_gallocr>;
-typedef ggml_backend_buffer_type_t = ffi.Pointer<ggml_backend_buffer_type>;
-typedef ggml_backend_t = ffi.Pointer<ggml_backend>;
 
 final class ggml_backend_event extends ffi.Opaque {}
 
+typedef ggml_backend_event_t = ffi.Pointer<ggml_backend_event>;
+typedef ggml_backend_graph_plan_t = ffi.Pointer<ffi.Void>;
+
 final class ggml_backend_reg extends ffi.Opaque {}
+
+typedef ggml_backend_reg_t = ffi.Pointer<ggml_backend_reg>;
 
 final class ggml_backend_device extends ffi.Opaque {}
 
@@ -18254,18 +18577,16 @@ enum ggml_backend_buffer_usage {
     1 => GGML_BACKEND_BUFFER_USAGE_WEIGHTS,
     2 => GGML_BACKEND_BUFFER_USAGE_COMPUTE,
     _ => throw ArgumentError(
-      "Unknown value for ggml_backend_buffer_usage: $value",
+      'Unknown value for ggml_backend_buffer_usage: $value',
     ),
   };
 }
 
-typedef ggml_backend_graph_plan_t = ffi.Pointer<ffi.Void>;
-typedef ggml_backend_event_t = ffi.Pointer<ggml_backend_event>;
-
 enum ggml_backend_dev_type {
   GGML_BACKEND_DEVICE_TYPE_CPU(0),
   GGML_BACKEND_DEVICE_TYPE_GPU(1),
-  GGML_BACKEND_DEVICE_TYPE_ACCEL(2);
+  GGML_BACKEND_DEVICE_TYPE_IGPU(2),
+  GGML_BACKEND_DEVICE_TYPE_ACCEL(3);
 
   final int value;
   const ggml_backend_dev_type(this.value);
@@ -18273,14 +18594,15 @@ enum ggml_backend_dev_type {
   static ggml_backend_dev_type fromValue(int value) => switch (value) {
     0 => GGML_BACKEND_DEVICE_TYPE_CPU,
     1 => GGML_BACKEND_DEVICE_TYPE_GPU,
-    2 => GGML_BACKEND_DEVICE_TYPE_ACCEL,
-    _ => throw ArgumentError("Unknown value for ggml_backend_dev_type: $value"),
+    2 => GGML_BACKEND_DEVICE_TYPE_IGPU,
+    3 => GGML_BACKEND_DEVICE_TYPE_ACCEL,
+    _ => throw ArgumentError('Unknown value for ggml_backend_dev_type: $value'),
   };
 }
 
 final class ggml_backend_dev_caps extends ffi.Struct {
   @ffi.Bool()
-  external bool async1;
+  external bool async$;
 
   @ffi.Bool()
   external bool host_buffer;
@@ -18304,12 +18626,51 @@ final class ggml_backend_dev_props extends ffi.Struct {
   external int memory_total;
 
   @ffi.UnsignedInt()
-  external int type;
+  external int typeAsInt;
+
+  ggml_backend_dev_type get type => ggml_backend_dev_type.fromValue(typeAsInt);
+
+  external ffi.Pointer<ffi.Char> device_id;
 
   external ggml_backend_dev_caps caps;
 }
 
-typedef ggml_backend_reg_t = ffi.Pointer<ggml_backend_reg>;
+typedef ggml_backend_split_buffer_type_tFunction =
+    ggml_backend_buffer_type_t Function(
+      ffi.Int main_device,
+      ffi.Pointer<ffi.Float> tensor_split,
+    );
+typedef Dartggml_backend_split_buffer_type_tFunction =
+    ggml_backend_buffer_type_t Function(
+      int main_device,
+      ffi.Pointer<ffi.Float> tensor_split,
+    );
+typedef ggml_backend_split_buffer_type_t =
+    ffi.Pointer<ffi.NativeFunction<ggml_backend_split_buffer_type_tFunction>>;
+typedef ggml_backend_set_n_threads_tFunction =
+    ffi.Void Function(ggml_backend_t backend, ffi.Int n_threads);
+typedef Dartggml_backend_set_n_threads_tFunction =
+    void Function(ggml_backend_t backend, int n_threads);
+typedef ggml_backend_set_n_threads_t =
+    ffi.Pointer<ffi.NativeFunction<ggml_backend_set_n_threads_tFunction>>;
+typedef ggml_backend_dev_get_extra_bufts_tFunction =
+    ffi.Pointer<ggml_backend_buffer_type_t> Function(ggml_backend_dev_t device);
+typedef ggml_backend_dev_get_extra_bufts_t =
+    ffi.Pointer<ffi.NativeFunction<ggml_backend_dev_get_extra_bufts_tFunction>>;
+typedef ggml_backend_set_abort_callback_tFunction =
+    ffi.Void Function(
+      ggml_backend_t backend,
+      ggml_abort_callback abort_callback,
+      ffi.Pointer<ffi.Void> abort_callback_data,
+    );
+typedef Dartggml_backend_set_abort_callback_tFunction =
+    void Function(
+      ggml_backend_t backend,
+      ggml_abort_callback abort_callback,
+      ffi.Pointer<ffi.Void> abort_callback_data,
+    );
+typedef ggml_backend_set_abort_callback_t =
+    ffi.Pointer<ffi.NativeFunction<ggml_backend_set_abort_callback_tFunction>>;
 
 final class ggml_backend_feature extends ffi.Struct {
   external ffi.Pointer<ffi.Char> name;
@@ -18317,11 +18678,14 @@ final class ggml_backend_feature extends ffi.Struct {
   external ffi.Pointer<ffi.Char> value;
 }
 
+typedef ggml_backend_get_features_tFunction =
+    ffi.Pointer<ggml_backend_feature> Function(ggml_backend_reg_t reg);
+typedef ggml_backend_get_features_t =
+    ffi.Pointer<ffi.NativeFunction<ggml_backend_get_features_tFunction>>;
+
 final class ggml_backend_sched extends ffi.Opaque {}
 
 typedef ggml_backend_sched_t = ffi.Pointer<ggml_backend_sched>;
-typedef ggml_backend_sched_eval_callback =
-    ffi.Pointer<ffi.NativeFunction<ggml_backend_sched_eval_callbackFunction>>;
 typedef ggml_backend_sched_eval_callbackFunction =
     ffi.Bool Function(
       ffi.Pointer<ggml_tensor> t,
@@ -18334,6 +18698,8 @@ typedef Dartggml_backend_sched_eval_callbackFunction =
       bool ask,
       ffi.Pointer<ffi.Void> user_data,
     );
+typedef ggml_backend_sched_eval_callback =
+    ffi.Pointer<ffi.NativeFunction<ggml_backend_sched_eval_callbackFunction>>;
 
 final class ggml_backend_graph_copy extends ffi.Struct {
   external ggml_backend_buffer_t buffer;
@@ -18345,8 +18711,6 @@ final class ggml_backend_graph_copy extends ffi.Struct {
   external ffi.Pointer<ggml_cgraph> graph;
 }
 
-typedef ggml_backend_eval_callback =
-    ffi.Pointer<ffi.NativeFunction<ggml_backend_eval_callbackFunction>>;
 typedef ggml_backend_eval_callbackFunction =
     ffi.Bool Function(
       ffi.Int node_index,
@@ -18361,6 +18725,8 @@ typedef Dartggml_backend_eval_callbackFunction =
       ffi.Pointer<ggml_tensor> t2,
       ffi.Pointer<ffi.Void> user_data,
     );
+typedef ggml_backend_eval_callback =
+    ffi.Pointer<ffi.NativeFunction<ggml_backend_eval_callbackFunction>>;
 
 final class ggml_cplan extends ffi.Struct {
   @ffi.Size()
@@ -18377,13 +18743,6 @@ final class ggml_cplan extends ffi.Struct {
 
   external ffi.Pointer<ffi.Void> abort_callback_data;
 }
-
-typedef ggml_abort_callback =
-    ffi.Pointer<ffi.NativeFunction<ggml_abort_callbackFunction>>;
-typedef ggml_abort_callbackFunction =
-    ffi.Bool Function(ffi.Pointer<ffi.Void> data);
-typedef Dartggml_abort_callbackFunction =
-    bool Function(ffi.Pointer<ffi.Void> data);
 
 enum ggml_numa_strategy {
   GGML_NUMA_STRATEGY_DISABLED(0),
@@ -18403,24 +18762,10 @@ enum ggml_numa_strategy {
     3 => GGML_NUMA_STRATEGY_NUMACTL,
     4 => GGML_NUMA_STRATEGY_MIRROR,
     5 => GGML_NUMA_STRATEGY_COUNT,
-    _ => throw ArgumentError("Unknown value for ggml_numa_strategy: $value"),
+    _ => throw ArgumentError('Unknown value for ggml_numa_strategy: $value'),
   };
 }
 
-final class ggml_type_traits_cpu extends ffi.Struct {
-  external ggml_from_float_t from_float;
-
-  external ggml_vec_dot_t vec_dot;
-
-  @ffi.UnsignedInt()
-  external int vec_dot_type;
-
-  @ffi.Int64()
-  external int nrows;
-}
-
-typedef ggml_vec_dot_t =
-    ffi.Pointer<ffi.NativeFunction<ggml_vec_dot_tFunction>>;
 typedef ggml_vec_dot_tFunction =
     ffi.Void Function(
       ffi.Int n,
@@ -18443,13 +18788,32 @@ typedef Dartggml_vec_dot_tFunction =
       int by,
       int nrc,
     );
-typedef ggml_threadpool_t = ffi.Pointer<ggml_threadpool>;
+typedef ggml_vec_dot_t =
+    ffi.Pointer<ffi.NativeFunction<ggml_vec_dot_tFunction>>;
+
+final class ggml_type_traits_cpu extends ffi.Struct {
+  external ggml_from_float_t from_float;
+
+  external ggml_vec_dot_t vec_dot;
+
+  @ffi.UnsignedInt()
+  external int vec_dot_typeAsInt;
+
+  ggml_type get vec_dot_type => ggml_type.fromValue(vec_dot_typeAsInt);
+
+  @ffi.Int64()
+  external int nrows;
+}
 
 final class ggml_opt_dataset extends ffi.Opaque {}
 
 final class ggml_opt_context extends ffi.Opaque {}
 
 final class ggml_opt_result extends ffi.Opaque {}
+
+typedef ggml_opt_dataset_t = ffi.Pointer<ggml_opt_dataset>;
+typedef ggml_opt_context_t = ffi.Pointer<ggml_opt_context>;
+typedef ggml_opt_result_t = ffi.Pointer<ggml_opt_result>;
 
 enum ggml_opt_loss_type {
   GGML_OPT_LOSS_TYPE_MEAN(0),
@@ -18465,12 +18829,9 @@ enum ggml_opt_loss_type {
     1 => GGML_OPT_LOSS_TYPE_SUM,
     2 => GGML_OPT_LOSS_TYPE_CROSS_ENTROPY,
     3 => GGML_OPT_LOSS_TYPE_MEAN_SQUARED_ERROR,
-    _ => throw ArgumentError("Unknown value for ggml_opt_loss_type: $value"),
+    _ => throw ArgumentError('Unknown value for ggml_opt_loss_type: $value'),
   };
 }
-
-typedef ggml_opt_dataset_t = ffi.Pointer<ggml_opt_dataset>;
-typedef ggml_opt_context_t = ffi.Pointer<ggml_opt_context>;
 
 enum ggml_opt_build_type {
   GGML_OPT_BUILD_TYPE_FORWARD(10),
@@ -18484,7 +18845,7 @@ enum ggml_opt_build_type {
     10 => GGML_OPT_BUILD_TYPE_FORWARD,
     20 => GGML_OPT_BUILD_TYPE_GRAD,
     30 => GGML_OPT_BUILD_TYPE_OPT,
-    _ => throw ArgumentError("Unknown value for ggml_opt_build_type: $value"),
+    _ => throw ArgumentError('Unknown value for ggml_opt_build_type: $value'),
   };
 }
 
@@ -18501,15 +18862,9 @@ enum ggml_opt_optimizer_type {
     1 => GGML_OPT_OPTIMIZER_TYPE_SGD,
     2 => GGML_OPT_OPTIMIZER_TYPE_COUNT,
     _ => throw ArgumentError(
-      "Unknown value for ggml_opt_optimizer_type: $value",
+      'Unknown value for ggml_opt_optimizer_type: $value',
     ),
   };
-}
-
-final class ggml_opt_optimizer_params extends ffi.Struct {
-  external UnnamedStruct1 adamw;
-
-  external UnnamedStruct2 sgd;
 }
 
 final class UnnamedStruct1 extends ffi.Struct {
@@ -18537,6 +18892,17 @@ final class UnnamedStruct2 extends ffi.Struct {
   external double wd;
 }
 
+final class ggml_opt_optimizer_params extends ffi.Struct {
+  external UnnamedStruct1 adamw;
+
+  external UnnamedStruct2 sgd;
+}
+
+typedef ggml_opt_get_optimizer_paramsFunction =
+    ggml_opt_optimizer_params Function(ffi.Pointer<ffi.Void> userdata);
+typedef ggml_opt_get_optimizer_params =
+    ffi.Pointer<ffi.NativeFunction<ggml_opt_get_optimizer_paramsFunction>>;
+
 final class ggml_opt_params extends ffi.Struct {
   external ggml_backend_sched_t backend_sched;
 
@@ -18547,10 +18913,16 @@ final class ggml_opt_params extends ffi.Struct {
   external ffi.Pointer<ggml_tensor> outputs;
 
   @ffi.UnsignedInt()
-  external int loss_type;
+  external int loss_typeAsInt;
+
+  ggml_opt_loss_type get loss_type =>
+      ggml_opt_loss_type.fromValue(loss_typeAsInt);
 
   @ffi.UnsignedInt()
-  external int build_type;
+  external int build_typeAsInt;
+
+  ggml_opt_build_type get build_type =>
+      ggml_opt_build_type.fromValue(build_typeAsInt);
 
   @ffi.Int32()
   external int opt_period;
@@ -18560,16 +18932,12 @@ final class ggml_opt_params extends ffi.Struct {
   external ffi.Pointer<ffi.Void> get_opt_pars_ud;
 
   @ffi.UnsignedInt()
-  external int optimizer;
+  external int optimizerAsInt;
+
+  ggml_opt_optimizer_type get optimizer =>
+      ggml_opt_optimizer_type.fromValue(optimizerAsInt);
 }
 
-typedef ggml_opt_get_optimizer_params =
-    ffi.Pointer<ffi.NativeFunction<ggml_opt_get_optimizer_paramsFunction>>;
-typedef ggml_opt_get_optimizer_paramsFunction =
-    ggml_opt_optimizer_params Function(ffi.Pointer<ffi.Void> userdata);
-typedef ggml_opt_result_t = ffi.Pointer<ggml_opt_result>;
-typedef ggml_opt_epoch_callback =
-    ffi.Pointer<ffi.NativeFunction<ggml_opt_epoch_callbackFunction>>;
 typedef ggml_opt_epoch_callbackFunction =
     ffi.Void Function(
       ffi.Bool train,
@@ -18590,6 +18958,8 @@ typedef Dartggml_opt_epoch_callbackFunction =
       int ibatch_max,
       int t_start_us,
     );
+typedef ggml_opt_epoch_callback =
+    ffi.Pointer<ffi.NativeFunction<ggml_opt_epoch_callbackFunction>>;
 
 final class llama_vocab extends ffi.Opaque {}
 
@@ -18597,10 +18967,31 @@ final class llama_model extends ffi.Opaque {}
 
 final class llama_context extends ffi.Opaque {}
 
-final class llama_sampler extends ffi.Struct {
-  external ffi.Pointer<llama_sampler_i> iface;
+typedef llama_token = ffi.Int32;
+typedef Dartllama_token = int;
 
-  external llama_sampler_context_t ctx;
+final class llama_token_data extends ffi.Struct {
+  @llama_token()
+  external int id;
+
+  @ffi.Float()
+  external double logit;
+
+  @ffi.Float()
+  external double p;
+}
+
+final class llama_token_data_array extends ffi.Struct {
+  external ffi.Pointer<llama_token_data> data;
+
+  @ffi.Size()
+  external int size;
+
+  @ffi.Int64()
+  external int selected;
+
+  @ffi.Bool()
+  external bool sorted;
 }
 
 final class llama_sampler_i extends ffi.Struct {
@@ -18646,36 +19037,21 @@ final class llama_sampler_i extends ffi.Struct {
   free;
 }
 
-typedef llama_token = ffi.Int32;
-typedef Dartllama_token = int;
-
-final class llama_token_data_array extends ffi.Struct {
-  external ffi.Pointer<llama_token_data> data;
-
-  @ffi.Size()
-  external int size;
-
-  @ffi.Int64()
-  external int selected;
-
-  @ffi.Bool()
-  external bool sorted;
-}
-
-final class llama_token_data extends ffi.Struct {
-  @llama_token()
-  external int id;
-
-  @ffi.Float()
-  external double logit;
-
-  @ffi.Float()
-  external double p;
-}
-
 typedef llama_sampler_context_t = ffi.Pointer<ffi.Void>;
 
+final class llama_sampler extends ffi.Struct {
+  external ffi.Pointer<llama_sampler_i> iface;
+
+  external llama_sampler_context_t ctx;
+}
+
 final class llama_memory_i extends ffi.Opaque {}
+
+typedef llama_memory_t = ffi.Pointer<llama_memory_i>;
+typedef llama_pos = ffi.Int32;
+typedef Dartllama_pos = int;
+typedef llama_seq_id = ffi.Int32;
+typedef Dartllama_seq_id = int;
 
 enum llama_vocab_type {
   LLAMA_VOCAB_TYPE_NONE(0),
@@ -18697,7 +19073,7 @@ enum llama_vocab_type {
     4 => LLAMA_VOCAB_TYPE_UGM,
     5 => LLAMA_VOCAB_TYPE_RWKV,
     6 => LLAMA_VOCAB_TYPE_PLAMO2,
-    _ => throw ArgumentError("Unknown value for llama_vocab_type: $value"),
+    _ => throw ArgumentError('Unknown value for llama_vocab_type: $value'),
   };
 }
 
@@ -18717,7 +19093,7 @@ enum llama_rope_type {
     2 => LLAMA_ROPE_TYPE_NEOX,
     8 => LLAMA_ROPE_TYPE_MROPE,
     24 => LLAMA_ROPE_TYPE_VISION,
-    _ => throw ArgumentError("Unknown value for llama_rope_type: $value"),
+    _ => throw ArgumentError('Unknown value for llama_rope_type: $value'),
   };
 }
 
@@ -18741,7 +19117,7 @@ enum llama_token_type {
     4 => LLAMA_TOKEN_TYPE_USER_DEFINED,
     5 => LLAMA_TOKEN_TYPE_UNUSED,
     6 => LLAMA_TOKEN_TYPE_BYTE,
-    _ => throw ArgumentError("Unknown value for llama_token_type: $value"),
+    _ => throw ArgumentError('Unknown value for llama_token_type: $value'),
   };
 }
 
@@ -18773,7 +19149,7 @@ enum llama_token_attr {
     128 => LLAMA_TOKEN_ATTR_LSTRIP,
     256 => LLAMA_TOKEN_ATTR_RSTRIP,
     512 => LLAMA_TOKEN_ATTR_SINGLE_WORD,
-    _ => throw ArgumentError("Unknown value for llama_token_attr: $value"),
+    _ => throw ArgumentError('Unknown value for llama_token_attr: $value'),
   };
 }
 
@@ -18851,7 +19227,7 @@ enum llama_ftype {
     37 => LLAMA_FTYPE_MOSTLY_TQ2_0,
     38 => LLAMA_FTYPE_MOSTLY_MXFP4_MOE,
     1024 => LLAMA_FTYPE_GUESSED,
-    _ => throw ArgumentError("Unknown value for llama_ftype: $value"),
+    _ => throw ArgumentError('Unknown value for llama_ftype: $value'),
   };
 }
 
@@ -18875,7 +19251,7 @@ enum llama_rope_scaling_type {
     2 => LLAMA_ROPE_SCALING_TYPE_YARN,
     3 => LLAMA_ROPE_SCALING_TYPE_LONGROPE,
     _ => throw ArgumentError(
-      "Unknown value for llama_rope_scaling_type: $value",
+      'Unknown value for llama_rope_scaling_type: $value',
     ),
   };
 
@@ -18905,7 +19281,7 @@ enum llama_pooling_type {
     2 => LLAMA_POOLING_TYPE_CLS,
     3 => LLAMA_POOLING_TYPE_LAST,
     4 => LLAMA_POOLING_TYPE_RANK,
-    _ => throw ArgumentError("Unknown value for llama_pooling_type: $value"),
+    _ => throw ArgumentError('Unknown value for llama_pooling_type: $value'),
   };
 }
 
@@ -18921,7 +19297,7 @@ enum llama_attention_type {
     -1 => LLAMA_ATTENTION_TYPE_UNSPECIFIED,
     0 => LLAMA_ATTENTION_TYPE_CAUSAL,
     1 => LLAMA_ATTENTION_TYPE_NON_CAUSAL,
-    _ => throw ArgumentError("Unknown value for llama_attention_type: $value"),
+    _ => throw ArgumentError('Unknown value for llama_attention_type: $value'),
   };
 }
 
@@ -18937,7 +19313,7 @@ enum llama_flash_attn_type {
     -1 => LLAMA_FLASH_ATTN_TYPE_AUTO,
     0 => LLAMA_FLASH_ATTN_TYPE_DISABLED,
     1 => LLAMA_FLASH_ATTN_TYPE_ENABLED,
-    _ => throw ArgumentError("Unknown value for llama_flash_attn_type: $value"),
+    _ => throw ArgumentError('Unknown value for llama_flash_attn_type: $value'),
   };
 }
 
@@ -18953,9 +19329,16 @@ enum llama_split_mode {
     0 => LLAMA_SPLIT_MODE_NONE,
     1 => LLAMA_SPLIT_MODE_LAYER,
     2 => LLAMA_SPLIT_MODE_ROW,
-    _ => throw ArgumentError("Unknown value for llama_split_mode: $value"),
+    _ => throw ArgumentError('Unknown value for llama_split_mode: $value'),
   };
 }
+
+typedef llama_progress_callbackFunction =
+    ffi.Bool Function(ffi.Float progress, ffi.Pointer<ffi.Void> user_data);
+typedef Dartllama_progress_callbackFunction =
+    bool Function(double progress, ffi.Pointer<ffi.Void> user_data);
+typedef llama_progress_callback =
+    ffi.Pointer<ffi.NativeFunction<llama_progress_callbackFunction>>;
 
 final class llama_batch extends ffi.Struct {
   @ffi.Int32()
@@ -18974,11 +19357,6 @@ final class llama_batch extends ffi.Struct {
   external ffi.Pointer<ffi.Int8> logits;
 }
 
-typedef llama_pos = ffi.Int32;
-typedef Dartllama_pos = int;
-typedef llama_seq_id = ffi.Int32;
-typedef Dartllama_seq_id = int;
-
 enum llama_model_kv_override_type {
   LLAMA_KV_OVERRIDE_TYPE_INT(0),
   LLAMA_KV_OVERRIDE_TYPE_FLOAT(1),
@@ -18994,19 +19372,9 @@ enum llama_model_kv_override_type {
     2 => LLAMA_KV_OVERRIDE_TYPE_BOOL,
     3 => LLAMA_KV_OVERRIDE_TYPE_STR,
     _ => throw ArgumentError(
-      "Unknown value for llama_model_kv_override_type: $value",
+      'Unknown value for llama_model_kv_override_type: $value',
     ),
   };
-}
-
-final class llama_model_kv_override extends ffi.Struct {
-  @ffi.UnsignedInt()
-  external int tag;
-
-  @ffi.Array.multi([128])
-  external ffi.Array<ffi.Char> key;
-
-  external UnnamedUnion2 unnamed;
 }
 
 final class UnnamedUnion2 extends ffi.Union {
@@ -19021,6 +19389,19 @@ final class UnnamedUnion2 extends ffi.Union {
 
   @ffi.Array.multi([128])
   external ffi.Array<ffi.Char> val_str;
+}
+
+final class llama_model_kv_override extends ffi.Struct {
+  @ffi.UnsignedInt()
+  external int tagAsInt;
+
+  llama_model_kv_override_type get tag =>
+      llama_model_kv_override_type.fromValue(tagAsInt);
+
+  @ffi.Array.multi([128])
+  external ffi.Array<ffi.Char> key;
+
+  external UnnamedUnion2 unnamed;
 }
 
 final class llama_model_tensor_buft_override extends ffi.Struct {
@@ -19038,7 +19419,10 @@ final class llama_model_params extends ffi.Struct {
   external int n_gpu_layers;
 
   @ffi.UnsignedInt()
-  external int split_mode;
+  external int split_modeAsInt;
+
+  llama_split_mode get split_mode =>
+      llama_split_mode.fromValue(split_modeAsInt);
 
   @ffi.Int32()
   external int main_gpu;
@@ -19067,13 +19451,6 @@ final class llama_model_params extends ffi.Struct {
   external bool use_extra_bufts;
 }
 
-typedef llama_progress_callback =
-    ffi.Pointer<ffi.NativeFunction<llama_progress_callbackFunction>>;
-typedef llama_progress_callbackFunction =
-    ffi.Bool Function(ffi.Float progress, ffi.Pointer<ffi.Void> user_data);
-typedef Dartllama_progress_callbackFunction =
-    bool Function(double progress, ffi.Pointer<ffi.Void> user_data);
-
 final class llama_context_params extends ffi.Struct {
   @ffi.Uint32()
   external int n_ctx;
@@ -19094,16 +19471,28 @@ final class llama_context_params extends ffi.Struct {
   external int n_threads_batch;
 
   @ffi.Int()
-  external int rope_scaling_type;
+  external int rope_scaling_typeAsInt;
+
+  llama_rope_scaling_type get rope_scaling_type =>
+      llama_rope_scaling_type.fromValue(rope_scaling_typeAsInt);
 
   @ffi.Int()
-  external int pooling_type;
+  external int pooling_typeAsInt;
+
+  llama_pooling_type get pooling_type =>
+      llama_pooling_type.fromValue(pooling_typeAsInt);
 
   @ffi.Int()
-  external int attention_type;
+  external int attention_typeAsInt;
+
+  llama_attention_type get attention_type =>
+      llama_attention_type.fromValue(attention_typeAsInt);
 
   @ffi.Int()
-  external int flash_attn_type;
+  external int flash_attn_typeAsInt;
+
+  llama_flash_attn_type get flash_attn_type =>
+      llama_flash_attn_type.fromValue(flash_attn_typeAsInt);
 
   @ffi.Float()
   external double rope_freq_base;
@@ -19134,10 +19523,14 @@ final class llama_context_params extends ffi.Struct {
   external ffi.Pointer<ffi.Void> cb_eval_user_data;
 
   @ffi.UnsignedInt()
-  external int type_k;
+  external int type_kAsInt;
+
+  ggml_type get type_k => ggml_type.fromValue(type_kAsInt);
 
   @ffi.UnsignedInt()
-  external int type_v;
+  external int type_vAsInt;
+
+  ggml_type get type_v => ggml_type.fromValue(type_vAsInt);
 
   external ggml_abort_callback abort_callback;
 
@@ -19167,13 +19560,21 @@ final class llama_model_quantize_params extends ffi.Struct {
   external int nthread;
 
   @ffi.UnsignedInt()
-  external int ftype;
+  external int ftypeAsInt;
+
+  llama_ftype get ftype => llama_ftype.fromValue(ftypeAsInt);
 
   @ffi.UnsignedInt()
-  external int output_tensor_type;
+  external int output_tensor_typeAsInt;
+
+  ggml_type get output_tensor_type =>
+      ggml_type.fromValue(output_tensor_typeAsInt);
 
   @ffi.UnsignedInt()
-  external int token_embedding_type;
+  external int token_embedding_typeAsInt;
+
+  ggml_type get token_embedding_type =>
+      ggml_type.fromValue(token_embedding_typeAsInt);
 
   @ffi.Bool()
   external bool allow_requantize;
@@ -19220,7 +19621,6 @@ final class llama_chat_message extends ffi.Struct {
 
 final class llama_adapter_lora extends ffi.Opaque {}
 
-typedef llama_memory_t = ffi.Pointer<llama_memory_i>;
 typedef llama_state_seq_flags = ffi.Uint32;
 typedef Dartllama_state_seq_flags = int;
 
@@ -19255,6 +19655,19 @@ final class llama_perf_sampler_data extends ffi.Struct {
   external int n_sample;
 }
 
+typedef llama_opt_param_filterFunction =
+    ffi.Bool Function(
+      ffi.Pointer<ggml_tensor> tensor,
+      ffi.Pointer<ffi.Void> userdata,
+    );
+typedef Dartllama_opt_param_filterFunction =
+    bool Function(
+      ffi.Pointer<ggml_tensor> tensor,
+      ffi.Pointer<ffi.Void> userdata,
+    );
+typedef llama_opt_param_filter =
+    ffi.Pointer<ffi.NativeFunction<llama_opt_param_filterFunction>>;
+
 final class llama_opt_params extends ffi.Struct {
   @ffi.Uint32()
   external int n_ctx_train;
@@ -19268,27 +19681,17 @@ final class llama_opt_params extends ffi.Struct {
   external ffi.Pointer<ffi.Void> get_opt_pars_ud;
 
   @ffi.UnsignedInt()
-  external int optimizer_type;
-}
+  external int optimizer_typeAsInt;
 
-typedef llama_opt_param_filter =
-    ffi.Pointer<ffi.NativeFunction<llama_opt_param_filterFunction>>;
-typedef llama_opt_param_filterFunction =
-    ffi.Bool Function(
-      ffi.Pointer<ggml_tensor> tensor,
-      ffi.Pointer<ffi.Void> userdata,
-    );
-typedef Dartllama_opt_param_filterFunction =
-    bool Function(
-      ffi.Pointer<ggml_tensor> tensor,
-      ffi.Pointer<ffi.Void> userdata,
-    );
+  ggml_opt_optimizer_type get optimizer_type =>
+      ggml_opt_optimizer_type.fromValue(optimizer_typeAsInt);
+}
 
 const int __bool_true_false_are_defined = 1;
 
-const int true1 = 1;
+const int true$ = 1;
 
-const int false1 = 0;
+const int false$ = 0;
 
 const int NULL = 0;
 
@@ -19640,6 +20043,8 @@ const int GGML_EXIT_SUCCESS = 0;
 
 const int GGML_EXIT_ABORTED = 1;
 
+const int GGML_ROPE_TYPE_NORMAL = 0;
+
 const int GGML_ROPE_TYPE_NEOX = 2;
 
 const int GGML_ROPE_TYPE_MROPE = 8;
@@ -19671,3 +20076,5 @@ const int LLAMA_STATE_SEQ_MAGIC = 1734833009;
 const int LLAMA_STATE_SEQ_VERSION = 2;
 
 const int LLAMA_STATE_SEQ_FLAGS_SWA_ONLY = 1;
+
+const int LLAMA_STATE_SEQ_FLAGS_PARTIAL_ONLY = 1;
