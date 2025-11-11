@@ -7,6 +7,8 @@
 # with a wide range of systems. Otherwise if I build with a newer glibc, 
 # then it will not work on older systems.
 
+# https://github.com/ggml-org/llama.cpp/discussions/17182
+
 # ===========================
 
 # cd linux_build
@@ -27,4 +29,4 @@ docker run -e UID=$(id -u) -e GID=$(id -g) --rm -v "$(pwd)/docker_build:/output"
 rm -rf ./linux/libs/
 mkdir -p ./linux/libs/
 
-cp -rP ./docker_build/*.so ./linux/libs/
+cp -rP ./docker_build/*.so* ./linux/libs/
