@@ -55,5 +55,5 @@ RUN cmake -B build -DBUILD_SHARED_LIBS=ON \
   -DCMAKE_INSTALL_RPATH="\$ORIGIN" && \
    cmake --build build --config Release -j$(nproc)
 
-CMD mkdir -p /output && cp /workspace/src/llama.cpp/build/bin/*.so* /output/ && \
+CMD mkdir -p /output && cp -rP /workspace/src/llama.cpp/build/bin/*.so* /output/ && \
   chown -R ${UID:-1000}:${GID:-1000} /output 
