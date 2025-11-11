@@ -22,7 +22,7 @@ dev_dependencies:
     git: https://github.com/JonasWanke/dart-code-metrics.git
   dfc_lints:
     git: https://github.com/sgehrman/dfc_lints.git
-  ffigen: ^19.1.0
+  ffigen: ^20.0.0
 
 flutter:
   plugin:

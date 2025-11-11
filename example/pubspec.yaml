@@ -12,7 +12,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   dfc_llama:
     path: ../
-  file_picker: ^10.3.3
+  file_picker: ^10.3.6
   flutter:
     sdk: flutter
 
